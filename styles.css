@@ -1,0 +1,312 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f4e1;
+    color: #3a170d;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background-color: #e0b570;
+    text-align: center;
+    padding: 20px;
+}
+
+header img.logo {
+    width: 100px;
+}
+
+header h1 {
+    color: #3a170d;
+    margin: 10px 0;
+}
+
+header p {
+    margin: 5px 0;
+}
+
+header ul {
+    list-style: none;
+    padding: 0;
+}
+
+header ul li {
+    margin: 5px 0;
+}
+
+main {
+    padding: 20px;
+}
+
+.menu-section, .address-section {
+    margin-bottom: 40px;
+}
+
+.menu-section h2, .address-section h2 {
+    background-color: #ab763a;
+    color: #f3f4e1;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.dish, .drink {
+    background-color: #ffffff;
+    border: 2px solid #ab763a;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.dish img, .drink img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.dish-info, .drink-info {
+    flex-grow: 1;
+}
+
+.dish-info h3, .drink-info h3 {
+    margin: 0;
+}
+
+button.add-drink {
+    background-color: #928072;
+    color: #f3f4e1;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button.add-drink:hover {
+    background-color: #ab763a;
+}
+
+fieldset {
+    border: none;
+    margin-top: 10px;
+}
+
+fieldset legend {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin: 5px 0;
+}
+
+select, input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+input[type="checkbox"] + label {
+    background-color: #f3f4e1;
+    border: 2px solid #ab763a;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 5px;
+    transition: background-color 0.3s ease;
+}
+
+input[type="checkbox"]:checked + label {
+    background-color: #e0b570;
+    color: #3a170d;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button {
+    background-color: #928072;
+    color: #f3f4e1;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #ab763a;
+}
+
+#resumo-pedido {
+    background-color: #ffffff;
+    border: 2px solid #ab763a;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 40px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#pedido-itens {
+    margin-bottom: 20px;
+}
+
+.pedido-item {
+    border-bottom: 1px solid #ab763a;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.pedido-item:last-child {
+    border-bottom: none;
+}
+
+.excluir-item, .excluir-endereco {
+    background-color: #ab763a;
+    color: #f3f4e1;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.excluir-item:hover, .excluir-endereco:hover {
+    background-color: #3a170d;
+}
+
+.option-container, .option-list, .adicionais-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.option-list li, .adicionais-lista li, .drink-option {
+    background-color: #f3f4e1;
+    border: 2px solid #ab763a;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.option-list li.selected, .adicionais-lista li.selected, .drink-option.selected {
+    background-color: #e0b570;
+    color: #3a170d;
+}
+
+.drink-option img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.drink-option span {
+    vertical-align: middle;
+}
+
+.address-section {
+    background-color: #ffffff;
+    border: 2px solid #ab763a;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.address-section label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #3a170d;
+}
+
+.address-section input[type="text"], 
+.address-section input[type="number"], 
+.address-section input[type="email"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ab763a;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.address-section input[type="text"]:focus, 
+.address-section input[type="number"]:focus, 
+.address-section input[type="email"]:focus {
+    border-color: #e0b570;
+    outline: none;
+}
+
+.address-section input[required]::placeholder {
+    color: #e0b570;
+}
+
+.address-section input[type="text"]::placeholder, 
+.address-section input[type="number"]::placeholder, 
+.address-section input[type="email"]::placeholder {
+    color: #928072;
+}
+
+.address-section .input-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.address-section .input-group .input-half {
+    width: 48%;
+}
+
+.address-section .input-group .input-full {
+    width: 100%;
+}
