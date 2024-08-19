@@ -78,7 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
     dishes.forEach(dish => {
         dish.addEventListener('click', () => {
             const name = dish.getAttribute('data-name');
-            let modalContent = `<h3>${name}</h3>`;
+            const basePrice = parseFloat(dish.getAttribute('data-price')); // Preço base do prato
+            let modalContent = `<h3>${name}</h3><p>R$${basePrice.toFixed(2)}</p>`;
 
             if (name === 'Batata Rosti Galáctica') {
                 modalContent += `
@@ -104,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             } else {
                 modalContent += `
-                    <p>R$${parseFloat(dish.getAttribute('data-price')).toFixed(2)}</p>
                     <fieldset>
                         <legend>Escolha o queijo</legend>
                         <ul class="option-list">
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             modalContent += `
                 <fieldset>
-                    <legend>Adicionais (opcional)</legend>
+                    <legend>Adicionais (máximo 2)</legend>
                     <ul class="adicionais-lista">
                         <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="2.00"><label for="alho-crocante">Alho crocante (R$2,00)</label></li>
                         <li><input type="checkbox" id="azeitona" value="Azeitona" data-price="2.00"><label for="azeitona">Azeitona (R$2,00)</label></li>
@@ -139,6 +139,18 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.style.display = "block";
             modal.scrollTop = 0;
 
+            // Limitar a seleção de 2 adicionais
+            const adicionaisCheckboxes = modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]');
+            adicionaisCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    const checkedCount = modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]:checked').length;
+                    if (checkedCount > 2) {
+                        checkbox.checked = false;
+                        alert('Você só pode selecionar até 2 adicionais.');
+                    }
+                });
+            });
+
             document.querySelectorAll('.option').forEach(option => {
                 option.addEventListener('click', () => {
                     option.parentElement.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
@@ -150,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const queijo = modalBody.querySelector('fieldset:nth-of-type(1) .option.selected')?.dataset.value || '';
                 const saborOption = modalBody.querySelector('fieldset:nth-of-type(2) .option.selected');
                 const sabor = saborOption?.dataset.value || '';
-                const saborPrice = parseFloat(saborOption?.dataset.price || 0);
+                const saborPrice = parseFloat(saborOption?.dataset.price || basePrice);
 
                 if (!queijo) {
                     alert('Por favor, selecione uma opção de queijo.');
@@ -166,9 +178,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const adicionaisPrecos = Array.from(modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]:checked')).map(adicional => parseFloat(adicional.dataset.price));
 
-                const totalPrice = adicionaisPrecos.reduce((total, preco) => total + preco, saborPrice);
+                const totalPrice = adicionaisPrecos.reduce((total, preco) => total + preco, saborPrice || basePrice);
 
-                addPedido(name, saborPrice, sabor, queijo, '', adicionais, totalPrice);
+                addPedido(name, basePrice, sabor, queijo, '', adicionais, totalPrice);
                 modal.style.display = "none";
                 mostrarMensagemAdicionado();
             });
@@ -204,10 +216,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('confirmar-pedido').addEventListener('click', confirmarPedido);
 });
 
-function addPedido(name, price, sabor, queijo, bebida, adicionais, totalPrice) {
+function addPedido(name, basePrice, sabor, queijo, bebida, adicionais, totalPrice) {
     const pedido = {
         name,
-        price,
+        basePrice,
         sabor: sabor || '',
         queijo: queijo || '',
         adicionais: adicionais.length ? adicionais.join(', ') : '',
