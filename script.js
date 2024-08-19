@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const cidadeCliente = document.getElementById('cidade-cliente');
     const pedidoItens = document.getElementById('pedido-itens');
 
+    let enderecoSalvo = null;
+
     const mostrarMensagemAdicionado = () => {
         const mensagem = document.createElement('div');
         mensagem.className = 'mensagem-adicionado';
@@ -49,25 +51,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     adicionarEnderecoBtn.addEventListener('click', () => {
         if (nomeCliente.value && cepCliente.value && ruaCliente.value && numeroCliente.value && bairroCliente.value && cidadeCliente.value) {
-            const enderecoResumo = document.createElement('div');
-            enderecoResumo.className = 'endereco-item';
-            enderecoResumo.innerHTML = `
-                <h4>Endereço de Entrega</h4>
-                <p>${nomeCliente.value}</p>
-                <p>${ruaCliente.value}, ${numeroCliente.value}</p>
-                <p>${complementoCliente.value ? complementoCliente.value + ', ' : ''}${bairroCliente.value}, ${cidadeCliente.value}</p>
-                <button class="excluir-endereco">Excluir Endereço</button>
-            `;
-            pedidoItens.appendChild(enderecoResumo);
+            enderecoSalvo = {
+                nome: nomeCliente.value,
+                cep: cepCliente.value,
+                rua: ruaCliente.value,
+                numero: numeroCliente.value,
+                complemento: complementoCliente.value,
+                bairro: bairroCliente.value,
+                cidade: cidadeCliente.value
+            };
 
+            atualizarResumoPedido();
             bloquearCamposEndereco();
-
-            enderecoResumo.querySelector('.excluir-endereco').addEventListener('click', () => {
-                enderecoResumo.remove();
-                liberarCamposEndereco();
-            });
-
-            mostrarMensagemAdicionado(); // Exibe a mensagem de "Adicionado"
+            mostrarMensagemAdicionado();
         } else {
             alert('Por favor, preencha todos os campos obrigatórios do endereço.');
         }
@@ -82,13 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
     dishes.forEach(dish => {
         dish.addEventListener('click', () => {
             const name = dish.getAttribute('data-name');
-            const price = parseFloat(dish.getAttribute('data-price'));
-            let modalContent = `<h3>${name}</h3><p>R$${price.toFixed(2)}</p>`;
-            
-            if (name.includes('Rosti')) {
+            let modalContent = `<h3>${name}</h3>`;
+
+            if (name === 'Batata Rosti Galáctica') {
                 modalContent += `
                     <fieldset>
-                        <legend>Escolha o queijo</legend>
+                        <legend>Escolha o queijo (obrigatório)</legend>
                         <ul class="option-list">
                             <li class="option" data-value="Mussarela">Mussarela</li>
                             <li class="option" data-value="Cheddar">Cheddar</li>
@@ -96,19 +91,20 @@ document.addEventListener('DOMContentLoaded', () => {
                         </ul>
                     </fieldset>
                     <fieldset>
-                        <legend>Escolha o sabor</legend>
+                        <legend>Escolha o sabor (obrigatório)</legend>
                         <ul class="option-list">
-                            <li class="option" data-value="Bacon">Bacon (R$34,90)</li>
-                            <li class="option" data-value="Bolonhesa">Bolonhesa (R$34,90)</li>
-                            <li class="option" data-value="Calabresa">Calabresa (R$35,90)</li>
-                            <li class="option" data-value="Estrogonofe de Frango">Estrogonofe de Frango (R$35,90)</li>
-                            <li class="option" data-value="Estrogonofe de Grão de Bico">Estrogonofe de Grão de Bico (R$29,90)</li>
-                            <li class="option" data-value="Frango Desfiado">Frango Desfiado (R$34,90)</li>
+                            <li class="option" data-value="Bacon" data-price="34.90">Bacon (R$34,90)</li>
+                            <li class="option" data-value="Bolonhesa" data-price="34.90">Bolonhesa (R$34,90)</li>
+                            <li class="option" data-value="Calabresa" data-price="35.90">Calabresa (R$35,90)</li>
+                            <li class="option" data-value="Estrogonofe de Frango" data-price="35.90">Estrogonofe de Frango (R$35,90)</li>
+                            <li class="option" data-value="Estrogonofe de Grão de Bico" data-price="29.90">Estrogonofe de Grão de Bico (R$29,90)</li>
+                            <li class="option" data-value="Frango Desfiado" data-price="34.90">Frango Desfiado (R$34,90)</li>
                         </ul>
                     </fieldset>
                 `;
             } else {
                 modalContent += `
+                    <p>R$${parseFloat(dish.getAttribute('data-price')).toFixed(2)}</p>
                     <fieldset>
                         <legend>Escolha o queijo</legend>
                         <ul class="option-list">
@@ -141,25 +137,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
             modalBody.innerHTML = modalContent;
             modal.style.display = "block";
-            modal.scrollTop = 0; // Garantir que o scroll comece do topo
+            modal.scrollTop = 0;
 
-            document.querySelectorAll('.option, .drink-option').forEach(option => {
+            document.querySelectorAll('.option').forEach(option => {
                 option.addEventListener('click', () => {
-                    option.parentElement.querySelectorAll('.option, .drink-option').forEach(opt => opt.classList.remove('selected'));
+                    option.parentElement.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
                     option.classList.add('selected');
                 });
             });
 
             document.getElementById(`add-${name}`).addEventListener('click', () => {
                 const queijo = modalBody.querySelector('fieldset:nth-of-type(1) .option.selected')?.dataset.value || '';
-                const sabor = name.includes('Rosti') ? modalBody.querySelector('fieldset:nth-of-type(2) .option.selected')?.dataset.value : '';
+                const saborOption = modalBody.querySelector('fieldset:nth-of-type(2) .option.selected');
+                const sabor = saborOption?.dataset.value || '';
+                const saborPrice = parseFloat(saborOption?.dataset.price || 0);
 
                 if (!queijo) {
                     alert('Por favor, selecione uma opção de queijo.');
                     return;
                 }
 
-                if (name.includes('Rosti') && !sabor) {
+                if (name === 'Batata Rosti Galáctica' && !sabor) {
                     alert('Por favor, selecione uma opção de sabor.');
                     return;
                 }
@@ -168,11 +166,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const adicionaisPrecos = Array.from(modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]:checked')).map(adicional => parseFloat(adicional.dataset.price));
 
-                const totalPrice = adicionaisPrecos.reduce((total, preco) => total + preco, price);
+                const totalPrice = adicionaisPrecos.reduce((total, preco) => total + preco, saborPrice);
 
-                addPedido(name, price, sabor, queijo, '', adicionais, totalPrice);
+                addPedido(name, saborPrice, sabor, queijo, '', adicionais, totalPrice);
                 modal.style.display = "none";
-                mostrarMensagemAdicionado(); // Exibe a mensagem de "Adicionado"
+                mostrarMensagemAdicionado();
             });
         });
     });
@@ -184,19 +182,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const price = parseFloat(drink.getAttribute('data-price'));
 
             addPedido(name, price, '', '', name, [], price);
-            mostrarMensagemAdicionado(); // Exibe a mensagem de "Adicionado"
+            mostrarMensagemAdicionado();
         });
     });
 
     closeModal.onclick = () => {
         modal.style.display = "none";
-    }
+    };
 
     window.onclick = event => {
         if (event.target == modal) {
             modal.style.display = "none";
         }
-    }
+    };
 
     document.getElementById('cep-cliente').addEventListener('blur', async () => {
         const cep = document.getElementById('cep-cliente').value;
