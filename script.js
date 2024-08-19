@@ -301,7 +301,7 @@ function confirmarPedido() {
         return;
     }
 
-    let mensagem = 'Gostaria de realizar meu pedido!\n\n';
+    let mensagem = 'Gostaria de realizar meu pedido e consultar o valor de entrega!\n\n';
 
     pedidos.forEach(pedido => {
         mensagem += `1x ${pedido.name}\n`;
