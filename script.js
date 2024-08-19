@@ -9,6 +9,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const cidadeCliente = document.getElementById('cidade-cliente');
     const pedidoItens = document.getElementById('pedido-itens');
 
+    const mostrarMensagemAdicionado = () => {
+        const mensagem = document.createElement('div');
+        mensagem.className = 'mensagem-adicionado';
+        mensagem.textContent = 'Adicionado';
+        document.body.appendChild(mensagem);
+
+        setTimeout(() => {
+            mensagem.classList.add('show');
+        }, 10);
+
+        setTimeout(() => {
+            mensagem.classList.remove('show');
+            setTimeout(() => mensagem.remove(), 300);
+        }, 2000);
+    };
+
     const bloquearCamposEndereco = () => {
         nomeCliente.disabled = true;
         cepCliente.disabled = true;
@@ -50,6 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 enderecoResumo.remove();
                 liberarCamposEndereco();
             });
+
+            mostrarMensagemAdicionado(); // Exibe a mensagem de "Adicionado"
         } else {
             alert('Por favor, preencha todos os campos obrigatórios do endereço.');
         }
@@ -154,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 addPedido(name, price, sabor, queijo, '', adicionais, totalPrice);
                 modal.style.display = "none";
+                mostrarMensagemAdicionado(); // Exibe a mensagem de "Adicionado"
             });
         });
     });
@@ -165,6 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const price = parseFloat(drink.getAttribute('data-price'));
 
             addPedido(name, price, '', '', name, [], price);
+            mostrarMensagemAdicionado(); // Exibe a mensagem de "Adicionado"
         });
     });
 
