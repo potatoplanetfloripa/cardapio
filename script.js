@@ -9,24 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const cidadeCliente = document.getElementById('cidade-cliente');
     const pedidoItens = document.getElementById('pedido-itens');
 
-    let enderecoSalvo = null;
-
-    const mostrarMensagemAdicionado = () => {
-        const mensagem = document.createElement('div');
-        mensagem.className = 'mensagem-adicionado';
-        mensagem.textContent = 'Adicionado';
-        document.body.appendChild(mensagem);
-
-        setTimeout(() => {
-            mensagem.classList.add('show');
-        }, 10);
-
-        setTimeout(() => {
-            mensagem.classList.remove('show');
-            setTimeout(() => mensagem.remove(), 300);
-        }, 2000);
-    };
-
     const bloquearCamposEndereco = () => {
         nomeCliente.disabled = true;
         cepCliente.disabled = true;
@@ -51,19 +33,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     adicionarEnderecoBtn.addEventListener('click', () => {
         if (nomeCliente.value && cepCliente.value && ruaCliente.value && numeroCliente.value && bairroCliente.value && cidadeCliente.value) {
-            enderecoSalvo = {
-                nome: nomeCliente.value,
-                cep: cepCliente.value,
-                rua: ruaCliente.value,
-                numero: numeroCliente.value,
-                complemento: complementoCliente.value,
-                bairro: bairroCliente.value,
-                cidade: cidadeCliente.value
-            };
+            const enderecoResumo = document.createElement('div');
+            enderecoResumo.className = 'endereco-item';
+            enderecoResumo.innerHTML = `
+                <h4>Endereço de Entrega</h4>
+                <p>${nomeCliente.value}</p>
+                <p>${ruaCliente.value}, ${numeroCliente.value}</p>
+                <p>${complementoCliente.value ? complementoCliente.value + ', ' : ''}${bairroCliente.value}, ${cidadeCliente.value}</p>
+                <button class="excluir-endereco">Excluir Endereço</button>
+            `;
+            pedidoItens.appendChild(enderecoResumo);
 
-            atualizarResumoPedido();
             bloquearCamposEndereco();
-            mostrarMensagemAdicionado();
+
+            enderecoResumo.querySelector('.excluir-endereco').addEventListener('click', () => {
+                enderecoResumo.remove();
+                liberarCamposEndereco();
+            });
         } else {
             alert('Por favor, preencha todos os campos obrigatórios do endereço.');
         }
@@ -78,13 +64,13 @@ document.addEventListener('DOMContentLoaded', () => {
     dishes.forEach(dish => {
         dish.addEventListener('click', () => {
             const name = dish.getAttribute('data-name');
-            const basePrice = parseFloat(dish.getAttribute('data-price')); // Preço base do prato
-            let modalContent = `<h3>${name}</h3><p>R$${basePrice.toFixed(2)}</p>`;
-
-            if (name === 'Batata Rosti Galáctica') {
+            const price = parseFloat(dish.getAttribute('data-price'));
+            let modalContent = `<h3>${name}</h3><p>R$${price.toFixed(2)}</p>`;
+            
+            if (name.includes('Rosti')) {
                 modalContent += `
                     <fieldset>
-                        <legend>Escolha o queijo (obrigatório)</legend>
+                        <legend>Escolha o queijo</legend>
                         <ul class="option-list">
                             <li class="option" data-value="Mussarela">Mussarela</li>
                             <li class="option" data-value="Cheddar">Cheddar</li>
@@ -92,14 +78,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         </ul>
                     </fieldset>
                     <fieldset>
-                        <legend>Escolha o sabor (obrigatório)</legend>
+                        <legend>Escolha o sabor</legend>
                         <ul class="option-list">
-                            <li class="option" data-value="Bacon" data-price="34.90">Bacon (R$34,90)</li>
-                            <li class="option" data-value="Bolonhesa" data-price="34.90">Bolonhesa (R$34,90)</li>
-                            <li class="option" data-value="Calabresa" data-price="35.90">Calabresa (R$35,90)</li>
-                            <li class="option" data-value="Estrogonofe de Frango" data-price="35.90">Estrogonofe de Frango (R$35,90)</li>
-                            <li class="option" data-value="Estrogonofe de Grão de Bico" data-price="29.90">Estrogonofe de Grão de Bico (R$29,90)</li>
-                            <li class="option" data-value="Frango Desfiado" data-price="34.90">Frango Desfiado (R$34,90)</li>
+                            <li class="option" data-value="Pizza">Pizza (R$32,90)</li>
+                            <li class="option" data-value="Queijo mussarela">Queijo mussarela (R$35,90)</li>
+                            <li class="option" data-value="Bacon">Bacon (R$34,90)</li>
+                            <li class="option" data-value="Bolonhesa">Bolonhesa (R$34,90)</li>
+                            <li class="option" data-value="Calabresa">Calabresa (R$35,90)</li>
+                            <li class="option" data-value="Estrogonofe de Frango">Estrogonofe de Frango (R$35,90)</li>
+                            <li class="option" data-value="Estrogonofe de Grão de Bico">Estrogonofe de Grão de Bico (R$29,90)</li>
+                            <li class="option" data-value="Frango Desfiado">Frango Desfiado (R$34,90)</li>
                         </ul>
                     </fieldset>
                 `;
@@ -117,19 +105,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             modalContent += `
                 <fieldset>
-                    <legend>Adicionais (máximo 2)</legend>
+                    <legend>Adicionais (opcional)</legend>
                     <ul class="adicionais-lista">
-                        <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="2.00"><label for="alho-crocante">Alho crocante (R$2,00)</label></li>
-                        <li><input type="checkbox" id="azeitona" value="Azeitona" data-price="2.00"><label for="azeitona">Azeitona (R$2,00)</label></li>
-                        <li><input type="checkbox" id="bacon" value="Bacon" data-price="6.00"><label for="bacon">Bacon (R$6,00)</label></li>
-                        <li><input type="checkbox" id="cheddar" value="Cheddar" data-price="5.00"><label for="cheddar">Cheddar (R$5,00)</label></li>
-                        <li><input type="checkbox" id="ervilha" value="Ervilha" data-price="2.00"><label for="ervilha">Ervilha (R$2,00)</label></li>
-                        <li><input type="checkbox" id="milho" value="Milho" data-price="2.00"><label for="milho">Milho (R$2,00)</label></li>
-                        <li><input type="checkbox" id="mussarela" value="Mussarela" data-price="5.00"><label for="mussarela">Mussarela (R$5,00)</label></li>
+                        <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="1.00"><label for="alho-crocante">Alho crocante (R$1,00)</label></li>
+                        <li><input type="checkbox" id="azeitona" value="Azeitona" data-price="1.50"><label for="azeitona">Azeitona (R$1,50)</label></li>
+                        <li><input type="checkbox" id="bacon" value="Bacon" data-price="5.00"><label for="bacon">Bacon (R$5,00)</label></li>
+                        <li><input type="checkbox" id="cheddar" value="Cheddar" data-price="3.00"><label for="cheddar">Cheddar (R$3,00)</label></li>
+                        <li><input type="checkbox" id="ervilha" value="Ervilha" data-price="1.50"><label for="ervilha">Ervilha (R$1,50)</label></li>
+                        <li><input type="checkbox" id="milho" value="Milho" data-price="1.50"><label for="milho">Milho (R$1,50)</label></li>
+                        <li><input type="checkbox" id="mussarela" value="Mussarela" data-price="3.00"><label for="mussarela">Mussarela (R$3,00)</label></li>
                         <li><input type="checkbox" id="presunto" value="Presunto" data-price="2.00"><label for="presunto">Presunto (R$2,00)</label></li>
-                        <li><input type="checkbox" id="requeijao" value="Requeijão" data-price="5.00"><label for="requeijao">Requeijão (R$5,00)</label></li>
-                        <li><input type="checkbox" id="tomate" value="Tomate" data-price="2.00"><label for="tomate">Tomate (R$2,00)</label></li>
-                        <li><input type="checkbox" id="batata-palha" value="Batata Palha" data-price="3.00"><label for="batata-palha">Batata Palha (R$3,00)</label></li>
+                        <li><input type="checkbox" id="requeijao" value="Requeijão" data-price="3.00"><label for="requeijao">Requeijão (R$3,00)</label></li>
+                        <li><input type="checkbox" id="tomate" value="Tomate" data-price="1.00"><label for="tomate">Tomate (R$1,00)</label></li>
+                        <li><input type="checkbox" id="batata-palha" value="Batata Palha" data-price="2.00"><label for="batata-palha">Batata Palha (R$2,00)</label></li>
                     </ul>
                 </fieldset>
                 <button id="add-${name}" class="add-pedido">Adicionar ao Pedido</button>
@@ -137,39 +125,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
             modalBody.innerHTML = modalContent;
             modal.style.display = "block";
-            modal.scrollTop = 0;
+            modal.scrollTop = 0; // Garantir que o scroll comece do topo
 
-            // Limitar a seleção de 2 adicionais
-            const adicionaisCheckboxes = modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]');
-            adicionaisCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', () => {
-                    const checkedCount = modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]:checked').length;
-                    if (checkedCount > 2) {
-                        checkbox.checked = false;
-                        alert('Você só pode selecionar até 2 adicionais.');
-                    }
-                });
-            });
-
-            document.querySelectorAll('.option').forEach(option => {
+            document.querySelectorAll('.option, .drink-option').forEach(option => {
                 option.addEventListener('click', () => {
-                    option.parentElement.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                    option.parentElement.querySelectorAll('.option, .drink-option').forEach(opt => opt.classList.remove('selected'));
                     option.classList.add('selected');
                 });
             });
 
             document.getElementById(`add-${name}`).addEventListener('click', () => {
                 const queijo = modalBody.querySelector('fieldset:nth-of-type(1) .option.selected')?.dataset.value || '';
-                const saborOption = modalBody.querySelector('fieldset:nth-of-type(2) .option.selected');
-                const sabor = saborOption?.dataset.value || '';
-                const saborPrice = parseFloat(saborOption?.dataset.price || basePrice);
+                const sabor = name.includes('Rosti') ? modalBody.querySelector('fieldset:nth-of-type(2) .option.selected')?.dataset.value : '';
 
                 if (!queijo) {
                     alert('Por favor, selecione uma opção de queijo.');
                     return;
                 }
 
-                if (name === 'Batata Rosti Galáctica' && !sabor) {
+                if (name.includes('Rosti') && !sabor) {
                     alert('Por favor, selecione uma opção de sabor.');
                     return;
                 }
@@ -178,11 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const adicionaisPrecos = Array.from(modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]:checked')).map(adicional => parseFloat(adicional.dataset.price));
 
-                const totalPrice = adicionaisPrecos.reduce((total, preco) => total + preco, saborPrice || basePrice);
+                const totalPrice = adicionaisPrecos.reduce((total, preco) => total + preco, price);
 
-                addPedido(name, basePrice, sabor, queijo, '', adicionais, totalPrice);
+                addPedido(name, price, sabor, queijo, '', adicionais, totalPrice);
                 modal.style.display = "none";
-                mostrarMensagemAdicionado();
             });
         });
     });
@@ -194,19 +167,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const price = parseFloat(drink.getAttribute('data-price'));
 
             addPedido(name, price, '', '', name, [], price);
-            mostrarMensagemAdicionado();
         });
     });
 
     closeModal.onclick = () => {
         modal.style.display = "none";
-    };
+    }
 
     window.onclick = event => {
         if (event.target == modal) {
             modal.style.display = "none";
         }
-    };
+    }
 
     document.getElementById('cep-cliente').addEventListener('blur', async () => {
         const cep = document.getElementById('cep-cliente').value;
@@ -216,10 +188,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('confirmar-pedido').addEventListener('click', confirmarPedido);
 });
 
-function addPedido(name, basePrice, sabor, queijo, bebida, adicionais, totalPrice) {
+function addPedido(name, price, sabor, queijo, bebida, adicionais, totalPrice) {
     const pedido = {
         name,
-        basePrice,
+        price,
         sabor: sabor || '',
         queijo: queijo || '',
         adicionais: adicionais.length ? adicionais.join(', ') : '',
@@ -301,7 +273,7 @@ function confirmarPedido() {
         return;
     }
 
-    let mensagem = 'Gostaria de realizar meu pedido e consultar o valor de entrega!\n\n';
+    let mensagem = 'Gostaria de realizar meu pedido!\n\n';
 
     pedidos.forEach(pedido => {
         mensagem += `1x ${pedido.name}\n`;
