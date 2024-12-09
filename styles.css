@@ -5,6 +5,7 @@ body {
     margin: 0;
     padding: 0;
 }
+
 header {
     background-color: #e0b570;
     text-align: center;
@@ -309,4 +310,25 @@ button:hover {
 
 .address-section .input-group .input-full {
     width: 100%;
+}
+.mensagem-adicionado {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #422d15;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    font-size: 16px;
+    font-weight: bold;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.mensagem-adicionado.show {
+    display: block;
+    opacity: 1;
 }
