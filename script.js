@@ -65,8 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
         dish.addEventListener('click', () => {
             const name = dish.getAttribute('data-name');
             const price = parseFloat(dish.getAttribute('data-price'));
+
+            // Condição para "Monta sua Batata Intergaláctica"
+            if (name === 'Monta sua Batata Intergaláctica') {
+                openCustomPotatoModal(name, price);
+                return;
+            }
+
             let modalContent = `<h3>${name}</h3><p>R$${price.toFixed(2)}</p>`;
-            
+
             if (name.includes('Rosti')) {
                 modalContent += `
                     <fieldset>
@@ -107,25 +114,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 <fieldset>
                     <legend>Adicionais (opcional)</legend>
                     <ul class="adicionais-lista">
-                        <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="1.00"><label for="alho-crocante">Alho crocante (R$1,00)</label></li>
-                        <li><input type="checkbox" id="azeitona" value="Azeitona" data-price="1.50"><label for="azeitona">Azeitona (R$1,50)</label></li>
-                        <li><input type="checkbox" id="bacon" value="Bacon" data-price="5.00"><label for="bacon">Bacon (R$5,00)</label></li>
-                        <li><input type="checkbox" id="cheddar" value="Cheddar" data-price="3.00"><label for="cheddar">Cheddar (R$3,00)</label></li>
-                        <li><input type="checkbox" id="ervilha" value="Ervilha" data-price="1.50"><label for="ervilha">Ervilha (R$1,50)</label></li>
-                        <li><input type="checkbox" id="milho" value="Milho" data-price="1.50"><label for="milho">Milho (R$1,50)</label></li>
-                        <li><input type="checkbox" id="mussarela" value="Mussarela" data-price="3.00"><label for="mussarela">Mussarela (R$3,00)</label></li>
+                        <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="2.00"><label for="alho-crocante">Alho crocante (R$2,00)</label></li>
+                        <li><input type="checkbox" id="azeitona" value="Azeitona" data-price="2.00"><label for="azeitona">Azeitona (R$2,00)</label></li>
+                        <li><input type="checkbox" id="bacon" value="Bacon" data-price="6.00"><label for="bacon">Bacon (R$6,00)</label></li>
+                        <li><input type="checkbox" id="cheddar" value="Cheddar" data-price="3.00"><label for="cheddar">Cheddar (R$5,00)</label></li>
+                        <li><input type="checkbox" id="ervilha" value="Ervilha" data-price="2.00"><label for="ervilha">Ervilha (R$2,00)</label></li>
+                        <li><input type="checkbox" id="milho" value="Milho" data-price="2.00"><label for="milho">Milho (R$2,00)</label></li>
+                        <li><input type="checkbox" id="mussarela" value="Mussarela" data-price="5.00"><label for="mussarela">Mussarela (R$5,00)</label></li>
                         <li><input type="checkbox" id="presunto" value="Presunto" data-price="2.00"><label for="presunto">Presunto (R$2,00)</label></li>
-                        <li><input type="checkbox" id="requeijao" value="Requeijão" data-price="3.00"><label for="requeijao">Requeijão (R$3,00)</label></li>
-                        <li><input type="checkbox" id="tomate" value="Tomate" data-price="1.00"><label for="tomate">Tomate (R$1,00)</label></li>
-                        <li><input type="checkbox" id="batata-palha" value="Batata Palha" data-price="2.00"><label for="batata-palha">Batata Palha (R$2,00)</label></li>
+                        <li><input type="checkbox" id="requeijao" value="Requeijão" data-price="5.00"><label for="requeijao">Requeijão (R$5,00)</label></li>
+                        <li><input type="checkbox" id="tomate" value="Tomate" data-price="2.00"><label for="tomate">Tomate (R$2,00)</label></li>
+                        <li><input type="checkbox" id="batata-palha" value="Batata Palha" data-price="3.00"><label for="batata-palha">Batata Palha (R$3,00)</label></li>
                     </ul>
                 </fieldset>
                 <button id="add-${name}" class="add-pedido">Adicionar ao Pedido</button>
             `;
-
+            
             modalBody.innerHTML = modalContent;
             modal.style.display = "block";
-            modal.scrollTop = 0; // Garantir que o scroll comece do topo
+            modal.scrollTop = 0;
 
             document.querySelectorAll('.option, .drink-option').forEach(option => {
                 option.addEventListener('click', () => {
@@ -159,7 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
-
+ 
+    
     drinks.forEach(drink => {
         const addButton = drink.querySelector('.add-drink');
         addButton.addEventListener('click', () => {
@@ -172,13 +180,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     closeModal.onclick = () => {
         modal.style.display = "none";
-    }
+    };
 
     window.onclick = event => {
         if (event.target == modal) {
             modal.style.display = "none";
         }
-    }
+    };
 
     document.getElementById('cep-cliente').addEventListener('blur', async () => {
         const cep = document.getElementById('cep-cliente').value;
@@ -186,6 +194,100 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('confirmar-pedido').addEventListener('click', confirmarPedido);
+
+    function openCustomPotatoModal(name, basePrice) {
+        modalBody.innerHTML = `
+            <h3>${name}</h3>
+            <p>Monte sua batata recheada intergaláctica do tamanho da sua fome.</p>
+            <fieldset>
+                <legend>Escolha a Batata</legend>
+                <ul class="option-list">
+                    <li class="option" data-value="Batata 300g" data-price="10.00">Batata 300g R$10,00</li>
+                    <li class="option" data-value="Batata 400g" data-price="13.00">Batata 400g R$13,00</li>
+                </ul>
+            </fieldset>
+            <fieldset>
+                <legend>Escolha a Base</legend>
+                <ul class="option-list">
+                    <li class="option" data-value="Queijo mussarela" data-price="5.00">Queijo mussarela R$5,00</li>
+                    <li class="option" data-value="Cheddar" data-price="5.00">Cheddar R$5,00</li>
+                    <li class="option" data-value="Requeijão" data-price="5.00">Requeijão R$5,00</li>
+                    <li class="option" data-value="Sem base" data-price="0.00">Sem base R$0,00</li>
+                </ul>
+            </fieldset>
+            <fieldset>
+            <legend>Escolha a Borda</legend>
+                <ul class="option-list">
+                    <li class="option" data-value="Cheddar" data-price="5.00">Cheddar R$5,00</li>
+                    <li class="option" data-value="Requeijão" data-price="5.00">Requeijão R$5,00</li>
+                    <li class="option" data-value="Sem borda" data-price="0.00">Sem borda R$0,00</li>
+                </ul>
+            </fieldset>
+            <fieldset>
+                <legend>Escolha o Sabor</legend>
+                <ul class="option-list">
+                    <li class="option" data-value="Frango desfiado" data-price="13.90">Frango desfiado R$13,90</li>
+                    <li class="option" data-value="Bacon" data-price="13.90">Bacon R$13,90</li>
+                    <li class="option" data-value="Calabresa" data-price="15.90">Calabresa R$15,90</li>
+                    <li class="option" data-value="Pizza" data-price="11.90">Pizza R$11,90</li>
+                    <li class="option" data-value="Estrogonofe de frango" data-price="15.90">Estrogonofe de frango R$15,90</li>
+                    <li class="option" data-value="Bolonhesa" data-price="13.90">Bolonhesa R$13,90</li>
+                    <li class="option" data-value="Estrogonofe de grão de bico" data-price="11.90">Estrogonofe de grão de bico R$11,90</li>
+                    <li class="option" data-value="Queijo" data-price="10.90">Queijo R$10,90</li>
+                </ul>
+            </fieldset>
+            <fieldset>
+                <legend>Adicionais (opcional)</legend>
+                <ul class="option-list">
+                    <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="2.00"><label for="alho-crocante">Alho crocante (R$2,00)</label></li>
+                        <li><input type="checkbox" id="azeitona" value="Azeitona" data-price="2.00"><label for="azeitona">Azeitona (R$2,00)</label></li>
+                        <li><input type="checkbox" id="bacon" value="Bacon" data-price="6.00"><label for="bacon">Bacon (R$6,00)</label></li>
+                        <li><input type="checkbox" id="cheddar" value="Cheddar" data-price="3.00"><label for="cheddar">Cheddar (R$5,00)</label></li>
+                        <li><input type="checkbox" id="ervilha" value="Ervilha" data-price="2.00"><label for="ervilha">Ervilha (R$2,00)</label></li>
+                        <li><input type="checkbox" id="milho" value="Milho" data-price="2.00"><label for="milho">Milho (R$2,00)</label></li>
+                        <li><input type="checkbox" id="mussarela" value="Mussarela" data-price="5.00"><label for="mussarela">Mussarela (R$5,00)</label></li>
+                        <li><input type="checkbox" id="presunto" value="Presunto" data-price="2.00"><label for="presunto">Presunto (R$2,00)</label></li>
+                        <li><input type="checkbox" id="requeijao" value="Requeijão" data-price="5.00"><label for="requeijao">Requeijão (R$5,00)</label></li>
+                        <li><input type="checkbox" id="tomate" value="Tomate" data-price="2.00"><label for="tomate">Tomate (R$2,00)</label></li>
+                        <li><input type="checkbox" id="batata-palha" value="Batata Palha" data-price="3.00"><label for="batata-palha">Batata Palha (R$3,00)</label></li>
+                    </ul>
+            </fieldset>
+            <button id="add-custom-potato" class="add-pedido">Adicionar ao Pedido</button>
+        `;
+        modal.style.display = "block";
+
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', () => {
+                option.parentElement.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+            });
+        });
+
+        document.getElementById('add-custom-potato').addEventListener('click', () => {
+            const batata = modalBody.querySelector('fieldset:nth-of-type(1) .option.selected');
+            const base = modalBody.querySelector('fieldset:nth-of-type(2) .option.selected');
+            const sabor = modalBody.querySelector('fieldset:nth-of-type(3) .option.selected');
+            const adicionais = Array.from(modalBody.querySelectorAll('fieldset:nth-of-type(4) .option.selected'));
+
+            if (!batata || !base || !sabor) {
+                alert('Por favor, preencha todas as opções obrigatórias.');
+                return;
+            }
+
+            const adicionaisPrice = adicionais.reduce((acc, adicional) => acc + parseFloat(adicional.dataset.price), 0);
+
+            const totalPrice = basePrice +
+                parseFloat(batata.dataset.price) +
+                parseFloat(base.dataset.price) +
+                parseFloat(sabor.dataset.price) +
+                adicionaisPrice;
+
+            const adicionaisList = adicionais.map(adicional => adicional.dataset.value);
+
+            addPedido(name, totalPrice, sabor.dataset.value, base.dataset.value, '', adicionaisList, totalPrice);
+            modal.style.display = "none";
+        });
+    }
 });
 
 function addPedido(name, price, sabor, queijo, bebida, adicionais, totalPrice) {
