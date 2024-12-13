@@ -65,15 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
         dish.addEventListener('click', () => {
             const name = dish.getAttribute('data-name');
             const price = parseFloat(dish.getAttribute('data-price'));
-
+    
             // Condição para "Monta sua Batata Intergaláctica"
             if (name === 'Monta sua Batata Intergaláctica') {
                 openCustomPotatoModal(name, price);
                 return;
             }
-
+    
             let modalContent = `<h3>${name}</h3><p>R$${price.toFixed(2)}</p>`;
-
+    
             if (name.includes('Rosti')) {
                 modalContent += `
                     <fieldset>
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </fieldset>
                 `;
             }
-
+    
             modalContent += `
                 <fieldset>
                     <legend>Adicionais (opcional)</legend>
@@ -129,43 +129,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 </fieldset>
                 <button id="add-${name}" class="add-pedido">Adicionar ao Pedido</button>
             `;
-            
+    
             modalBody.innerHTML = modalContent;
             modal.style.display = "block";
             modal.scrollTop = 0;
-
+    
+            const adicionaisCheckboxes = modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]');
+    
+            adicionaisCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    const selectedAdicionais = Array.from(adicionaisCheckboxes).filter(cb => cb.checked);
+                    if (selectedAdicionais.length > 2) {
+                        checkbox.checked = false;
+                        alert('Você pode selecionar no máximo 2 adicionais.');
+                    }
+                });
+            });
+    
             document.querySelectorAll('.option, .drink-option').forEach(option => {
                 option.addEventListener('click', () => {
                     option.parentElement.querySelectorAll('.option, .drink-option').forEach(opt => opt.classList.remove('selected'));
                     option.classList.add('selected');
                 });
             });
-
+    
             document.getElementById(`add-${name}`).addEventListener('click', () => {
                 const queijo = modalBody.querySelector('fieldset:nth-of-type(1) .option.selected')?.dataset.value || '';
                 const sabor = name.includes('Rosti') ? modalBody.querySelector('fieldset:nth-of-type(2) .option.selected')?.dataset.value : '';
-
+    
                 if (!queijo) {
                     alert('Por favor, selecione uma opção de queijo.');
                     return;
                 }
-
+    
                 if (name.includes('Rosti') && !sabor) {
                     alert('Por favor, selecione uma opção de sabor.');
                     return;
                 }
-
+    
                 const adicionais = Array.from(modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]:checked')).map(adicional => adicional.value);
-
                 const adicionaisPrecos = Array.from(modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]:checked')).map(adicional => parseFloat(adicional.dataset.price));
-
                 const totalPrice = adicionaisPrecos.reduce((total, preco) => total + preco, price);
-
+    
                 addPedido(name, price, sabor, queijo, '', adicionais, totalPrice);
                 modal.style.display = "none";
             });
         });
     });
+    
  
     
     drinks.forEach(drink => {
