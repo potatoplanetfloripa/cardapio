@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 modalContent += `
                     <fieldset>
-                        <legend>Escolha o queijo</legend>
+                        <legend>Escolha a borda</legend>
                         <ul class="option-list">
                             <li class="option" data-value="Requeijão Cremoso">Requeijão Cremoso</li>
                             <li class="option" data-value="Cheddar">Cheddar</li>
@@ -428,20 +428,29 @@ function confirmarPedido() {
     let mensagem = 'Gostaria de realizar meu pedido!\n\n';
 
     pedidos.forEach(pedido => {
-        mensagem += `1x ${pedido.name}\n`;
-        if (pedido.sabor) {
-            mensagem += `    Sabor: ${pedido.sabor}\n`;
+        if (pedido.name === 'Monta sua Batata Intergaláctica') {
+            mensagem += `Monta sua Batata Intergaláctica - R$${pedido.totalPrice}\n`;
+            mensagem += `Batata: ${pedido.batata || 'Não especificado'}\n`;
+            mensagem += `Base: ${pedido.base || 'Não especificado'}\n`;
+            mensagem += `Borda: ${pedido.borda || 'Não especificado'}\n`;
+            mensagem += `Sabor: ${pedido.sabor || 'Não especificado'}\n`;
+            mensagem += `Adicionais: ${pedido.adicionais || 'Nenhum'}\n\n`;
+        } else {
+            mensagem += `1x ${pedido.name} - R$${pedido.totalPrice}\n`;
+            if (pedido.sabor) {
+                mensagem += `    Sabor: ${pedido.sabor}\n`;
+            }
+            if (pedido.queijo) {
+                mensagem += `    Queijo: ${pedido.queijo}\n`;
+            }
+            if (pedido.adicionais) {
+                mensagem += `    Adicionais: ${pedido.adicionais}\n`;
+            }
+            if (pedido.bebida) {
+                mensagem += `    Bebida: ${pedido.bebida}\n`;
+            }
+            mensagem += `\n`;
         }
-        if (pedido.queijo) {
-            mensagem += `    Queijo: ${pedido.queijo}\n`;
-        }
-        if (pedido.adicionais) {
-            mensagem += `    Adicionais: ${pedido.adicionais}\n`;
-        }
-        if (pedido.bebida) {
-            mensagem += `    Bebida: ${pedido.bebida}\n`;
-        }
-        mensagem += `    Total: R$${pedido.totalPrice}\n\n`;
     });
 
     const totalGeral = document.getElementById('total-pedido').textContent;
@@ -458,6 +467,7 @@ function confirmarPedido() {
     const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
     window.open(url, '_blank');
 }
+''
 
 async function preencherEndereco(cep) {
     try {
