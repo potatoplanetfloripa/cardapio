@@ -360,7 +360,10 @@ function atualizarResumoPedido() {
         const item = document.createElement('div');
         item.className = 'pedido-item';
 
+        const isRosti = pedido.name.includes('Rosti');
+
         if (pedido.name === 'Monta sua Batata Intergaláctica') {
+            // Lógica específica para "Monta sua Batata Intergaláctica"
             item.innerHTML = `<h4>${pedido.name} - R$${pedido.totalPrice}</h4>`;
             item.innerHTML += `<p>Batata: ${pedido.batata || 'Não especificado'}</p>`;
             item.innerHTML += `<p>Base: ${pedido.base || 'Não especificado'}</p>`;
@@ -370,12 +373,14 @@ function atualizarResumoPedido() {
                 item.innerHTML += `<p>Adicionais: ${pedido.adicionais}</p>`;
             }
         } else {
+            // Demais pedidos, incluindo Rosti
             item.innerHTML = `<h4>${pedido.name} - R$${pedido.totalPrice}</h4>`;
             if (pedido.sabor) {
                 item.innerHTML += `<p>Sabor: ${pedido.sabor}</p>`;
             }
             if (pedido.queijo) {
-                item.innerHTML += `<p>Queijo: ${pedido.queijo}</p>`;
+                const label = isRosti ? 'Queijo' : 'Borda';
+                item.innerHTML += `<p>${label}: ${pedido.queijo}</p>`;
             }
             if (pedido.adicionais) {
                 item.innerHTML += `<p>Adicionais: ${pedido.adicionais}</p>`;
@@ -399,36 +404,20 @@ function atualizarResumoPedido() {
     });
 }
 
-function excluirPedido(index) {
-    const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
-    pedidos.splice(index, 1);
-    localStorage.setItem('pedidos', JSON.stringify(pedidos));
-    atualizarResumoPedido();
-}
-
 function confirmarPedido() {
     const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
-    if (pedidos.length === 0 || pedidos.every(pedido => !pedido.name.includes('Batata'))) {
+    if (pedidos.length === 0) {
         alert('Por favor, adicione ao menos um prato ao pedido.');
-        return;
-    }
-
-    const nome = document.getElementById('nome-cliente').value;
-    const rua = document.getElementById('rua-cliente').value;
-    const numero = document.getElementById('numero-cliente').value;
-    const complemento = document.getElementById('complemento-cliente').value;
-    const bairro = document.getElementById('bairro-cliente').value;
-    const cidade = document.getElementById('cidade-cliente').value;
-
-    if (!nome || !rua || !numero || !bairro || !cidade) {
-        alert('Por favor, preencha todos os campos obrigatórios do endereço.');
         return;
     }
 
     let mensagem = 'Gostaria de realizar meu pedido!\n\n';
 
     pedidos.forEach(pedido => {
+        const isRosti = pedido.name.includes('Rosti');
+
         if (pedido.name === 'Monta sua Batata Intergaláctica') {
+            // Lógica específica para "Monta sua Batata Intergaláctica"
             mensagem += `Monta sua Batata Intergaláctica - R$${pedido.totalPrice}\n`;
             mensagem += `Batata: ${pedido.batata || 'Não especificado'}\n`;
             mensagem += `Base: ${pedido.base || 'Não especificado'}\n`;
@@ -436,12 +425,14 @@ function confirmarPedido() {
             mensagem += `Sabor: ${pedido.sabor || 'Não especificado'}\n`;
             mensagem += `Adicionais: ${pedido.adicionais || 'Nenhum'}\n\n`;
         } else {
+            // Demais pedidos, incluindo Rosti
             mensagem += `1x ${pedido.name} - R$${pedido.totalPrice}\n`;
             if (pedido.sabor) {
                 mensagem += `    Sabor: ${pedido.sabor}\n`;
             }
             if (pedido.queijo) {
-                mensagem += `    Queijo: ${pedido.queijo}\n`;
+                const label = isRosti ? 'Queijo' : 'Borda';
+                mensagem += `    ${label}: ${pedido.queijo}\n`;
             }
             if (pedido.adicionais) {
                 mensagem += `    Adicionais: ${pedido.adicionais}\n`;
@@ -449,23 +440,23 @@ function confirmarPedido() {
             if (pedido.bebida) {
                 mensagem += `    Bebida: ${pedido.bebida}\n`;
             }
-            mensagem += `\n`;
+            mensagem += '\n';
         }
     });
 
     const totalGeral = document.getElementById('total-pedido').textContent;
-    mensagem += `${totalGeral}\n\n`;
-
-    mensagem += `Endereço de Entrega:\n`;
-    mensagem += `Nome: ${nome}\n`;
-    mensagem += `Rua: ${rua}, Número: ${numero}\n`;
-    if (complemento) mensagem += `Complemento: ${complemento}\n`;
-    mensagem += `Bairro: ${bairro}\n`;
-    mensagem += `Cidade: ${cidade}\n`;
+    mensagem += `${totalGeral}\n`;
 
     const telefone = '48991354876';
     const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
     window.open(url, '_blank');
+}
+
+function excluirPedido(index) {
+    const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+    pedidos.splice(index, 1);
+    localStorage.setItem('pedidos', JSON.stringify(pedidos));
+    atualizarResumoPedido();
 }
 ''
 
