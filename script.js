@@ -87,14 +87,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     <fieldset>
                         <legend>Escolha o sabor</legend>
                         <ul class="option-list">
-                            <li class="option" data-value="Pizza">Pizza (R$32,90)</li>
-                            <li class="option" data-value="Queijo mussarela">Queijo mussarela (R$35,90)</li>
-                            <li class="option" data-value="Bacon">Bacon (R$34,90)</li>
-                            <li class="option" data-value="Bolonhesa">Bolonhesa (R$34,90)</li>
-                            <li class="option" data-value="Calabresa">Calabresa (R$35,90)</li>
-                            <li class="option" data-value="Estrogonofe de Frango">Estrogonofe de Frango (R$35,90)</li>
-                            <li class="option" data-value="Estrogonofe de Grão de Bico">Estrogonofe de Grão de Bico (R$29,90)</li>
-                            <li class="option" data-value="Frango Desfiado">Frango Desfiado (R$34,90)</li>
+                            <li class="option" data-value="Pizza">Pizza (R$39,90)</li>
+                            <li class="option" data-value="Queijo mussarela">Queijo mussarela (R$39,90)</li>
+                            <li class="option" data-value="Bacon">Bacon (R$41,90)</li>
+                            <li class="option" data-value="Bolonhesa">Bolonhesa (R$41,90)</li>
+                            <li class="option" data-value="Calabresa">Calabresa (R$42,90)</li>
+                            <li class="option" data-value="Estrogonofe de Frango">Estrogonofe de Frango (R$43,90)</li>
+                            <li class="option" data-value="Estrogonofe de Grão de Bico">Estrogonofe de Grão de Bico (R$36,90)</li>
+                            <li class="option" data-value="Frango Desfiado">Frango Desfiado (R$41,90)</li>
                         </ul>
                     </fieldset>
                 `;
@@ -114,17 +114,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 <fieldset>
                     <legend>Adicionais (opcional)</legend>
                     <ul class="adicionais-lista">
-                        <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="2.00"><label for="alho-crocante">Alho crocante (R$2,00)</label></li>
-                        <li><input type="checkbox" id="azeitona" value="Azeitona" data-price="2.00"><label for="azeitona">Azeitona (R$2,00)</label></li>
-                        <li><input type="checkbox" id="bacon" value="Bacon" data-price="6.00"><label for="bacon">Bacon (R$6,00)</label></li>
-                        <li><input type="checkbox" id="cheddar" value="Cheddar" data-price="3.00"><label for="cheddar">Cheddar (R$5,00)</label></li>
-                        <li><input type="checkbox" id="ervilha" value="Ervilha" data-price="2.00"><label for="ervilha">Ervilha (R$2,00)</label></li>
-                        <li><input type="checkbox" id="milho" value="Milho" data-price="2.00"><label for="milho">Milho (R$2,00)</label></li>
-                        <li><input type="checkbox" id="mussarela" value="Mussarela" data-price="5.00"><label for="mussarela">Mussarela (R$5,00)</label></li>
-                        <li><input type="checkbox" id="presunto" value="Presunto" data-price="2.00"><label for="presunto">Presunto (R$2,00)</label></li>
-                        <li><input type="checkbox" id="requeijao" value="Requeijão" data-price="5.00"><label for="requeijao">Requeijão (R$5,00)</label></li>
-                        <li><input type="checkbox" id="tomate" value="Tomate" data-price="2.00"><label for="tomate">Tomate (R$2,00)</label></li>
-                        <li><input type="checkbox" id="batata-palha" value="Batata Palha" data-price="3.00"><label for="batata-palha">Batata Palha (R$3,00)</label></li>
+                        <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="3.00"><label for="alho-crocante">Alho crocante (R$3,00)</label></li>
+                        <li><input type="checkbox" id="azeitona" value="Azeitona" data-price="3.00"><label for="azeitona">Azeitona (R$3,00)</label></li>
+                        <li><input type="checkbox" id="bacon" value="Bacon" data-price="7.00"><label for="bacon">Bacon (R$7,00)</label></li>
+                        <li><input type="checkbox" id="cheddar" value="Cheddar" data-price="6.00"><label for="cheddar">Cheddar (R$6,00)</label></li>
+                        <li><input type="checkbox" id="ervilha" value="Ervilha" data-price="2.50"><label for="ervilha">Ervilha (R$2,50)</label></li>
+                        <li><input type="checkbox" id="milho" value="Milho" data-price="2.50"><label for="milho">Milho (R$2,50)</label></li>
+                        <li><input type="checkbox" id="mussarela" value="Mussarela" data-price="6.00"><label for="mussarela">Mussarela (R$6,00)</label></li>
+                        <li><input type="checkbox" id="presunto" value="Presunto" data-price="3.00"><label for="presunto">Presunto (R$3,00)</label></li>
+                        <li><input type="checkbox" id="requeijao" value="Requeijão" data-price="6.00"><label for="requeijao">Requeijão (R$6,00)</label></li>
+                        <li><input type="checkbox" id="tomate" value="Tomate" data-price="3.00"><label for="tomate">Tomate (R$3,00)</label></li>
+                        <li><input type="checkbox" id="batata-palha" value="Batata Palha" data-price="4.00"><label for="batata-palha">Batata Palha (R$4,00)</label></li>
                     </ul>
                 </fieldset>
                 <button id="add-${name}" class="add-pedido">Adicionar ao Pedido</button>
@@ -220,47 +220,47 @@ document.addEventListener('DOMContentLoaded', () => {
             <fieldset>
                 <legend>Escolha a Base (obrigatório, até 2 opções)</legend>
                 <ul class="option-list">
-                    <li><input type="checkbox" id="base-mussarela" value="Queijo mussarela" data-price="5.00"><label for="base-mussarela">Queijo mussarela R$5,00</label></li>
-                    <li><input type="checkbox" id="base-cheddar" value="Cheddar" data-price="5.00"><label for="base-cheddar">Cheddar R$5,00</label></li>
-                    <li><input type="checkbox" id="base-requeijao" value="Requeijão" data-price="5.00"><label for="base-requeijao">Requeijão R$5,00</label></li>
+                    <li><input type="checkbox" id="base-mussarela" value="Queijo mussarela" data-price="6.00"><label for="base-mussarela">Queijo mussarela R$6,00</label></li>
+                    <li><input type="checkbox" id="base-cheddar" value="Cheddar" data-price="6.00"><label for="base-cheddar">Cheddar R$6,00</label></li>
+                    <li><input type="checkbox" id="base-requeijao" value="Requeijão" data-price="6.00"><label for="base-requeijao">Requeijão R$6,00</label></li>
                     <li><input type="checkbox" id="base-sem" value="Sem base" data-price="0.00"><label for="base-sem">Sem base R$0,00</label></li>
                 </ul>
             </fieldset>
             <fieldset>
             <legend>Escolha a Borda</legend>
                 <ul class="option-list">
-                    <li class="option" data-value="Cheddar" data-price="5.00">Cheddar R$5,00</li>
-                    <li class="option" data-value="Requeijão" data-price="5.00">Requeijão R$5,00</li>
+                    <li class="option" data-value="Cheddar" data-price="6.00">Cheddar R$6,00</li>
+                    <li class="option" data-value="Requeijão" data-price="6.00">Requeijão R$6,00</li>
                     <li class="option" data-value="Sem borda" data-price="0.00">Sem borda R$0,00</li>
                 </ul>
             </fieldset>
             <fieldset>
                 <legend>Escolha o Sabor</legend>
                 <ul class="option-list">
-                    <li class="option" data-value="Frango desfiado" data-price="13.90">Frango desfiado R$13,90</li>
-                    <li class="option" data-value="Bacon" data-price="13.90">Bacon R$13,90</li>
-                    <li class="option" data-value="Calabresa" data-price="15.90">Calabresa R$15,90</li>
-                    <li class="option" data-value="Pizza" data-price="11.90">Pizza R$11,90</li>
-                    <li class="option" data-value="Estrogonofe de frango" data-price="15.90">Estrogonofe de frango R$15,90</li>
-                    <li class="option" data-value="Bolonhesa" data-price="13.90">Bolonhesa R$13,90</li>
-                    <li class="option" data-value="Estrogonofe de grão de bico" data-price="11.90">Estrogonofe de grão de bico R$11,90</li>
-                    <li class="option" data-value="Queijo" data-price="10.90">Queijo R$10,90</li>
+                    <li class="option" data-value="Frango desfiado" data-price="15.90">Frango desfiado R$15,90</li>
+                    <li class="option" data-value="Bacon" data-price="15.90">Bacon R$15,90</li>
+                    <li class="option" data-value="Calabresa" data-price="16.90">Calabresa R$16,90</li>
+                    <li class="option" data-value="Pizza" data-price="12.90">Pizza R$12,90</li>
+                    <li class="option" data-value="Estrogonofe de frango" data-price="17.90">Estrogonofe de frango R$17,90</li>
+                    <li class="option" data-value="Bolonhesa" data-price="15.90">Bolonhesa R$15,90</li>
+                    <li class="option" data-value="Estrogonofe de grão de bico" data-price="12.90">Estrogonofe de grão de bico R$12,90</li>
+                    <li class="option" data-value="Queijo" data-price="12.90">Queijo R$12,90</li>
                 </ul>
             </fieldset>
             <fieldset>
                 <legend>Adicionais (opcional, até 2 opções)</legend>
                 <ul class="option-list">
-                    <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="2.00"><label for="alho-crocante">Alho crocante (R$2,00)</label></li>
-                    <li><input type="checkbox" id="azeitona" value="Azeitona" data-price="2.00"><label for="azeitona">Azeitona (R$2,00)</label></li>
-                    <li><input type="checkbox" id="bacon" value="Bacon" data-price="6.00"><label for="bacon">Bacon (R$6,00)</label></li>
-                    <li><input type="checkbox" id="cheddar" value="Cheddar" data-price="3.00"><label for="cheddar">Cheddar (R$5,00)</label></li>
-                    <li><input type="checkbox" id="ervilha" value="Ervilha" data-price="2.00"><label for="ervilha">Ervilha (R$2,00)</label></li>
-                    <li><input type="checkbox" id="milho" value="Milho" data-price="2.00"><label for="milho">Milho (R$2,00)</label></li>
-                    <li><input type="checkbox" id="mussarela" value="Mussarela" data-price="5.00"><label for="mussarela">Mussarela (R$5,00)</label></li>
-                    <li><input type="checkbox" id="presunto" value="Presunto" data-price="2.00"><label for="presunto">Presunto (R$2,00)</label></li>
-                    <li><input type="checkbox" id="requeijao" value="Requeijão" data-price="5.00"><label for="requeijao">Requeijão (R$5,00)</label></li>
-                    <li><input type="checkbox" id="tomate" value="Tomate" data-price="2.00"><label for="tomate">Tomate (R$2,00)</label></li>
-                    <li><input type="checkbox" id="batata-palha" value="Batata Palha" data-price="3.00"><label for="batata-palha">Batata Palha (R$3,00)</label></li>
+                    <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="3.00"><label for="alho-crocante">Alho crocante (R$3,00)</label></li>
+                    <li><input type="checkbox" id="azeitona" value="Azeitona" data-price="3.00"><label for="azeitona">Azeitona (R$3,00)</label></li>
+                    <li><input type="checkbox" id="bacon" value="Bacon" data-price="7.00"><label for="bacon">Bacon (R$7,00)</label></li>
+                    <li><input type="checkbox" id="cheddar" value="Cheddar" data-price="6.00"><label for="cheddar">Cheddar (R$6,00)</label></li>
+                    <li><input type="checkbox" id="ervilha" value="Ervilha" data-price="2.50"><label for="ervilha">Ervilha (R$2,50)</label></li>
+                    <li><input type="checkbox" id="milho" value="Milho" data-price="2.50"><label for="milho">Milho (R$2,50)</label></li>
+                    <li><input type="checkbox" id="mussarela" value="Mussarela" data-price="6.00"><label for="mussarela">Mussarela (R$6,00)</label></li>
+                    <li><input type="checkbox" id="presunto" value="Presunto" data-price="3.00"><label for="presunto">Presunto (R$3,00)</label></li>
+                    <li><input type="checkbox" id="requeijao" value="Requeijão" data-price="6.00"><label for="requeijao">Requeijão (R$6,00)</label></li>
+                    <li><input type="checkbox" id="tomate" value="Tomate" data-price="3.00"><label for="tomate">Tomate (R$3,00)</label></li>
+                    <li><input type="checkbox" id="batata-palha" value="Batata Palha" data-price="4.00"><label for="batata-palha">Batata Palha (R$4,00)</label></li>
                 </ul>
             </fieldset>
             <button id="add-custom-potato" class="add-pedido">Adicionar ao Pedido</button>
