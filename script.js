@@ -404,27 +404,10 @@ function atualizarResumoPedido() {
     });
 }
 
-// Função para armazenar o endereço no localStorage
-function armazenarEndereco(endereco) {
-    localStorage.setItem('endereco', JSON.stringify(endereco));
-}
-
-// Função para obter o endereço do localStorage
-function obterEndereco() {
-    return JSON.parse(localStorage.getItem('endereco'));
-}
-
-// Atualizar a função de confirmar pedido para incluir o endereço corretamente
 function confirmarPedido() {
     const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
     if (pedidos.length === 0) {
         alert('Por favor, adicione ao menos um prato ao pedido.');
-        return;
-    }
-
-    const endereco = obterEndereco();  // Agora estamos pegando o endereço do localStorage
-    if (!endereco) {
-        alert('Por favor, adicione um endereço para finalizar o pedido.');
         return;
     }
 
@@ -434,6 +417,7 @@ function confirmarPedido() {
         const isRosti = pedido.name.includes('Rosti');
 
         if (pedido.name === 'Monta sua Batata Intergaláctica') {
+            // Lógica específica para "Monta sua Batata Intergaláctica"
             mensagem += `Monta sua Batata Intergaláctica - R$${pedido.totalPrice}\n`;
             mensagem += `Batata: ${pedido.batata || 'Não especificado'}\n`;
             mensagem += `Base: ${pedido.base || 'Não especificado'}\n`;
@@ -441,6 +425,7 @@ function confirmarPedido() {
             mensagem += `Sabor: ${pedido.sabor || 'Não especificado'}\n`;
             mensagem += `Adicionais: ${pedido.adicionais || 'Nenhum'}\n\n`;
         } else {
+            // Demais pedidos, incluindo Rosti
             mensagem += `1x ${pedido.name} - R$${pedido.totalPrice}\n`;
             if (pedido.sabor) {
                 mensagem += `    Sabor: ${pedido.sabor}\n`;
@@ -460,10 +445,7 @@ function confirmarPedido() {
     });
 
     const totalGeral = document.getElementById('total-pedido').textContent;
-    mensagem += `${totalGeral}\n\n`;
-
-    // Adicionar informações de endereço na mensagem
-    mensagem += `Endereço:\nRua: ${endereco.rua}\nBairro: ${endereco.bairro}\nCidade: ${endereco.cidade}\n`;
+    mensagem += `${totalGeral}\n`;
 
     const telefone = '48991354876';
     const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
@@ -489,14 +471,6 @@ async function preencherEndereco(cep) {
         document.getElementById('rua-cliente').value = data.logradouro;
         document.getElementById('bairro-cliente').value = data.bairro;
         document.getElementById('cidade-cliente').value = data.localidade;
-
-        // Salvar o endereço no localStorage
-        const endereco = {
-            rua: data.logradouro,
-            bairro: data.bairro,
-            cidade: data.localidade
-        };
-        salvarEndereco(endereco);
     } catch (error) {
         console.error('Erro ao buscar o CEP:', error);
     }
