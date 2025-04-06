@@ -72,11 +72,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
     
+            // Criar ID seguro para evitar problemas com espaços/acentos
+            const safeId = name.replace(/\s+/g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    
             let modalContent = `<h3>${name}</h3><p>R$${price.toFixed(2)}</p>`;
     
             if (name.includes('Rosti')) {
                 modalContent += `
-                    <fieldset>
+                    <fieldset data-role="queijo">
                         <legend>Escolha o queijo</legend>
                         <ul class="option-list">
                             <li class="option" data-value="Mussarela">Mussarela</li>
@@ -84,23 +87,23 @@ document.addEventListener('DOMContentLoaded', () => {
                             <li class="option" data-value="Requeijão">Requeijão</li>
                         </ul>
                     </fieldset>
-                    <fieldset>
+                    <fieldset data-role="sabor">
                         <legend>Escolha o sabor</legend>
                         <ul class="option-list">
-                            <li class="option" data-value="Pizza">Pizza (R$39,90)</li>
-                            <li class="option" data-value="Queijo mussarela">Queijo mussarela (R$39,90)</li>
-                            <li class="option" data-value="Bacon">Bacon (R$41,90)</li>
-                            <li class="option" data-value="Bolonhesa">Bolonhesa (R$41,90)</li>
-                            <li class="option" data-value="Calabresa">Calabresa (R$42,90)</li>
-                            <li class="option" data-value="Estrogonofe de Frango">Estrogonofe de Frango (R$43,90)</li>
-                            <li class="option" data-value="Estrogonofe de Grão de Bico">Estrogonofe de Grão de Bico (R$36,90)</li>
-                            <li class="option" data-value="Frango Desfiado">Frango Desfiado (R$41,90)</li>
+                            <li class="option" data-value="Pizza" data-price="39.90">Pizza (R$39,90)</li>
+                            <li class="option" data-value="Queijo mussarela" data-price="39.90">Queijo mussarela (R$39,90)</li>
+                            <li class="option" data-value="Bacon" data-price="41.90">Bacon (R$41,90)</li>
+                            <li class="option" data-value="Bolonhesa" data-price="41.90">Bolonhesa (R$41,90)</li>
+                            <li class="option" data-value="Calabresa" data-price="42.90">Calabresa (R$42,90)</li>
+                            <li class="option" data-value="Estrogonofe de Frango" data-price="43.90">Estrogonofe de Frango (R$43,90)</li>
+                            <li class="option" data-value="Estrogonofe de Grão de Bico" data-price="36.90">Estrogonofe de Grão de Bico (R$36,90)</li>
+                            <li class="option" data-value="Frango Desfiado" data-price="41.90">Frango Desfiado (R$41,90)</li>
                         </ul>
                     </fieldset>
                 `;
             } else {
                 modalContent += `
-                    <fieldset>
+                    <fieldset data-role="queijo">
                         <legend>Escolha a borda</legend>
                         <ul class="option-list">
                             <li class="option" data-value="Requeijão Cremoso">Requeijão Cremoso</li>
@@ -127,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <li><input type="checkbox" id="batata-palha" value="Batata Palha" data-price="4.00"><label for="batata-palha">Batata Palha (R$4,00)</label></li>
                     </ul>
                 </fieldset>
-                <button id="add-${name}" class="add-pedido">Adicionar ao Pedido</button>
+                <button id="add-${safeId}" class="add-pedido">Adicionar ao Pedido</button>
             `;
     
             modalBody.innerHTML = modalContent;
@@ -153,9 +156,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
     
-            document.getElementById(`add-${name}`).addEventListener('click', () => {
-                const queijo = modalBody.querySelector('fieldset:nth-of-type(1) .option.selected')?.dataset.value || '';
-                const sabor = name.includes('Rosti') ? modalBody.querySelector('fieldset:nth-of-type(2) .option.selected')?.dataset.value : '';
+            document.getElementById(`add-${safeId}`).addEventListener('click', () => {
+                const queijo = modalBody.querySelector('[data-role="queijo"] .option.selected')?.dataset.value || '';
+                const saborOption = name.includes('Rosti') 
+                    ? modalBody.querySelector('[data-role="sabor"] .option.selected') 
+                    : null;
+    
+                const sabor = saborOption?.dataset.value || '';
     
                 if (!queijo) {
                     alert('Por favor, selecione uma opção de queijo.');
@@ -167,18 +174,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
     
+                const saborPrice = saborOption ? parseFloat(saborOption.dataset.price) : price;
+    
                 const adicionais = Array.from(modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]:checked')).map(adicional => adicional.value);
                 const adicionaisPrecos = Array.from(modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]:checked')).map(adicional => parseFloat(adicional.dataset.price));
-                const totalPrice = adicionaisPrecos.reduce((total, preco) => total + preco, price);
     
-                addPedido(name, price, sabor, queijo, '', adicionais, totalPrice);
+                const totalPrice = adicionaisPrecos.reduce((total, preco) => total + preco, saborPrice);
+    
+                addPedido(name, saborPrice, sabor, queijo, '', adicionais, totalPrice);
                 modal.style.display = "none";
             });
         });
     });
-    
- 
-    
     drinks.forEach(drink => {
         const addButton = drink.querySelector('.add-drink');
         addButton.addEventListener('click', () => {
