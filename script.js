@@ -401,6 +401,19 @@ function atualizarResumoPedido() {
 
     document.getElementById('total-pedido').textContent = `Total: R$${totalGeral.toFixed(2)}`;
 
+    // Exibir endereço salvo no rascunho
+    const endereco = JSON.parse(localStorage.getItem('endereco'));
+    const enderecoResumo = document.getElementById('endereco-resumo');
+    if (endereco && enderecoResumo) {
+        enderecoResumo.innerHTML = `
+            <h4>Endereço de Entrega:</h4>
+            <p>${endereco.nome}</p>
+            <p>${endereco.rua}, ${endereco.numero}${endereco.complemento ? ' - ' + endereco.complemento : ''}</p>
+            <p>${endereco.bairro} - ${endereco.cidade}</p>
+            <p>CEP: ${endereco.cep}</p>
+        `;
+    }
+
     document.querySelectorAll('.excluir-item').forEach(button => {
         button.addEventListener('click', (event) => {
             const index = event.target.getAttribute('data-index');
@@ -411,8 +424,15 @@ function atualizarResumoPedido() {
 
 function confirmarPedido() {
     const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+    const endereco = JSON.parse(localStorage.getItem('endereco'));
+
     if (pedidos.length === 0) {
         alert('Por favor, adicione ao menos um prato ao pedido.');
+        return;
+    }
+
+    if (!endereco || !endereco.nome || !endereco.rua || !endereco.numero || !endereco.bairro || !endereco.cidade) {
+        alert('Por favor, adicione um endereço válido antes de confirmar o pedido.');
         return;
     }
 
@@ -430,19 +450,13 @@ function confirmarPedido() {
             mensagem += `Adicionais: ${pedido.adicionais || 'Nenhum'}\n\n`;
         } else {
             mensagem += `1x ${pedido.name} - R$${pedido.totalPrice}\n`;
-            if (pedido.sabor) {
-                mensagem += `    Sabor: ${pedido.sabor}\n`;
-            }
+            if (pedido.sabor) mensagem += `    Sabor: ${pedido.sabor}\n`;
             if (pedido.queijo) {
                 const label = isRosti ? 'Queijo' : 'Borda';
                 mensagem += `    ${label}: ${pedido.queijo}\n`;
             }
-            if (pedido.adicionais) {
-                mensagem += `    Adicionais: ${pedido.adicionais}\n`;
-            }
-            if (pedido.bebida) {
-                mensagem += `    Bebida: ${pedido.bebida}\n`;
-            }
+            if (pedido.adicionais) mensagem += `    Adicionais: ${pedido.adicionais}\n`;
+            if (pedido.bebida) mensagem += `    Bebida: ${pedido.bebida}\n`;
             mensagem += '\n';
         }
     });
@@ -450,19 +464,11 @@ function confirmarPedido() {
     const totalGeral = document.getElementById('total-pedido').textContent;
     mensagem += `${totalGeral}\n\n`;
 
-    // Adiciona o endereço à mensagem
-    const endereco = JSON.parse(localStorage.getItem('enderecoCliente'));
-    if (endereco) {
-        mensagem += '*Dados de Entrega:*\n';
-        mensagem += `Nome: ${endereco.nome}\n`;
-        mensagem += `CEP: ${endereco.cep}\n`;
-        mensagem += `Endereço: ${endereco.rua}, ${endereco.numero}\n`;
-        if (endereco.complemento) {
-            mensagem += `Complemento: ${endereco.complemento}\n`;
-        }
-        mensagem += `Bairro: ${endereco.bairro}\n`;
-        mensagem += `Cidade: ${endereco.cidade}\n`;
-    }
+    mensagem += `Endereço de entrega:\n`;
+    mensagem += `${endereco.nome}\n`;
+    mensagem += `${endereco.rua}, ${endereco.numero}${endereco.complemento ? ' - ' + endereco.complemento : ''}\n`;
+    mensagem += `${endereco.bairro} - ${endereco.cidade}\n`;
+    mensagem += `CEP: ${endereco.cep}`;
 
     const telefone = '48991354876';
     const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
@@ -476,22 +482,7 @@ function excluirPedido(index) {
     atualizarResumoPedido();
 }
 
-async function preencherEndereco(cep) {
-    try {
-        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-        const data = await response.json();
-        if (data.erro) {
-            alert('CEP inválido');
-            return '';
-        }
-        document.getElementById('rua-cliente').value = data.logradouro;
-        document.getElementById('bairro-cliente').value = data.bairro;
-        document.getElementById('cidade-cliente').value = data.localidade;
-    } catch (error) {
-        console.error('Erro ao buscar o CEP:', error);
-    }
-}
-
+// Mantém o endereço salvo mesmo após recarregar ou adicionar produtos
 function salvarEndereco() {
     const endereco = {
         nome: document.getElementById('nome-cliente').value.trim(),
@@ -503,12 +494,40 @@ function salvarEndereco() {
         cidade: document.getElementById('cidade-cliente').value.trim()
     };
 
-    localStorage.setItem('enderecoCliente', JSON.stringify(endereco));
+    if (!endereco.nome || !endereco.cep || !endereco.rua || !endereco.numero || !endereco.bairro || !endereco.cidade) {
+        alert('Por favor, preencha todos os campos obrigatórios do endereço.');
+        return;
+    }
+
+    localStorage.setItem('endereco', JSON.stringify(endereco));
+    alert('Endereço adicionado com sucesso!');
+    atualizarResumoPedido();
 }
 
-// EVENTOS
+function preencherEndereco(cep) {
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.erro) {
+                alert('CEP não encontrado!');
+                return;
+            }
 
-// Ao sair do campo CEP, busca endereço automático
+            document.getElementById('rua-cliente').value = data.logradouro || '';
+            document.getElementById('bairro-cliente').value = data.bairro || '';
+            document.getElementById('cidade-cliente').value = data.localidade || '';
+        })
+        .catch(error => {
+            console.error('Erro ao buscar o CEP:', error);
+            alert('Erro ao buscar o CEP. Tente novamente.');
+        });
+}
+
+document.getElementById('adicionar-endereco').addEventListener('click', (e) => {
+    e.preventDefault();
+    salvarEndereco();
+});
+
 document.getElementById('cep-cliente').addEventListener('blur', (e) => {
     const cep = e.target.value.replace(/\D/g, '');
     if (cep.length === 8) {
@@ -516,9 +535,16 @@ document.getElementById('cep-cliente').addEventListener('blur', (e) => {
     }
 });
 
-// Botão Adicionar Endereço
-document.getElementById('adicionar-endereco').addEventListener('click', (e) => {
-    e.preventDefault();
-    salvarEndereco();
-    alert('Endereço adicionado com sucesso!');
+window.addEventListener('DOMContentLoaded', () => {
+    const endereco = JSON.parse(localStorage.getItem('endereco'));
+    if (endereco) {
+        document.getElementById('nome-cliente').value = endereco.nome || '';
+        document.getElementById('cep-cliente').value = endereco.cep || '';
+        document.getElementById('rua-cliente').value = endereco.rua || '';
+        document.getElementById('numero-cliente').value = endereco.numero || '';
+        document.getElementById('complemento-cliente').value = endereco.complemento || '';
+        document.getElementById('bairro-cliente').value = endereco.bairro || '';
+        document.getElementById('cidade-cliente').value = endereco.cidade || '';
+    }
+    atualizarResumoPedido();
 });
