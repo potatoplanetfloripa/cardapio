@@ -370,7 +370,6 @@ function atualizarResumoPedido() {
         const isRosti = pedido.name.includes('Rosti');
 
         if (pedido.name === 'Monta sua Batata Intergaláctica') {
-            // Lógica específica para "Monta sua Batata Intergaláctica"
             item.innerHTML = `<h4>${pedido.name} - R$${pedido.totalPrice}</h4>`;
             item.innerHTML += `<p>Batata: ${pedido.batata || 'Não especificado'}</p>`;
             item.innerHTML += `<p>Base: ${pedido.base || 'Não especificado'}</p>`;
@@ -380,7 +379,6 @@ function atualizarResumoPedido() {
                 item.innerHTML += `<p>Adicionais: ${pedido.adicionais}</p>`;
             }
         } else {
-            // Demais pedidos, incluindo Rosti
             item.innerHTML = `<h4>${pedido.name} - R$${pedido.totalPrice}</h4>`;
             if (pedido.sabor) {
                 item.innerHTML += `<p>Sabor: ${pedido.sabor}</p>`;
@@ -424,7 +422,6 @@ function confirmarPedido() {
         const isRosti = pedido.name.includes('Rosti');
 
         if (pedido.name === 'Monta sua Batata Intergaláctica') {
-            // Lógica específica para "Monta sua Batata Intergaláctica"
             mensagem += `Monta sua Batata Intergaláctica - R$${pedido.totalPrice}\n`;
             mensagem += `Batata: ${pedido.batata || 'Não especificado'}\n`;
             mensagem += `Base: ${pedido.base || 'Não especificado'}\n`;
@@ -432,7 +429,6 @@ function confirmarPedido() {
             mensagem += `Sabor: ${pedido.sabor || 'Não especificado'}\n`;
             mensagem += `Adicionais: ${pedido.adicionais || 'Nenhum'}\n\n`;
         } else {
-            // Demais pedidos, incluindo Rosti
             mensagem += `1x ${pedido.name} - R$${pedido.totalPrice}\n`;
             if (pedido.sabor) {
                 mensagem += `    Sabor: ${pedido.sabor}\n`;
@@ -452,7 +448,21 @@ function confirmarPedido() {
     });
 
     const totalGeral = document.getElementById('total-pedido').textContent;
-    mensagem += `${totalGeral}\n`;
+    mensagem += `${totalGeral}\n\n`;
+
+    // Adiciona o endereço à mensagem
+    const endereco = JSON.parse(localStorage.getItem('enderecoCliente'));
+    if (endereco) {
+        mensagem += '*Dados de Entrega:*\n';
+        mensagem += `Nome: ${endereco.nome}\n`;
+        mensagem += `CEP: ${endereco.cep}\n`;
+        mensagem += `Endereço: ${endereco.rua}, ${endereco.numero}\n`;
+        if (endereco.complemento) {
+            mensagem += `Complemento: ${endereco.complemento}\n`;
+        }
+        mensagem += `Bairro: ${endereco.bairro}\n`;
+        mensagem += `Cidade: ${endereco.cidade}\n`;
+    }
 
     const telefone = '48991354876';
     const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
@@ -465,7 +475,6 @@ function excluirPedido(index) {
     localStorage.setItem('pedidos', JSON.stringify(pedidos));
     atualizarResumoPedido();
 }
-''
 
 async function preencherEndereco(cep) {
     try {
@@ -482,3 +491,34 @@ async function preencherEndereco(cep) {
         console.error('Erro ao buscar o CEP:', error);
     }
 }
+
+function salvarEndereco() {
+    const endereco = {
+        nome: document.getElementById('nome-cliente').value.trim(),
+        cep: document.getElementById('cep-cliente').value.trim(),
+        rua: document.getElementById('rua-cliente').value.trim(),
+        numero: document.getElementById('numero-cliente').value.trim(),
+        complemento: document.getElementById('complemento-cliente').value.trim(),
+        bairro: document.getElementById('bairro-cliente').value.trim(),
+        cidade: document.getElementById('cidade-cliente').value.trim()
+    };
+
+    localStorage.setItem('enderecoCliente', JSON.stringify(endereco));
+}
+
+// EVENTOS
+
+// Ao sair do campo CEP, busca endereço automático
+document.getElementById('cep-cliente').addEventListener('blur', (e) => {
+    const cep = e.target.value.replace(/\D/g, '');
+    if (cep.length === 8) {
+        preencherEndereco(cep);
+    }
+});
+
+// Botão Adicionar Endereço
+document.getElementById('adicionar-endereco').addEventListener('click', (e) => {
+    e.preventDefault();
+    salvarEndereco();
+    alert('Endereço adicionado com sucesso!');
+});
