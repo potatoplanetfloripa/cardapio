@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <fieldset>
                     <legend>Adicionais (opcional)</legend>
                     <ul class="adicionais-lista">
+                        <li><input type="checkbox" id="cebola-crispy" value="Cebola Crispy" data-price="4.00"><label for="cebola-crispy">Cebola Crispy (R$4,00)</label></li>
                         <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="3.00"><label for="alho-crocante">Alho crocante (R$3,00)</label></li>
                         <li><input type="checkbox" id="azeitona" value="Azeitona" data-price="3.00"><label for="azeitona">Azeitona (R$3,00)</label></li>
                         <li><input type="checkbox" id="bacon" value="Bacon" data-price="7.00"><label for="bacon">Bacon (R$7,00)</label></li>
@@ -259,6 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <fieldset>
                 <legend>Adicionais (opcional, até 2 opções)</legend>
                 <ul class="option-list">
+                    <li><input type="checkbox" id="cebola-crispy" value="Cebola Crispy" data-price="4.00"><label for="cebola-crispy">Cebola Crispy (R$4,00)</label></li>
                     <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="3.00"><label for="alho-crocante">Alho crocante (R$3,00)</label></li>
                     <li><input type="checkbox" id="azeitona" value="Azeitona" data-price="3.00"><label for="azeitona">Azeitona (R$3,00)</label></li>
                     <li><input type="checkbox" id="bacon" value="Bacon" data-price="7.00"><label for="bacon">Bacon (R$7,00)</label></li>
