@@ -1,13 +1,13 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #ccccc6;
+    background-color: #f4f1ea;
     color: #000000;
     margin: 0;
     padding: 0;
 }
 
 header {
-    background-color: #e0b570;
+    background: linear-gradient(135deg, #473f36 0%, #b26a3d 100%);
     text-align: center;
     padding: 20px;
 }
@@ -17,7 +17,7 @@ header img.logo {
 }
 
 header h1 {
-    color: #3a170d;
+    color: #ffffff;
     margin: 10px 0;
 }
 
@@ -43,14 +43,14 @@ main {
 }
 
 .menu-section h2, .address-section h2 {
-    background-color: #ab763a;
+    background: linear-gradient(135deg, #473f36 0%, #b26a3d 100%);
     color: #f3f4e1;
     padding: 10px;
     border-radius: 5px;
 }
 
 .dish, .drink {
-    background-color: #ffffff;
+    background-color: #fffaf5;
     border: 2px solid #ab763a;
     border-radius: 10px;
     padding: 15px;
@@ -80,8 +80,8 @@ main {
 }
 
 button.add-drink {
-    background-color: #928072;
-    color: #f3f4e1;
+    background: linear-gradient(135deg, #887b6d 0%, #b26a3d 100%);
+    color: #f0ece0;
     border: none;
     padding: 5px 10px;
     border-radius: 5px;
@@ -89,7 +89,7 @@ button.add-drink {
 }
 
 button.add-drink:hover {
-    background-color: #ab763a;
+    background: linear-gradient(135deg, #473f36 0%, #b26a3d 100%);
 }
 
 fieldset {
@@ -152,7 +152,7 @@ input[type="checkbox"]:checked + label {
 }
 
 .close {
-    color: #aaa;
+    color: #888;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -166,7 +166,7 @@ input[type="checkbox"]:checked + label {
 }
 
 button {
-    background-color: #928072;
+    background: linear-gradient(135deg, #887b6d 0%, #b26a3d 100%);
     color: #f3f4e1;
     border: none;
     padding: 10px 20px;
@@ -178,7 +178,7 @@ button {
 }
 
 button:hover {
-    background-color: #ab763a;
+    background: linear-gradient(135deg, #473f36 0%, #b26a3d 100%);
 }
 
 #resumo-pedido {
@@ -190,6 +190,7 @@ button:hover {
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 25px;
 }
 
 #pedido-itens {
