@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (name.includes('Rosti')) {
                 modalContent += `
                     <fieldset data-role="queijo">
-                        <legend>Escolha o queijo</legend>
+                        <legend>Escolha o queijo *</legend>
                         <ul class="option-list">
                             <li class="option" data-value="Mussarela">Mussarela</li>
                             <li class="option" data-value="Cheddar">Cheddar</li>
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </ul>
                     </fieldset>
                     <fieldset data-role="sabor">
-                        <legend>Escolha o sabor</legend>
+                        <legend>Escolha o sabor *</legend>
                         <ul class="option-list">
                             <li class="option" data-value="Pizza" data-price="39.90">Pizza (R$39,90)</li>
                             <li class="option" data-value="Queijo mussarela" data-price="39.90">Queijo mussarela (R$39,90)</li>
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 modalContent += `
                     <fieldset data-role="queijo">
-                        <legend>Escolha a borda</legend>
+                        <legend>Escolha a borda *</legend>
                         <ul class="option-list">
                             <li class="option" data-value="Requeijão Cremoso">Requeijão Cremoso</li>
                             <li class="option" data-value="Cheddar">Cheddar</li>
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
             modalContent += `
                 <fieldset>
-                    <legend>Adicionais (opcional)</legend>
+                    <legend>Adicionais</legend>
                     <ul class="adicionais-lista">
                         <li><input type="checkbox" id="cebola-crispy" value="Cebola Crispy" data-price="4.00"><label for="cebola-crispy">Cebola Crispy (R$4,00)</label></li>
                         <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="3.00"><label for="alho-crocante">Alho crocante (R$3,00)</label></li>
@@ -133,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </ul>
                 </fieldset>
                 <button id="add-${safeId}" class="add-pedido">Adicionar ao Pedido</button>
+                Campos que contem * são obrigatórios
             `;
     
             modalBody.innerHTML = modalContent;
@@ -220,14 +221,14 @@ document.addEventListener('DOMContentLoaded', () => {
             <h3>${name}</h3>
             <p>Monte sua batata recheada intergaláctica do tamanho da sua fome.</p>
             <fieldset>
-                <legend>Escolha a Batata</legend>
+                <legend>Escolha a Batata *</legend>
                 <ul class="option-list">
                     <li class="option" data-value="Batata 300g" data-price="10.00">Batata 300g R$10,00</li>
                     <li class="option" data-value="Batata 400g" data-price="13.00">Batata 400g R$13,00</li>
                 </ul>
             </fieldset>
             <fieldset>
-                <legend>Escolha a Base (obrigatório, até 2 opções)</legend>
+                <legend>Escolha a Base (até 2 opções) *</legend>
                 <ul class="option-list">
                     <li><input type="checkbox" id="base-mussarela" value="Queijo mussarela" data-price="6.00"><label for="base-mussarela">Queijo mussarela R$6,00</label></li>
                     <li><input type="checkbox" id="base-cheddar" value="Cheddar" data-price="6.00"><label for="base-cheddar">Cheddar R$6,00</label></li>
@@ -236,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </ul>
             </fieldset>
             <fieldset>
-            <legend>Escolha a Borda</legend>
+            <legend>Escolha a Borda *</legend>
                 <ul class="option-list">
                     <li class="option" data-value="Cheddar" data-price="6.00">Cheddar R$6,00</li>
                     <li class="option" data-value="Requeijão" data-price="6.00">Requeijão R$6,00</li>
@@ -244,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </ul>
             </fieldset>
             <fieldset>
-                <legend>Escolha o Sabor</legend>
+                <legend>Escolha o Sabor *</legend>
                 <ul class="option-list">
                     <li class="option" data-value="Frango desfiado" data-price="15.90">Frango desfiado R$15,90</li>
                     <li class="option" data-value="Bacon" data-price="15.90">Bacon R$15,90</li>
@@ -258,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </ul>
             </fieldset>
             <fieldset>
-                <legend>Adicionais (opcional, até 2 opções)</legend>
+                <legend>Adicionais (até 2 opções)</legend>
                 <ul class="option-list">
                     <li><input type="checkbox" id="cebola-crispy" value="Cebola Crispy" data-price="4.00"><label for="cebola-crispy">Cebola Crispy (R$4,00)</label></li>
                     <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="3.00"><label for="alho-crocante">Alho crocante (R$3,00)</label></li>
@@ -275,6 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </ul>
             </fieldset>
             <button id="add-custom-potato" class="add-pedido">Adicionar ao Pedido</button>
+            Campos que contem * são obrigatórios
         `;
         modal.style.display = "block";
     

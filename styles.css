@@ -109,6 +109,7 @@ label {
 
 select, input[type="checkbox"] {
     margin-right: 10px;
+    display: none;
 }
 
 input[type="checkbox"] + label {
