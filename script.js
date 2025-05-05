@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <li class="option" data-value="Bacon" data-price="41.90">Bacon (R$41,90)</li>
                             <li class="option" data-value="Bolonhesa" data-price="41.90">Bolonhesa (R$41,90)</li>
                             <li class="option" data-value="Calabresa" data-price="42.90">Calabresa (R$42,90)</li>
+                            <li class="option" data-value="Carne de panela" data-price="43.90">Carne de panela (R$43,90)</li>
                             <li class="option" data-value="Estrogonofe de Frango" data-price="43.90">Estrogonofe de Frango (R$43,90)</li>
                             <li class="option" data-value="Estrogonofe de Carne" data-price="49.90">Estrogonofe de Carne (R$49,90)</li>
                             <li class="option" data-value="Estrogonofe de Grão de Bico" data-price="36.90">Estrogonofe de Grão de Bico (R$36,90)</li>
@@ -251,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <li class="option" data-value="Bacon" data-price="15.90">Bacon R$15,90</li>
                     <li class="option" data-value="Calabresa" data-price="16.90">Calabresa R$16,90</li>
                     <li class="option" data-value="Pizza" data-price="12.90">Pizza R$12,90</li>
+                    <li class="option" data-value="Carne de penela" data-price="17.90">Carne de panela R$17,90</li>
                     <li class="option" data-value="Estrogonofe de frango" data-price="17.90">Estrogonofe de frango R$17,90</li>
                     <li class="option" data-value="Estrogonofe de carne" data-price="22.90">Estrogonofe de carne R$22,90</li>
                     <li class="option" data-value="Bolonhesa" data-price="15.90">Bolonhesa R$15,90</li>
