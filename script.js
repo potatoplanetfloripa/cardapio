@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <li class="option" data-value="Mussarela">Mussarela</li>
                             <li class="option" data-value="Cheddar">Cheddar</li>
                             <li class="option" data-value="Requeijão">Requeijão</li>
+                            <li class="option" data-value="Cream chesse">Cream chesse</li>
                         </ul>
                     </fieldset>
                     <fieldset data-role="sabor">
@@ -129,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <li><input type="checkbox" id="mussarela" value="Mussarela" data-price="6.00"><label for="mussarela">Mussarela (R$6,00)</label></li>
                         <li><input type="checkbox" id="presunto" value="Presunto" data-price="3.00"><label for="presunto">Presunto (R$3,00)</label></li>
                         <li><input type="checkbox" id="requeijao" value="Requeijão" data-price="6.00"><label for="requeijao">Requeijão (R$6,00)</label></li>
+                        <li><input type="checkbox" id="cream-chesse" value="Cream chesse" data-price="6.00"><label for="cream-chesse">Cream chesse (R$6,00)</label></li>
                         <li><input type="checkbox" id="tomate" value="Tomate" data-price="3.00"><label for="tomate">Tomate (R$3,00)</label></li>
                         <li><input type="checkbox" id="batata-palha" value="Batata Palha" data-price="4.00"><label for="batata-palha">Batata Palha (R$4,00)</label></li>
                     </ul>
@@ -234,6 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <li><input type="checkbox" id="base-mussarela" value="Queijo mussarela" data-price="6.00"><label for="base-mussarela">Queijo mussarela R$6,00</label></li>
                     <li><input type="checkbox" id="base-cheddar" value="Cheddar" data-price="6.00"><label for="base-cheddar">Cheddar R$6,00</label></li>
                     <li><input type="checkbox" id="base-requeijao" value="Requeijão" data-price="6.00"><label for="base-requeijao">Requeijão R$6,00</label></li>
+                    <li><input type="checkbox" id="base-cream-chesse" value="Cream chesse" data-price="6.00"><label for="base-cream-chesse">Cream chesse R$6,00</label></li>
                     <li><input type="checkbox" id="base-sem" value="Sem base" data-price="0.00"><label for="base-sem">Sem base R$0,00</label></li>
                 </ul>
             </fieldset>
