@@ -65,18 +65,18 @@ document.addEventListener('DOMContentLoaded', () => {
         dish.addEventListener('click', () => {
             const name = dish.getAttribute('data-name');
             const price = parseFloat(dish.getAttribute('data-price'));
-    
+
             // Condição para "Monta sua Batata Intergaláctica"
             if (name === 'Monta sua Batata Intergaláctica') {
                 openCustomPotatoModal(name, price);
                 return;
             }
-    
+
             // Criar ID seguro para evitar problemas com espaços/acentos
             const safeId = name.replace(/\s+/g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    
+
             let modalContent = `<h3>${name}</h3><p>R$${price.toFixed(2)}</p>`;
-    
+
             if (name.includes('Rosti')) {
                 modalContent += `
                     <fieldset data-role="queijo">
@@ -114,8 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         </ul>
                     </fieldset>
                 `;
-            }
-    
+            } 
+
             modalContent += `
                 <fieldset>
                     <legend>Adicionais</legend>
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <li><input type="checkbox" id="mussarela" value="Mussarela" data-price="6.00"><label for="mussarela">Mussarela (R$6,00)</label></li>
                         <li><input type="checkbox" id="presunto" value="Presunto" data-price="3.00"><label for="presunto">Presunto (R$3,00)</label></li>
                         <li><input type="checkbox" id="requeijao" value="Requeijão" data-price="6.00"><label for="requeijao">Requeijão (R$6,00)</label></li>
-                        <li><input type="checkbox" id="cream-chesse" value="Cream chesse" data-price="6.00"><label for="cream-chesse">Cream chesse (R$6,00)</label></li>
+                        <li><input type="checkbox" id="cream-chesse" value="Cream-chesse" data-price="6.00"><label for="cream-chesse">Cream chesse (R$6,00)</label></li>
                         <li><input type="checkbox" id="tomate" value="Tomate" data-price="3.00"><label for="tomate">Tomate (R$3,00)</label></li>
                         <li><input type="checkbox" id="batata-palha" value="Batata Palha" data-price="4.00"><label for="batata-palha">Batata Palha (R$4,00)</label></li>
                     </ul>
@@ -138,13 +138,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button id="add-${safeId}" class="add-pedido">Adicionar ao Pedido</button>
                 Campos que contem * são obrigatórios
             `;
-    
+
             modalBody.innerHTML = modalContent;
             modal.style.display = "block";
             modal.scrollTop = 0;
-    
+
             const adicionaisCheckboxes = modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]');
-    
+
             adicionaisCheckboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', () => {
                     const selectedAdicionais = Array.from(adicionaisCheckboxes).filter(cb => cb.checked);
@@ -154,39 +154,39 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             });
-    
+
             document.querySelectorAll('.option, .drink-option').forEach(option => {
                 option.addEventListener('click', () => {
                     option.parentElement.querySelectorAll('.option, .drink-option').forEach(opt => opt.classList.remove('selected'));
                     option.classList.add('selected');
                 });
             });
-    
+
             document.getElementById(`add-${safeId}`).addEventListener('click', () => {
                 const queijo = modalBody.querySelector('[data-role="queijo"] .option.selected')?.dataset.value || '';
-                const saborOption = name.includes('Rosti') 
-                    ? modalBody.querySelector('[data-role="sabor"] .option.selected') 
+                const saborOption = name.includes('Rosti')
+                    ? modalBody.querySelector('[data-role="sabor"] .option.selected')
                     : null;
-    
+
                 const sabor = saborOption?.dataset.value || '';
-    
+
                 if (!queijo) {
                     alert('Por favor, selecione uma opção de queijo.');
                     return;
                 }
-    
+
                 if (name.includes('Rosti') && !sabor) {
                     alert('Por favor, selecione uma opção de sabor.');
                     return;
                 }
-    
+
                 const saborPrice = saborOption ? parseFloat(saborOption.dataset.price) : price;
-    
+
                 const adicionais = Array.from(modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]:checked')).map(adicional => adicional.value);
                 const adicionaisPrecos = Array.from(modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]:checked')).map(adicional => parseFloat(adicional.dataset.price));
-    
+
                 const totalPrice = adicionaisPrecos.reduce((total, preco) => total + preco, saborPrice);
-    
+
                 addPedido(name, saborPrice, sabor, queijo, '', adicionais, totalPrice);
                 modal.style.display = "none";
             });
@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <li><input type="checkbox" id="base-mussarela" value="Queijo mussarela" data-price="6.00"><label for="base-mussarela">Queijo mussarela R$6,00</label></li>
                     <li><input type="checkbox" id="base-cheddar" value="Cheddar" data-price="6.00"><label for="base-cheddar">Cheddar R$6,00</label></li>
                     <li><input type="checkbox" id="base-requeijao" value="Requeijão" data-price="6.00"><label for="base-requeijao">Requeijão R$6,00</label></li>
-                    <li><input type="checkbox" id="base-cream-chesse" value="Cream chesse" data-price="6.00"><label for="base-cream-chesse">Cream chesse R$6,00</label></li>
+                    <li><input type="checkbox" id="base-cream-chesse" value="cream-chesse" data-price="6.00"><label for="base-cream-chesse">Cream chesse R$6,00</label></li>
                     <li><input type="checkbox" id="base-sem" value="Sem base" data-price="0.00"><label for="base-sem">Sem base R$0,00</label></li>
                 </ul>
             </fieldset>
@@ -276,22 +276,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     <li><input type="checkbox" id="mussarela" value="Mussarela" data-price="6.00"><label for="mussarela">Mussarela (R$6,00)</label></li>
                     <li><input type="checkbox" id="presunto" value="Presunto" data-price="3.00"><label for="presunto">Presunto (R$3,00)</label></li>
                     <li><input type="checkbox" id="requeijao" value="Requeijão" data-price="6.00"><label for="requeijao">Requeijão (R$6,00)</label></li>
+                    <li><input type="checkbox" id="cream-chesse" value="Cream chesse" data-price="6.00"><label for="cream-chesse">Cream chesse (R$6,00)</label></li>
                     <li><input type="checkbox" id="tomate" value="Tomate" data-price="3.00"><label for="tomate">Tomate (R$3,00)</label></li>
                     <li><input type="checkbox" id="batata-palha" value="Batata Palha" data-price="4.00"><label for="batata-palha">Batata Palha (R$4,00)</label></li>
                 </ul>
-            </fieldset>
-            <button id="add-custom-potato" class="add-pedido">Adicionar ao Pedido</button>
+                </fieldset>
+                <button id="add-custom-potato" class="add-pedido">Adicionar ao Pedido</button>
             Campos que contem * são obrigatórios
         `;
         modal.style.display = "block";
-    
+
         document.querySelectorAll('.option').forEach(option => {
             option.addEventListener('click', () => {
                 option.parentElement.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
                 option.classList.add('selected');
             });
         });
-    
+
         document.querySelectorAll('fieldset:nth-of-type(2) input[type="checkbox"]').forEach(input => {
             input.addEventListener('change', () => {
                 const checkedInputs = document.querySelectorAll('fieldset:nth-of-type(2) input[type="checkbox"]:checked');
@@ -301,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
-    
+
         document.querySelectorAll('fieldset:nth-of-type(5) input[type="checkbox"]').forEach(input => {
             input.addEventListener('change', () => {
                 const checkedInputs = document.querySelectorAll('fieldset:nth-of-type(5) input[type="checkbox"]:checked');
@@ -311,31 +312,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
-    
+
         document.getElementById('add-custom-potato').addEventListener('click', () => {
             const batata = modalBody.querySelector('fieldset:nth-of-type(1) .option.selected');
             const baseInputs = Array.from(modalBody.querySelectorAll('fieldset:nth-of-type(2) input[type="checkbox"]:checked'));
             const borda = modalBody.querySelector('fieldset:nth-of-type(3) .option.selected');
             const sabor = modalBody.querySelector('fieldset:nth-of-type(4) .option.selected');
             const adicionaisInputs = Array.from(modalBody.querySelectorAll('fieldset:nth-of-type(5) input[type="checkbox"]:checked'));
-    
+
             if (!batata || baseInputs.length === 0 || baseInputs.length > 2 || !borda || !sabor) {
                 alert('Por favor, preencha todas as opções obrigatórias corretamente.');
                 return;
             }
-    
+
             const basePrice = baseInputs.reduce((total, input) => total + parseFloat(input.dataset.price), 0);
             const adicionaisPrice = adicionaisInputs.reduce((total, input) => total + parseFloat(input.dataset.price), 0);
-    
+
             const totalPrice = basePrice +
                 parseFloat(batata.dataset.price) +
                 parseFloat(borda.dataset.price) +
                 parseFloat(sabor.dataset.price) +
                 adicionaisPrice;
-    
+
             const baseList = baseInputs.map(input => input.value);
             const adicionaisList = adicionaisInputs.map(input => input.value);
-    
+
             addPedido(name, totalPrice, sabor.textContent, '', '', adicionaisList, totalPrice, {
                 batata: batata.dataset.value,
                 base: baseList.join(', '),
@@ -344,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.style.display = "none";
         });
     }
-});    
+});
 
 function addPedido(name, price, sabor, queijo, bebida, adicionais, totalPrice, customOptions = {}) {
     const pedido = {
@@ -401,9 +402,13 @@ function atualizarResumoPedido() {
             if (pedido.adicionais) {
                 item.innerHTML += `<p>Adicionais: ${pedido.adicionais}</p>`;
             }
-            if (pedido.bebida) {
-                item.innerHTML += `<p>Bebida: ${pedido.bebida}</p>`;
-            }
+            if (!pedido.name.toLowerCase().includes('pudim') && pedido.bebida) {
+    item.innerHTML += `<p>Bebida: ${pedido.bebida}</p>`;
+}
+if (pedido.name.toLowerCase().includes('pudim')) {
+    item.innerHTML += `<p>Sobremesa: pudim</p>`;
+}
+
         }
 
         item.innerHTML += `<button class="excluir-item" data-index="${index}">Excluir</button>`;
