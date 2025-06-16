@@ -114,11 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         </ul>
                     </fieldset>
                 `;
-            } 
+            }
 
             modalContent += `
                 <fieldset>
-                    <legend>Adicionais</legend>
+                    <legend>Adicionais (até 2 opções)</legend>
                     <ul class="adicionais-lista">
                         <li><input type="checkbox" id="cebola-crispy" value="Cebola Crispy" data-price="4.00"><label for="cebola-crispy">Cebola Crispy (R$4,00)</label></li>
                         <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="3.00"><label for="alho-crocante">Alho crocante (R$3,00)</label></li>
@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <li><input type="checkbox" id="base-mussarela" value="Queijo mussarela" data-price="6.00"><label for="base-mussarela">Queijo mussarela R$6,00</label></li>
                     <li><input type="checkbox" id="base-cheddar" value="Cheddar" data-price="6.00"><label for="base-cheddar">Cheddar R$6,00</label></li>
                     <li><input type="checkbox" id="base-requeijao" value="Requeijão" data-price="6.00"><label for="base-requeijao">Requeijão R$6,00</label></li>
-                    <li><input type="checkbox" id="base-cream-chesse" value="cream-chesse" data-price="6.00"><label for="base-cream-chesse">Cream chesse R$6,00</label></li>
+                    <li><input type="checkbox" id="base-cream-chesse" value="cream chesse" data-price="6.00"><label for="base-cream-chesse">Cream chesse R$6,00</label></li>
                     <li><input type="checkbox" id="base-sem" value="Sem base" data-price="0.00"><label for="base-sem">Sem base R$0,00</label></li>
                 </ul>
             </fieldset>
@@ -403,11 +403,11 @@ function atualizarResumoPedido() {
                 item.innerHTML += `<p>Adicionais: ${pedido.adicionais}</p>`;
             }
             if (!pedido.name.toLowerCase().includes('pudim') && pedido.bebida) {
-    item.innerHTML += `<p>Bebida: ${pedido.bebida}</p>`;
-}
-if (pedido.name.toLowerCase().includes('pudim')) {
-    item.innerHTML += `<p>Sobremesa: pudim</p>`;
-}
+                item.innerHTML += `<p>Bebida: ${pedido.bebida}</p>`;
+            }
+            if (pedido.name.toLowerCase().includes('pudim')) {
+                item.innerHTML += `<p>Sobremesa: pudim</p>`;
+            }
 
         }
 
