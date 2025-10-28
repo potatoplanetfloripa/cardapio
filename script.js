@@ -91,10 +91,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <fieldset data-role="sabor">
                         <legend>Escolha o sabor *</legend>
                         <ul class="option-list">
+                            <li class="option" data-value="Alho-poró com gorgonzola" data-price="43.90">Alho-poró com gorgonzola (R$43,90)</li>
+                            <li class="option" data-value="Lombo desfiado com BBQ" data-price="43.90">Lombo desfiado com BBQ (R$43,90)</li>
                             <li class="option" data-value="Pizza" data-price="39.90">Pizza (R$39,90)</li>
                             <li class="option" data-value="Queijo mussarela" data-price="39.90">Queijo mussarela (R$39,90)</li>
                             <li class="option" data-value="Bacon" data-price="41.90">Bacon (R$41,90)</li>
-                            <li class="option" data-value="Carne de panela" data-price="43.90">Carne de panela (R$43,90)</li>
+                            <li class="option" data-value="Carne de panela" data-price="44.90">Carne de panela (R$44,90)</li>
                             <li class="option" data-value="Bolonhesa" data-price="41.90">Bolonhesa (R$41,90)</li>
                             <li class="option" data-value="Calabresa" data-price="42.90">Calabresa (R$42,90)</li>
                             <li class="option" data-value="Estrogonofe de Frango" data-price="43.90">Estrogonofe de Frango (R$43,90)</li>
@@ -252,12 +254,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <legend>Escolha o Sabor *</legend>
                 <ul class="option-list">
                     <li class="option" data-value="Frango desfiado" data-price="15.90">Frango desfiado R$15,90</li>
+                    <li class="option" data-value="Lombo desfiado com BBQ" data-price="17.90">Lombo desfiado com BBQ R$17,90</li>
+                    <li class="option" data-value="Alho-poró com gorgonzola" data-price="17.90">Alho-poró com gorgonzola R$17,90</li>
                     <li class="option" data-value="Bacon" data-price="15.90">Bacon R$15,90</li>
-                    <li class="option" data-value="Carne de penela" data-price="17.90">Carne de panela R$17,90</li>
+                    <li class="option" data-value="Carne de penela" data-price="18.90">Carne de panela R$18,90</li>
                     <li class="option" data-value="Calabresa" data-price="16.90">Calabresa R$16,90</li>
                     <li class="option" data-value="Pizza" data-price="12.90">Pizza R$12,90</li>
                     <li class="option" data-value="Estrogonofe de frango" data-price="17.90">Estrogonofe de frango R$17,90</li>
-                    <li class="option" data-value="Estrogonofe de carne" data-price="22.90">Estrogonofe de carne R$22,90</li>
+                    <li class="option" data-value="Estrogonofe de carne" data-price="23.90">Estrogonofe de carne R$23,90</li>
                     <li class="option" data-value="Bolonhesa" data-price="15.90">Bolonhesa R$15,90</li>
                     <li class="option" data-value="Estrogonofe de grão de bico" data-price="12.90">Estrogonofe de grão de bico R$12,90</li>
                     <li class="option" data-value="Queijo" data-price="12.90">Queijo R$12,90</li>
@@ -381,35 +385,47 @@ function atualizarResumoPedido() {
 
         const isRosti = pedido.name.includes('Rosti');
 
-        if (pedido.name === 'Monta sua Batata Intergaláctica') {
-            item.innerHTML = `<h4>${pedido.name} - R$${pedido.totalPrice}</h4>`;
-            item.innerHTML += `<p>Batata: ${pedido.batata || 'Não especificado'}</p>`;
-            item.innerHTML += `<p>Base: ${pedido.base || 'Não especificado'}</p>`;
-            item.innerHTML += `<p>Borda: ${pedido.borda || 'Não especificado'}</p>`;
-            item.innerHTML += `<p>Sabor: ${pedido.sabor || 'Não especificado'}</p>`;
-            if (pedido.adicionais) {
-                item.innerHTML += `<p>Adicionais: ${pedido.adicionais}</p>`;
-            }
-        } else {
-            item.innerHTML = `<h4>${pedido.name} - R$${pedido.totalPrice}</h4>`;
-            if (pedido.sabor) {
-                item.innerHTML += `<p>Sabor: ${pedido.sabor}</p>`;
-            }
-            if (pedido.queijo) {
-                const label = isRosti ? 'Queijo' : 'Borda';
-                item.innerHTML += `<p>${label}: ${pedido.queijo}</p>`;
-            }
-            if (pedido.adicionais) {
-                item.innerHTML += `<p>Adicionais: ${pedido.adicionais}</p>`;
-            }
-            if (!pedido.name.toLowerCase().includes('pudim') && pedido.bebida) {
-                item.innerHTML += `<p>Bebida: ${pedido.bebida}</p>`;
-            }
-            if (pedido.name.toLowerCase().includes('pudim')) {
-                item.innerHTML += `<p>Sobremesa: pudim</p>`;
-            }
+       if (pedido.name === 'Monta sua Batata Intergaláctica') {
+    item.innerHTML = `<h4>${pedido.name} - R$${pedido.totalPrice}</h4>`;
+    item.innerHTML += `<p>Batata: ${pedido.batata || 'Não especificado'}</p>`;
+    item.innerHTML += `<p>Base: ${pedido.base || 'Não especificado'}</p>`;
+    item.innerHTML += `<p>Borda: ${pedido.borda || 'Não especificado'}</p>`;
+    item.innerHTML += `<p>Sabor: ${pedido.sabor || 'Não especificado'}</p>`;
+    if (pedido.adicionais) {
+        item.innerHTML += `<p>Adicionais: ${pedido.adicionais}</p>`;
+    }
+} else {
+    item.innerHTML = `<h4>${pedido.name} - R$${pedido.totalPrice}</h4>`;
+    if (pedido.sabor) {
+        item.innerHTML += `<p>Sabor: ${pedido.sabor}</p>`;
+    }
+    if (pedido.queijo) {
+        const label = isRosti ? 'Queijo' : 'Borda';
+        item.innerHTML += `<p>${label}: ${pedido.queijo}</p>`;
+    }
+    if (pedido.adicionais) {
+        item.innerHTML += `<p>Adicionais: ${pedido.adicionais}</p>`;
+    }
 
-        }
+    // Só mostra bebida se não for pudim nem mousse
+    if (
+        !pedido.name.toLowerCase().includes('pudim') &&
+        !pedido.name.toLowerCase().includes('Mousse') &&
+        pedido.bebida
+    ) {
+        item.innerHTML += `<p>Bebida: ${pedido.bebida}</p>`;
+    }
+
+    // Sobremesa: pudim
+    if (pedido.name.toLowerCase().includes('pudim')) {
+        item.innerHTML += `<p>Sobremesa: pudim</p>`;
+    }
+
+    // Sobremesa: mousse
+    if (pedido.name.toLowerCase().includes('mousse')) {
+        item.innerHTML += `<p>Sobremesa: mousse</p>`;
+    }
+}
 
         item.innerHTML += `<button class="excluir-item" data-index="${index}">Excluir</button>`;
         pedidoItens.appendChild(item);
