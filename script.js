@@ -65,82 +65,81 @@ document.addEventListener('DOMContentLoaded', () => {
         dish.addEventListener('click', () => {
             const name = dish.getAttribute('data-name');
             const price = parseFloat(dish.getAttribute('data-price'));
+            const safeId = name.replace(/\s+/g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-            // Condição para "Monta sua Batata Intergaláctica"
             if (name === 'Monta sua Batata Intergaláctica') {
                 openCustomPotatoModal(name, price);
                 return;
             }
 
-            // Criar ID seguro para evitar problemas com espaços/acentos
-            const safeId = name.replace(/\s+/g, '-').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
             let modalContent = `<h3>${name}</h3><p>R$${price.toFixed(2)}</p>`;
 
             if (name.includes('Rosti')) {
-            } else {
                 modalContent += `
-                <fieldset data-role="queijo">
-                <legend>Escolha a borda *</legend>
-                <ul class="option-list">
-                <li class="option" data-value="Requeijão Cremoso">Requeijão Cremoso</li>
-                <li class="option" data-value="Cheddar">Cheddar</li>
-                </ul>
-                </fieldset>
-                `;
-            }
-            modalContent += `
                 <fieldset data-role="queijo">
                     <legend>Escolha o queijo *</legend>
                     <ul class="option-list">
                         <li class="option" data-value="Mussarela">Mussarela</li>
                         <li class="option" data-value="Cheddar">Cheddar</li>
                         <li class="option" data-value="Requeijão">Requeijão</li>
-                        <li class="option" data-value="Cream chesse">Cream chesse</li>
+                        <li class="option" data-value="Cream cheese">Cream cheese</li>
                     </ul>
                 </fieldset>
+
                 <fieldset data-role="sabor">
-                <legend>Escolha o sabor *</legend>
-                <ul class="option-list">
-                <li class="option" data-value="Cachorro-quente" data-price="36.90">Cachorro-quente (R$36,90)</li>
-                <li class="option" data-value="Carne de panela" data-price="44.90">Carne de panela (R$44,90)</li>
-                <li class="option" data-value="Estrogonofe de Carne" data-price="49.90">Estrogonofe de Carne (R$49,90)</li>
-                <li class="option" data-value="Lombo desfiado com BBQ" data-price="43.90">Lombo desfiado com BBQ (R$43,90)</li>
-                <li class="option" data-value="Estrogonofe de Frango" data-price="43.90">Estrogonofe de Frango (R$43,90)</li>
-                <li class="option" data-value="Bacon" data-price="43.90">Bacon (R$43,90)</li>
-                <li class="option" data-value="Calabresa" data-price="42.90">Calabresa (R$42,90)</li>
-                <li class="option" data-value="Frango Desfiado" data-price="41.90">Frango Desfiado (R$41,90)</li>
-                <li class="option" data-value="Bolonhesa" data-price="41.90">Bolonhesa (R$41,90)</li>
-                <li class="option" data-value="Alho-poró com gorgonzola" data-price="43.90">Alho-poró com gorgonzola (R$43,90)</li>
-                <li class="option" data-value="Pizza" data-price="39.90">Pizza (R$39,90)</li>
-                <li class="option" data-value="Estrogonofe de Grão de Bico" data-price="38.90">Estrogonofe de Grão de Bico (R$38,90)</li>
-                <li class="option" data-value="Queijo mussarela" data-price="39.90">Queijo mussarela (R$39,90)</li>
+                    <legend>Escolha o sabor *</legend>
+                    <ul class="option-list">
+                        <li class="option" data-value="Cachorro-quente" data-price="36.90">Cachorro-quente (R$36,90)</li>
+                        <li class="option" data-value="Carne de panela" data-price="44.90">Carne de panela (R$44,90)</li>
+                        <li class="option" data-value="Estrogonofe de Carne" data-price="49.90">Estrogonofe de Carne (R$49,90)</li>
+                        <li class="option" data-value="Lombo desfiado com BBQ" data-price="43.90">Lombo desfiado com BBQ (R$43,90)</li>
+                        <li class="option" data-value="Estrogonofe de Frango" data-price="43.90">Estrogonofe de Frango (R$43,90)</li>
+                        <li class="option" data-value="Bacon" data-price="43.90">Bacon (R$43,90)</li>
+                        <li class="option" data-value="Calabresa" data-price="42.90">Calabresa (R$42,90)</li>
+                        <li class="option" data-value="Frango Desfiado" data-price="41.90">Frango Desfiado (R$41,90)</li>
+                        <li class="option" data-value="Bolonhesa" data-price="41.90">Bolonhesa (R$41,90)</li>
+                        <li class="option" data-value="Alho-poró com gorgonzola" data-price="43.90">Alho-poró com gorgonzola (R$43,90)</li>
+                        <li class="option" data-value="Pizza" data-price="39.90">Pizza (R$39,90)</li>
+                        <li class="option" data-value="Estrogonofe de Grão de Bico" data-price="38.90">Estrogonofe de Grão de Bico (R$38,90)</li>
+                        <li class="option" data-value="Queijo mussarela" data-price="39.90">Queijo mussarela (R$39,90)</li>
                     </ul>
                 </fieldset>
             `;
-            
+            } else {
+                modalContent += `
+                <fieldset data-role="borda">
+                    <legend>Escolha a borda *</legend>
+                    <ul class="option-list">
+                        <li class="option" data-value="Requeijão Cremoso">Requeijão Cremoso</li>
+                        <li class="option" data-value="Cheddar">Cheddar</li>
+                    </ul>
+                </fieldset>
+            `;
+            }
+
             modalContent += `
-                <fieldset>
-                    <legend>Adicionais (até 2 opções)</legend>
-                    <ul class="adicionais-lista">
-                        <li><input type="checkbox" id="cebola-crispy" value="Cebola Crispy" data-price="4.00"><label for="cebola-crispy">Cebola Crispy (R$4,00)</label></li>
-                        <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="3.00"><label for="alho-crocante">Alho crocante (R$3,00)</label></li>
-                        <li><input type="checkbox" id="azeitona" value="Azeitona" data-price="3.00"><label for="azeitona">Azeitona (R$3,00)</label></li>
-                        <li><input type="checkbox" id="bacon" value="Bacon" data-price="7.00"><label for="bacon">Bacon (R$7,00)</label></li>
-                        <li><input type="checkbox" id="cheddar" value="Cheddar" data-price="6.00"><label for="cheddar">Cheddar (R$6,00)</label></li>
-                        <li><input type="checkbox" id="ervilha" value="Ervilha" data-price="2.50"><label for="ervilha">Ervilha (R$2,50)</label></li>
-                        <li><input type="checkbox" id="milho" value="Milho" data-price="2.50"><label for="milho">Milho (R$2,50)</label></li>
-                        <li><input type="checkbox" id="mussarela" value="Mussarela" data-price="6.00"><label for="mussarela">Mussarela (R$6,00)</label></li>
-                        <li><input type="checkbox" id="presunto" value="Presunto" data-price="3.00"><label for="presunto">Presunto (R$3,00)</label></li>
-                        <li><input type="checkbox" id="requeijao" value="Requeijão" data-price="6.00"><label for="requeijao">Requeijão (R$6,00)</label></li>
-                        <li><input type="checkbox" id="cream-chesse" value="Cream-chesse" data-price="6.00"><label for="cream-chesse">Cream chesse (R$6,00)</label></li>
-                        <li><input type="checkbox" id="tomate" value="Tomate" data-price="3.00"><label for="tomate">Tomate (R$3,00)</label></li>
-                        <li><input type="checkbox" id="batata-palha" value="Batata Palha" data-price="4.00"><label for="batata-palha">Batata Palha (R$4,00)</label></li>
-                    </ul>
-                </fieldset>
-                <button id="add-${safeId}" class="add-pedido">Adicionar ao Pedido</button>
-                Campos que contem * são obrigatórios
-            `;
+            <fieldset>
+                <legend>Adicionais (até 2 opções)</legend>
+                <ul class="adicionais-lista">
+                    <li><input type="checkbox" id="cebola-crispy" value="Cebola Crispy" data-price="4.00"><label for="cebola-crispy">Cebola Crispy (R$4,00)</label></li>
+                    <li><input type="checkbox" id="alho-crocante" value="Alho crocante" data-price="3.00"><label for="alho-crocante">Alho crocante (R$3,00)</label></li>
+                    <li><input type="checkbox" id="azeitona" value="Azeitona" data-price="3.00"><label for="azeitona">Azeitona (R$3,00)</label></li>
+                    <li><input type="checkbox" id="bacon" value="Bacon" data-price="7.00"><label for="bacon">Bacon (R$7,00)</label></li>
+                    <li><input type="checkbox" id="cheddar" value="Cheddar" data-price="6.00"><label for="cheddar">Cheddar (R$6,00)</label></li>
+                    <li><input type="checkbox" id="ervilha" value="Ervilha" data-price="2.50"><label for="ervilha">Ervilha (R$2,50)</label></li>
+                    <li><input type="checkbox" id="milho" value="Milho" data-price="2.50"><label for="milho">Milho (R$2,50)</label></li>
+                    <li><input type="checkbox" id="mussarela" value="Mussarela" data-price="6.00"><label for="mussarela">Mussarela (R$6,00)</label></li>
+                    <li><input type="checkbox" id="presunto" value="Presunto" data-price="3.00"><label for="presunto">Presunto (R$3,00)</label></li>
+                    <li><input type="checkbox" id="requeijao" value="Requeijão" data-price="6.00"><label for="requeijao">Requeijão (R$6,00)</label></li>
+                    <li><input type="checkbox" id="cream-chesse" value="Cream cheese" data-price="6.00"><label for="cream-chesse">Cream cheese (R$6,00)</label></li>
+                    <li><input type="checkbox" id="tomate" value="Tomate" data-price="3.00"><label for="tomate">Tomate (R$3,00)</label></li>
+                    <li><input type="checkbox" id="batata-palha" value="Batata Palha" data-price="4.00"><label for="batata-palha">Batata Palha (R$4,00)</label></li>
+                </ul>
+            </fieldset>
+
+            <button id="add-${safeId}" class="add-pedido">Adicionar ao Pedido</button>
+            <p>Campos que contêm * são obrigatórios</p>
+        `;
 
             modalBody.innerHTML = modalContent;
             modal.style.display = "block";
@@ -151,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
             adicionaisCheckboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', () => {
                     const selectedAdicionais = Array.from(adicionaisCheckboxes).filter(cb => cb.checked);
+
                     if (selectedAdicionais.length > 2) {
                         checkbox.checked = false;
                         alert('Você pode selecionar no máximo 2 adicionais.');
@@ -158,39 +158,56 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            document.querySelectorAll('.option, .drink-option').forEach(option => {
+            modalBody.querySelectorAll('.option').forEach(option => {
                 option.addEventListener('click', () => {
-                    option.parentElement.querySelectorAll('.option, .drink-option').forEach(opt => opt.classList.remove('selected'));
+                    option.parentElement.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
                     option.classList.add('selected');
                 });
             });
 
             document.getElementById(`add-${safeId}`).addEventListener('click', () => {
-                const queijo = modalBody.querySelector('[data-role="queijo"] .option.selected')?.dataset.value || '';
-                const saborOption = name.includes('Rosti')
-                    ? modalBody.querySelector('[data-role="sabor"] .option.selected')
-                    : null;
+                let escolhaPrincipal = '';
+                let sabor = '';
+                let itemPrice = price;
 
-                const sabor = saborOption?.dataset.value || '';
+                if (name.includes('Rosti')) {
+                    const queijoOption = modalBody.querySelector('[data-role="queijo"] .option.selected');
+                    const saborOption = modalBody.querySelector('[data-role="sabor"] .option.selected');
 
-                if (!queijo) {
-                    alert('Por favor, selecione uma opção de queijo.');
-                    return;
+                    if (!queijoOption) {
+                        alert('Por favor, selecione uma opção de queijo.');
+                        return;
+                    }
+
+                    if (!saborOption) {
+                        alert('Por favor, selecione uma opção de sabor.');
+                        return;
+                    }
+
+                    escolhaPrincipal = queijoOption.dataset.value;
+                    sabor = saborOption.dataset.value;
+                    itemPrice = parseFloat(saborOption.dataset.price);
+                } else {
+                    const bordaOption = modalBody.querySelector('[data-role="borda"] .option.selected');
+
+                    if (!bordaOption) {
+                        alert('Por favor, selecione uma opção de borda.');
+                        return;
+                    }
+
+                    escolhaPrincipal = bordaOption.dataset.value;
                 }
 
-                if (name.includes('Rosti') && !sabor) {
-                    alert('Por favor, selecione uma opção de sabor.');
-                    return;
-                }
+                const adicionaisMarcados = Array.from(
+                    modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]:checked')
+                );
 
-                const saborPrice = saborOption ? parseFloat(saborOption.dataset.price) : price;
+                const adicionais = adicionaisMarcados.map(adicional => adicional.value);
+                const adicionaisPrecos = adicionaisMarcados.map(adicional => parseFloat(adicional.dataset.price));
 
-                const adicionais = Array.from(modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]:checked')).map(adicional => adicional.value);
-                const adicionaisPrecos = Array.from(modalBody.querySelectorAll('.adicionais-lista input[type="checkbox"]:checked')).map(adicional => parseFloat(adicional.dataset.price));
+                const totalPrice = adicionaisPrecos.reduce((total, preco) => total + preco, itemPrice);
 
-                const totalPrice = adicionaisPrecos.reduce((total, preco) => total + preco, saborPrice);
-
-                addPedido(name, saborPrice, sabor, queijo, '', adicionais, totalPrice);
+                addPedido(name, itemPrice, sabor, escolhaPrincipal, '', adicionais, totalPrice);
                 modal.style.display = "none";
             });
         });
@@ -299,9 +316,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        document.querySelectorAll('fieldset:nth-of-type(2) input[type="checkbox"]').forEach(input => {
+        modalBody.querySelectorAll('fieldset:nth-of-type(2) input[type="checkbox"]').forEach(input => {
             input.addEventListener('change', () => {
-                const checkedInputs = document.querySelectorAll('fieldset:nth-of-type(2) input[type="checkbox"]:checked');
+                const checkedInputs = modalBody.querySelectorAll('fieldset:nth-of-type(2) input[type="checkbox"]:checked');
                 if (checkedInputs.length > 2) {
                     alert('Você só pode escolher até 2 opções de base.');
                     input.checked = false;
@@ -309,9 +326,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        document.querySelectorAll('fieldset:nth-of-type(5) input[type="checkbox"]').forEach(input => {
+        modalBody.querySelectorAll('fieldset:nth-of-type(5) input[type="checkbox"]').forEach(input => {
             input.addEventListener('change', () => {
-                const checkedInputs = document.querySelectorAll('fieldset:nth-of-type(5) input[type="checkbox"]:checked');
+                const checkedInputs = modalBody.querySelectorAll('fieldset:nth-of-type(5) input[type="checkbox"]:checked');
                 if (checkedInputs.length > 2) {
                     alert('Você só pode escolher até 2 opções de adicionais.');
                     input.checked = false;
