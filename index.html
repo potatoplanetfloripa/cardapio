@@ -1,362 +1,284 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Potato Planet</title>
+    <link rel="icon" id="favicon" />
+    <link rel="shortcut icon" id="shortcut-icon" />
+    <link rel="apple-touch-icon" id="apple-touch-icon" />
+    <title>Cardápio</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
-  <body>
+  <body class="carregando-cardapio carregando-perfil">
+    <div id="mensagem-topo-loja" class="mensagem-topo-loja"></div>
+
     <header>
-      <img src="assets/logo.png" alt="Logo" class="logo" />
-      <h1>Potato Planet</h1>
-      <p style="color: white">Horário de atendimento:</p>
-      <ul style="color: white; font-size: 13px">
-        <li>Segunda a Sexta: 19:00 as 23:59</li>
-        <li>Sabádos e Domingo: 18:00 a 23:59</li>
-      </ul>
+      <a id="banner-link-loja" href="#" target="_blank" style="display: none">
+        <img id="banner-loja" class="banner-loja" alt="Banner da loja" />
+      </a>
+
+      <img
+        id="logo-loja"
+        class="logo"
+        alt="Logo da loja"
+        style="display: none"
+      />
+
+      <h1 id="nome-loja-cardapio"></h1>
+
+      <p id="descricao-loja-cardapio" class="descricao-loja-cardapio"></p>
+
+      <p id="info-loja-cardapio" class="info-loja-cardapio"></p>
+
+      <p id="status-horario"></p>
     </header>
-    <main>
-      <section class="menu-section">
-        <h2>Batatas Recheadas</h2>
-        <div class="dish" data-name="Batata Recheada Cometa Hot Dog" data-price="32.90">
-          <img src="assets/cachorro-quente.png" alt="Batata Recheada Cometa Hot Dog" />
-          <div class="dish-info">
-            <h3>Batata Recheada Cometa Hot Dog</h3>
-            <p>R$32,90</p>
-            <p>
-              Batata, requeijão ou cheddar, queijo, Molho de cachorro-quente. Aprox. 500g
-            </p>
-          </div>
+
+    <main id="menu-container"></main>
+
+    <section id="resumo-pedido">
+      <div class="carrinho-header">
+        <div>
+          <h2>Seu Pedido</h2>
+          <span id="carrinho-header-qtd">0 itens</span>
         </div>
-        <div
-          class="dish"
-          data-name="Monta sua Batata Intergaláctica"
-          data-price="0.00"
-        >
-          <img
-            src="assets/monte_sua_batata.png"
-            alt="Monta sua Batata Intergaláctica"
-          />
-          <div class="dish-info">
-            <h3>Monta sua Batata Intergaláctica</h3>
-            <p>A partir de R$20,90</p>
-            <p>
-              Monte sua batata recheada intergaláctica do tamanho da sua fome.
-            </p>
-          </div>
-        </div>
-        <div class="dish" data-name="Batata Rosti Galática" data-price="36.90">
-          <img src="assets/Rosti.png" alt="Batata Rosti Galática" />
-          <div class="dish-info">
-            <h3>Batata Rosti Galática</h3>
-            <p>A partir de R$38,90</p>
-            <p>Escolha o queijo e o sabor.</p>
-          </div>
-        </div>
-        <div class="dish" data-name="Batata Recheada Urano" data-price="39.90">
-          <img src="assets/Carne_de_panela.png" alt="Batata Recheada Urano" />
-          <div class="dish-info">
-            <h3>Batata Recheada Urano</h3>
-            <p>R$40,90</p>
-            <p>
-              Batata, requeijão ou cheddar, queijo, carne de panela. Aprox. 500g
-            </p>
-          </div>
-        </div>
-        <div class="dish" data-name="Batata Recheada Netuno" data-price="44.90">
-          <img src="assets/Netuno.png" alt="Batata Recheada Netuno" />
-          <div class="dish-info">
-            <h3>Batata Recheada Netuno</h3>
-            <p>R$45,90</p>
-            <p>
-              Batata, requeijão ou cheddar, queijo, estrogonofe de carne. Aprox.
-              500g
-            </p>
-          </div>
-        </div>
-        <div class="dish" data-name="Batata Recheada Kepler BBQ" data-price="39.90">
-          <img src="assets/kepler.png" alt="Batata Recheada Kepler BBQ" />
-          <div class="dish-info">
-            <h3>Batata Recheada Kepler BBQ</h3>
-            <p>R$39,90</p>
-            <p>
-              Batata, requeijão ou cheddar, queijo, lombo desfiado com BBQ. Aprox. 500g
-            </p>
-          </div>
-        </div>
-        <div class="dish" data-name="Batata Recheada Marte" data-price="39.90">
-          <img src="assets/marte.png" alt="Batata Recheada Marte" />
-          <div class="dish-info">
-            <h3>Batata Recheada Marte</h3>
-            <p>R$39,90</p>
-            <p>
-              Batata, requeijão ou cheddar, queijo, estrogonofe de frango.
-              Aprox. 500g
-            </p>
-          </div>
-        </div>
-        <div
-          class="dish"
-          data-name="Batata Recheada Saturno"
-          data-price="39.90"
-        >
-          <img src="assets/saturno.png" alt="Batata Recheada Saturno" />
-          <div class="dish-info">
-            <h3>Batata Recheada Saturno</h3>
-            <p>R$39,90</p>
-            <p>Batata, requeijão ou cheddar, queijo, bacon. Aprox. 500g</p>
-          </div>
-        </div>
-        <div
-          class="dish"
-          data-name="Batata Recheada Mercúrio"
-          data-price="38.90"
-        >
-          <img src="assets/Mercurio.png" alt="Batata Recheada Mercúrio" />
-          <div class="dish-info">
-            <h3>Batata Recheada Mercúrio</h3>
-            <p>R$38,90</p>
-            <p>Batata, requeijão ou cheddar, queijo, calabresa. Aprox. 500g</p>
-          </div>
-        </div>
-        <div class="dish" data-name="Batata Recheada Plutão" data-price="37.90">
-          <img src="assets/plutão.png" alt="Batata Recheada Plutão" />
-          <div class="dish-info">
-            <h3>Batata Recheada Plutão</h3>
-            <p>R$37,90</p>
-            <p>
-              Batata, requeijão ou cheddar, queijo, frango desfiado. Aprox. 500g
-            </p>
-          </div>
-        </div>
-        <div class="dish" data-name="Batata Recheada Vênus" data-price="37.90">
-          <img src="assets/Venus.png" alt="Batata Recheada Vênus" />
-          <div class="dish-info">
-            <h3>Batata Recheada Vênus</h3>
-            <p>R37,90</p>
-            <p>
-              Batata, requeijão ou cheddar, queijo, carne moída. Aprox. 500g
-            </p>
-          </div>
-        </div>
-        <div class="dish" data-name="Batata Recheada Lunar" data-price="39.90">
-          <img src="assets/Lunar.png" alt="Batata Recheada Lunar" />
-          <div class="dish-info">
-            <h3>Batata Recheada Lunar</h3>
-            <p>R$39,90</p>
-            <p>
-              Batata, requeijão ou cheddar, queijo, molho de alho-poró com gorgonzola. Aprox. 500g
-            </p>
-          </div>
-        </div>
-        <div
-          class="dish" data-name="Batata Recheada Júpiter" data-price="34.90"> 
-          <img src="assets/Jupiter.png" alt="Batata Recheada Júpiter" />
-          <div class="dish-info">
-            <h3>Batata Recheada Júpiter</h3>
-            <p>R$34,90</p>
-            <p>
-              Batata, requeijão ou cheddar, queijo, presunto e tomate. Aprox.
-              500g
-            </p>
-          </div>
-        </div>
-        <div class="dish" data-name="Batata Recheada Terra" data-price="34.90">
-          <img src="assets/Terra.png" alt="Batata Recheada Terra" />
-          <div class="dish-info">
-            <h3>Batata Recheada Terra</h3>
-            <p>R$34,90</p>
-            <p>
-              Batata, estrogonofe de grão de bico, requeijão ou cheddar, queijo.
-              Aprox. 500g
-            </p>
-          </div>
-        </div>
-      </section>
-      <section class="menu-section" hidden>
-        <h2>Doçuras do Espaço</h2>
-        <div
-          class="drink"
-          data-name="Pudim"
-          data-price="6.90"
-          data-type="sobremesa"
-        >
-          <img src="assets/pudim.png" alt="Pudim" />
-          <div class="drink-info">
-            <h3>Pudim 80g</h3>
-            <p>R$6,90</p>
-            <button class="add-drink">Adicionar</button>
-          </div>
-        </div>
-        <div
-          class="drink"
-          data-name="Mousse"
-          data-price="7.90"
-          data-type="sobremesa"
-        >
-          <img src="assets/mouse.png" alt="Mousse" />
-          <div class="drink-info">
-            <h3>Mousse 80g</h3>
-            <p>R$7,90</p>
-            <button class="add-drink">Adicionar</button>
-          </div>
-        </div>
-      </section>
-      <section class="menu-section">
-        <h2>Bebidas</h2>
-        <div
-          class="drink"
-          data-name="Coca cola Original 350ml"
-          data-price="8.50"
-        >
-          <img
-            src="assets/coca original 350 ml1.png"
-            alt="Coca cola Original 350ml"
-          />
-          <div class="drink-info">
-            <h3>Coca cola Original 350ml</h3>
-            <p>R$8,50</p>
-            <button class="add-drink">Adicionar</button>
-          </div>
-        </div>
-        <div class="drink" data-name="Coca cola Zero 350ml" data-price="8.50">
-          <img
-            src="assets/Coca sem açucar 350ml1.png"
-            alt="Coca cola Zero 350ml"
-          />
-          <div class="drink-info">
-            <h3>Coca cola Zero 350ml</h3>
-            <p>R$8,50</p>
-            <button class="add-drink">Adicionar</button>
-          </div>
-        </div>
-        <div class="drink" data-name="Guaraná 350ml" data-price="8.50">
-          <img src="assets/Guaraná 350ml1.png" alt="Guaraná 350ml" />
-          <div class="drink-info">
-            <h3>Guaraná 350ml</h3>
-            <p>R$8,50</p>
-            <button class="add-drink">Adicionar</button>
-          </div>
-        </div>
-        <div
-          class="drink"
-          data-name="Água mineral sem gás 500ml"
-          data-price="5.00"
-        >
-          <img
-            src="assets/AGUA crystal 500ml1.png"
-            alt="Água mineral sem gás 500ml"
-          />
-          <div class="drink-info">
-            <h3>Água mineral sem gás 500ml</h3>
-            <p>R$5,00</p>
-            <button class="add-drink">Adicionar</button>
-          </div>
-        </div>
-      </section>
+
+        <button type="button" id="fechar-carrinho" class="fechar-carrinho">
+          ✕
+        </button>
+      </div>
+      <div id="pedido-itens"></div>
+
       <section class="address-section">
-        <h2>Dados de Envio:</h2>
-        <p>Entrega via entregador parceiro do iFood.</p>
-        <p>
-          Pedido finalizado é enviado para WhatsApp para confirmação e consulta
-          do frete.
-        </p>
-        <div class="input-group">
-          <div class="input-half">
-            <label for="nome-cliente">Nome:</label>
-            <input
-              type="text"
-              id="nome-cliente"
-              name="nome-cliente"
-              placeholder="Nome completo"
-              required
-            />
+        <div id="box-tipo-entrega" class="box-tipo-entrega">
+          <div class="opcoes-tipo-entrega">
+            <button
+              type="button"
+              id="btn-tipo-entrega"
+              class="tipo-entrega ativo"
+            >
+              Entrega
+            </button>
+
+            <button type="button" id="btn-tipo-retirada" class="tipo-entrega">
+              Retirada
+            </button>
           </div>
-          <div class="input-half">
-            <label for="cep-cliente">CEP:</label>
-            <input
-              type="text"
-              id="cep-cliente"
-              name="cep-cliente"
-              placeholder="Digite seu CEP"
-              required
-            />
-          </div>
-        </div>
-        <div class="input-group">
-          <div class="input-full">
-            <label for="rua-cliente">Endereço:</label>
-            <input
-              type="text"
-              id="rua-cliente"
-              name="rua-cliente"
-              placeholder="Rua, Av, etc."
-              required
-            />
-          </div>
-        </div>
-        <div class="input-group">
-          <div class="input-half">
-            <label for="numero-cliente">Número:</label>
-            <input
-              type="text"
-              id="numero-cliente"
-              name="numero-cliente"
-              placeholder="Número"
-              required
-            />
-          </div>
-          <div class="input-half">
-            <label for="complemento-cliente">Complemento:</label>
-            <input
-              type="text"
-              id="complemento-cliente"
-              name="complemento-cliente"
-              placeholder="Apto, CJ ou deixe em branco"
-            />
-          </div>
-        </div>
-        <div class="input-group">
-          <div class="input-half">
-            <label for="bairro-cliente">Bairro:</label>
-            <input
-              type="text"
-              id="bairro-cliente"
-              name="bairro-cliente"
-              placeholder="Bairro"
-              required
-            />
-          </div>
-          <div class="input-half">
-            <label for="cidade-cliente">Cidade:</label>
-            <input
-              type="text"
-              id="cidade-cliente"
-              name="cidade-cliente"
-              placeholder="Cidade"
-              required
-            />
+
+          <div class="tipo-entrega-conteudo">
+            <div
+              id="box-info-retirada"
+              class="box-info-retirada"
+              style="display: none"
+            >
+              <strong>Endereço de retirada</strong>
+              <p id="texto-endereco-retirada"></p>
+            </div>
+
+            <div id="box-dados-entrega" class="box-dados-entrega">
+              <strong>Dados de entrega</strong>
+
+              <div class="input-group compacto">
+                <div class="input-half">
+                  <label for="cep-cliente">CEP:</label>
+                  <input
+                    id="cep-cliente"
+                    type="text"
+                    placeholder="00000-000"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="input-group compacto">
+                <div class="input-full">
+                  <label for="rua-cliente">Endereço:</label>
+                  <input
+                    id="rua-cliente"
+                    type="text"
+                    placeholder="Rua, Av, etc."
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="input-group compacto">
+                <div class="input-half">
+                  <label for="numero-cliente">Número:</label>
+                  <input
+                    id="numero-cliente"
+                    type="text"
+                    placeholder="Nº"
+                    required
+                  />
+                </div>
+
+                <div class="input-half">
+                  <label for="complemento-cliente">Complemento:</label>
+                  <input
+                    id="complemento-cliente"
+                    type="text"
+                    placeholder="Opcional"
+                  />
+                </div>
+              </div>
+
+              <div class="input-group compacto">
+                <div class="input-half">
+                  <label for="bairro-cliente">Bairro:</label>
+                  <input
+                    id="bairro-cliente"
+                    type="text"
+                    placeholder="Bairro"
+                    required
+                  />
+                </div>
+
+                <div class="input-half">
+                  <label for="cidade-cliente">Cidade:</label>
+                  <input
+                    id="cidade-cliente"
+                    type="text"
+                    placeholder="Cidade"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="linha-whatsapp-entrega">
+              <div class="input-group compacto">
+                <div class="input-half">
+                  <label for="nome-cliente">Nome:</label>
+                  <input
+                    id="nome-cliente"
+                    type="text"
+                    placeholder="Nome completo"
+                    required
+                  />
+                </div>
+
+                <div class="input-half">
+                  <label for="whatsapp-cliente">WhatsApp:</label>
+                  <input
+                    type="tel"
+                    id="whatsapp-cliente"
+                    name="whatsapp-cliente"
+                    placeholder="(xx) xxxxx-xxxx"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <button id="adicionar-endereco">Adicionar Endereço</button>
       </section>
-    </main>
-    <section id="resumo-pedido">
-      <h2>Resumo do Pedido</h2>
-      <div id="pedido-itens"></div>
-      <h3 id="total-pedido">Total: R$0,00</h3>
-      <button id="confirmar-pedido">Confirmar Pedido</button>
+      <div class="carrinho-footer">
+        <div class="cupom-area">
+          <label for="cupom-input">Cupom de desconto:</label>
+
+          <div class="cupom-linha">
+            <input
+              id="cupom-input"
+              type="text"
+              placeholder="Digite seu cupom"
+              autocomplete="off"
+            />
+
+            <button id="aplicar-cupom" type="button">Aplicar</button>
+          </div>
+
+          <div id="cupom-mensagem"></div>
+        </div>
+
+        <div id="resumo-button">
+
+  <div class="total-carrinho">
+    <span class="titulo-total">Total do pedido</span>
+    <strong id="total-pedido">R$0,00</strong>
+  </div>
+
+  <div class="acoes-carrinho">
+
+    <button id="limpar-pedido" type="button" class="btn-secundario">
+     Limpar carrinho
+    </button>
+
+    <button id="confirmar-pedido" class="btn-principal">
+      Finalizar Pedido
+    </button>
+
+  </div>
+
+</div>
+      </div>
     </section>
 
-    <!-- Modal para opções de pratos e bebidas -->
     <div id="modal" class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
         <div id="modal-body"></div>
       </div>
     </div>
+
+    <div id="mensagem-adicionado" class="mensagem-adicionado">
+      Item adicionado ao carrinho!
+    </div>
+
+    <button id="carrinho-flutuante" class="carrinho-flutuante" type="button">
+      <span class="carrinho-info">
+        <span class="carrinho-icone">🛒</span>
+        <span id="carrinho-qtd">0 itens</span>
+      </span>
+
+      <span class="carrinho-total">
+        R$0,00 <span class="carrinho-seta">›</span>
+      </span>
+    </button>
+    <div id="overlay-carrinho" class="overlay-carrinho"></div>
+    <button
+      id="pedido-andamento-btn"
+      class="pedido-andamento-btn"
+      type="button"
+    >
+      📦 Pedido em andamento
+    </button>
+
+    <div id="overlay-acompanhamento" class="overlay-acompanhamento"></div>
+
+    <div id="modal-acompanhamento" class="modal-acompanhamento">
+      <div class="acompanhamento-card">
+        <button
+          id="fechar-acompanhamento"
+          class="fechar-acompanhamento"
+          type="button"
+        >
+          ✕
+        </button>
+
+        <div id="conteudo-acompanhamento"></div>
+      </div>
+    </div>
+    <footer id="rodape-loja" class="rodape-loja" style="display: none">
+      <a id="rodape-instagram" href="#" target="_blank" style="display: none">
+        <svg class="icone-social" viewBox="0 0 24 24">
+          <path
+            d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5zm10.5 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM12 7a5 5 0 110 10 5 5 0 010-10zm0 2a3 3 0 100 6 3 3 0 000-6z"
+          />
+        </svg>
+        Instagram
+      </a>
+
+      <a id="rodape-whatsapp" href="#" target="_blank" style="display: none">
+        <svg class="icone-social" viewBox="0 0 24 24">
+          <path
+            d="M20 3.9A10 10 0 003.7 16.3L2 22l5.9-1.5A10 10 0 1020 3.9zm-8 16.1a8 8 0 01-4.1-1.1l-.3-.2-3.5.9.9-3.4-.2-.3A8 8 0 1112 20zm4.5-6c-.2-.1-1.3-.6-1.5-.7-.2-.1-.4-.1-.6.1l-.5.7c-.1.2-.3.2-.5.1a6.5 6.5 0 01-3.2-2.8c-.2-.3 0-.4.1-.5l.4-.5c.1-.2.1-.3 0-.5l-.7-1.6c-.2-.4-.3-.3-.5-.3h-.4c-.2 0-.5.1-.7.3s-.9.9-.9 2.1.9 2.4 1 2.6a11 11 0 004.2 3.8c2.5 1.1 2.5.7 2.9.7s1.3-.5 1.5-1 .2-1 .1-1.1-.2-.1-.5-.3z"
+          />
+        </svg>
+        WhatsApp
+      </a>
+    </footer>
 
     <script src="script.js"></script>
   </body>
