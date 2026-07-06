@@ -1,7 +1,7 @@
 let pedidoAcompanhamentoAberto = null;
 let timeoutStatusCliente = null;
 const URL_CONTROLE =
-  'https://script.google.com/macros/s/AKfycbyrscRFWbx7_4AReWiNzK6OO3v2VTj9PKNdWSW_JkY9l0JbP_yM7f77ot-TcVxjvGWf/exec';
+  'https://script.google.com/macros/s/AKfycbxtEiOTWzHDTC2CO3XKG5rb-KEE2lPr6tz6RBHojLpUfQZHwoi5CS_Y0NOaQDFP71uTVA/exec';
 
 let API_URL = "";
 const TEMPO_PEDIDO_AGUARDANDO = 1 * 60 * 60 * 1000;
