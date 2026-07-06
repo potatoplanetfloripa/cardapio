@@ -2379,7 +2379,7 @@
             ></div>
             <div class="upload-incorporado">
               <iframe
-                src="https://script.google.com/macros/s/AKfycbxtEiOTWzHDTC2CO3XKG5rb-KEE2lPr6tz6RBHojLpUfQZHwoi5CS_Y0NOaQDFP71uTVA/exec/exec?pagina=upload"
+                src="https://script.google.com/macros/s/AKfycbyrscRFWbx7_4AReWiNzK6OO3v2VTj9PKNdWSW_JkY9l0JbP_yM7f77ot-TcVxjvGWf/exec/exec?pagina=upload"
                 style="
                   width: 100%;
                   height: 360px;
@@ -2486,7 +2486,7 @@
             <div id="preview-imagem-editar" class="preview-imagem-admin"></div>
             <div class="upload-incorporado">
               <iframe
-                src="https://script.google.com/macros/s/AKfycbxtEiOTWzHDTC2CO3XKG5rb-KEE2lPr6tz6RBHojLpUfQZHwoi5CS_Y0NOaQDFP71uTVA/exec/exec?pagina=upload"
+                src="https://script.google.com/macros/s/AKfycbyrscRFWbx7_4AReWiNzK6OO3v2VTj9PKNdWSW_JkY9l0JbP_yM7f77ot-TcVxjvGWf/exec/exec?pagina=upload"
                 style="
                   width: 100%;
                   height: 360px;
@@ -2604,7 +2604,7 @@
           <textarea id="perfil-mensagem-ajuda"></textarea>
 
           <label>Instagram:</label>
-          <input id="perfil-instagram" type="text" placeholder="@Instagram" />
+          <input id="perfil-instagram" type="text" placeholder="@instagram" />
 
           <label>Tempo médio de preparo:</label>
           <input
@@ -2706,7 +2706,7 @@
           <label>upload imagens</label>
           <div class="upload-incorporado">
             <iframe
-              src="https://script.google.com/macros/s/AKfycbxtEiOTWzHDTC2CO3XKG5rb-KEE2lPr6tz6RBHojLpUfQZHwoi5CS_Y0NOaQDFP71uTVA/exec/exec?pagina=upload"
+              src="https://script.google.com/macros/s/AKfycbyrscRFWbx7_4AReWiNzK6OO3v2VTj9PKNdWSW_JkY9l0JbP_yM7f77ot-TcVxjvGWf/exec/exec?pagina=upload"
               style="
                 width: 100%;
                 height: 360px;
@@ -2894,7 +2894,7 @@
       }
 
       const URL_CONTROLE =
-        "https://script.google.com/macros/s/AKfycbxtEiOTWzHDTC2CO3XKG5rb-KEE2lPr6tz6RBHojLpUfQZHwoi5CS_Y0NOaQDFP71uTVA/exec";
+        "https://script.google.com/macros/s/AKfycbyrscRFWbx7_4AReWiNzK6OO3v2VTj9PKNdWSW_JkY9l0JbP_yM7f77ot-TcVxjvGWf/exec";
 
       let dadosPedidos = [];
       let perfilLojaAdmin = {};
@@ -4289,6 +4289,24 @@
                 botao.disabled = false;
                 botao.classList.remove("loading-status");
               }
+            });
+          });
+
+        area
+          .querySelectorAll("[data-remover-item-complemento]")
+          .forEach((botao) => {
+            botao.addEventListener("click", () => {
+              const index = Number(botao.dataset.removerItemComplemento);
+
+              if (isNaN(index)) return;
+
+              if (!confirm("Deseja remover este complemento?")) return;
+
+              itensComplementoEditor.splice(index, 1);
+
+              reorganizarOrdemComplementosEditor();
+              renderizarItensComplementoEditor();
+              atualizarBotaoCancelarGrupoComplemento();
             });
           });
 
