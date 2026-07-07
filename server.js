@@ -67,6 +67,15 @@ app.post("/criar-pagamento", async (req, res) => {
 
                     external_reference: pedidoId,
 
+                    payment_methods: {
+                        excluded_payment_types: [
+                            {
+                                id: "ticket"
+                            }
+                        ],
+                        installments: 1
+                    },
+
                     expires: true,
                     expiration_date_from: new Date().toISOString(),
                     expiration_date_to: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
