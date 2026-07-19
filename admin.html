@@ -61,6 +61,13 @@
         color: #fff4d8;
       }
 
+      #imagem-borde {
+        margin-top: 12px;
+        border: 2px solid #d28a36;
+        border-radius: 16px;
+        padding: 8px;
+      }
+
       .form-card,
       .item .strog {
         color: #875033 !important;
@@ -1872,10 +1879,193 @@
         -moz-appearance: textfield;
         appearance: textfield;
       }
+
+      .preview-push-mobile {
+        background: #f4f4f4;
+        color: #222;
+        border-radius: 18px;
+        padding: 14px;
+        margin-top: 12px;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+        max-width: 360px;
+      }
+
+      .preview-push-topo {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 13px;
+        margin-bottom: 10px;
+        opacity: 0.75;
+      }
+
+      #preview-push-titulo {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 5px;
+      }
+
+      #preview-push-mensagem {
+        font-size: 14px;
+        margin: 0 0 10px;
+      }
+
+      #preview-push-img {
+        width: 100%;
+        border-radius: 14px;
+        margin-top: 8px;
+      }
+
+      #preview-push-botao {
+        margin-top: 10px;
+        width: 100%;
+        border: none;
+        border-radius: 12px;
+        padding: 10px;
+        font-weight: 800;
+        background: #e64b09;
+        color: white;
+      }
+
+      .preview-push-topo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        margin-bottom: 10px;
+      }
+
+      .preview-push-logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        object-fit: cover;
+        background: #ddd;
+        flex-shrink: 0;
+      }
+
+      .preview-push-info-loja {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+      }
+
+      .preview-push-info-loja strong {
+        color: #222;
+        font-size: 13px;
+      }
+
+      .preview-push-info-loja span {
+        color: #777;
+        font-size: 12px;
+      }
+
+      .pedido-cliente-nome {
+        margin: 6px 0 3px;
+        color: #111;
+        font-size: 16px;
+      }
+
+      .pedido-cliente-whatsapp {
+        margin: 0 0 8px;
+        color: #555;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .login-admin {
+        position: fixed;
+        inset: 0;
+        z-index: 20000;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 18px;
+        box-sizing: border-box;
+
+        background: linear-gradient(
+          180deg,
+          #1b120d 0%,
+          #2a1810 45%,
+          #120b08 100%
+        );
+      }
+
+      .login-admin-card {
+        width: min(100%, 390px);
+
+        padding: 24px;
+        box-sizing: border-box;
+
+        background: #2b1a11;
+        color: #fff4d8;
+
+        border: 2px solid #d28a36;
+        border-radius: 22px;
+
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.48);
+      }
+
+      .login-admin-card h1 {
+        margin: 8px 0;
+        font-size: 24px;
+      }
+
+      .login-admin-card p {
+        margin: 0 0 18px;
+        text-align: center;
+        color: #f4d29a;
+      }
+
+      .login-admin-card label {
+        color: #fff4d8;
+      }
+
+      .login-admin-icone {
+        text-align: center;
+        font-size: 42px;
+      }
+
+      .login-admin-erro {
+        min-height: 18px;
+        margin-top: 8px;
+
+        color: #ff8787;
+        text-align: center;
+        font-size: 13px;
+        font-weight: bold;
+      }
     </style>
   </head>
 
   <body>
+    <div id="login-admin" class="login-admin">
+      <form id="form-login-admin" class="login-admin-card">
+        <div class="login-admin-icone">🔐</div>
+
+        <h1>Acesso ao painel</h1>
+
+        <p>Digite a senha para continuar.</p>
+
+        <label for="login-admin-senha"> Senha: </label>
+
+        <input
+          id="login-admin-senha"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Digite sua senha"
+          required
+        />
+
+        <div id="login-admin-erro" class="login-admin-erro"></div>
+
+        <button type="submit" id="btn-login-admin" class="salvar">
+          Entrar
+        </button>
+      </form>
+    </div>
     <div id="modal-upload" style="display: none">
       <div
         style="
@@ -1923,7 +2113,7 @@
         ></iframe>
       </div>
     </div>
-    <div class="container">
+    <div id="conteudo-admin" class="container" style="display: none">
       <div class="topo-painel">
         <h1>Painel</h1>
 
@@ -2030,6 +2220,19 @@
             <button class="aba-btn" data-aba="relatar">Relatar</button>
           </div>
         </div>
+
+        <div class="grupo-menu">
+          <button class="grupo-menu-titulo">
+            📢 Marketing
+            <span>▾</span>
+          </button>
+
+          <div class="grupo-menu-conteudo">
+            <button class="aba-btn" data-aba="notificacoes">
+              🔔 Notificações
+            </button>
+          </div>
+        </div>
       </nav>
 
       <section id="aba-complementos" class="aba">
@@ -2119,7 +2322,7 @@
           <input
             id="categoria-nome-admin"
             type="text"
-            placeholder="Ex: Croissants Salgados"
+            placeholder="Ex: Salgados"
           />
 
           <label>Status da categoria:</label>
@@ -2321,7 +2524,7 @@
           <select id="categoria"></select>
 
           <label for="nome">Nome:</label>
-          <input id="nome" type="text" placeholder="Ex: Croissant Mercúrio" />
+          <input id="nome" type="text" placeholder="Ex: Cachorro quente..." />
 
           <label>Status:</label>
           <div class="switch-area">
@@ -2367,29 +2570,38 @@
             <div id="resumo-complementos-cadastro"></div>
 
             <div id="grupos-complementos-produto" style="display: none"></div>
-            <label>Imagem:</label>
-            <input
-              id="imagemURL"
-              type="text"
-              placeholder="URL automática da imagem"
-            />
-            <div
-              id="preview-imagem-cadastro"
-              class="preview-imagem-admin"
-            ></div>
-            <div class="upload-incorporado">
-              <iframe
-                src="https://script.google.com/macros/s/AKfycbxtEiOTWzHDTC2CO3XKG5rb-KEE2lPr6tz6RBHojLpUfQZHwoi5CS_Y0NOaQDFP71uTVA/exec/exec?pagina=upload"
-                style="
-                  width: 100%;
-                  height: 360px;
-                  border: 2px solid #d28a36;
-                  border-radius: 18px;
-                  margin-top: 10px;
-                  background: #f9e7bc;
-                  overflow: hidden;
-                "
-              ></iframe>
+
+            <div id="imagem-borde">
+              <label>Imagem:</label>
+              <input
+                id="imagemURL"
+                type="text"
+                placeholder="URL automática da imagem"
+              />
+
+              <div
+                id="preview-imagem-cadastro"
+                class="preview-imagem-admin"
+              ></div>
+              <div class="upload-incorporado">
+                <div class="upload-inline-admin" data-upload-destino="cadastro">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    class="upload-inline-arquivo"
+                  />
+
+                  <button
+                    type="button"
+                    class="salvar"
+                    onclick="enviarImagemInlineAdmin(this)"
+                  >
+                    📤 Enviar imagem
+                  </button>
+
+                  <small class="upload-inline-status"></small>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -2426,7 +2638,7 @@
           <input
             id="editar-nome"
             type="text"
-            placeholder="Ex: Croissant Mercúrio"
+            placeholder="Ex: Cachorro-quente..."
           />
 
           <label>Status:</label>
@@ -2476,27 +2688,36 @@
               id="editar-grupos-complementos-produto"
               style="display: none"
             ></div>
+            <div id="imagem-borde">
+              <label>Imagem:</label>
+              <input
+                id="editar-imagemURL"
+                type="text"
+                placeholder="URL automática da imagem"
+              />
+              <div
+                id="preview-imagem-editar"
+                class="preview-imagem-admin"
+              ></div>
+              <div class="upload-incorporado">
+                <div class="upload-inline-admin" data-upload-destino="edicao">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    class="upload-inline-arquivo"
+                  />
 
-            <label>Imagem:</label>
-            <input
-              id="editar-imagemURL"
-              type="text"
-              placeholder="URL automática da imagem"
-            />
-            <div id="preview-imagem-editar" class="preview-imagem-admin"></div>
-            <div class="upload-incorporado">
-              <iframe
-                src="https://script.google.com/macros/s/AKfycbxtEiOTWzHDTC2CO3XKG5rb-KEE2lPr6tz6RBHojLpUfQZHwoi5CS_Y0NOaQDFP71uTVA/exec/exec?pagina=upload"
-                style="
-                  width: 100%;
-                  height: 360px;
-                  border: 2px solid #d28a36;
-                  border-radius: 18px;
-                  margin-top: 10px;
-                  background: #f9e7bc;
-                  overflow: hidden;
-                "
-              ></iframe>
+                  <button
+                    type="button"
+                    class="salvar"
+                    onclick="enviarImagemInlineAdmin(this)"
+                  >
+                    📤 Enviar imagem
+                  </button>
+
+                  <small class="upload-inline-status"></small>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -2577,9 +2798,28 @@
           <label>Nome da loja:</label>
           <input id="perfil-nome-loja" type="text" />
 
-          <label>Foto de perfil / logo:</label>
-          <input id="perfil-foto" type="text" placeholder="URL da imagem" />
-          <div id="preview-perfil-foto" class="preview-imagem-admin"></div>
+          <div id="imagem-borde">
+            <label>Foto de perfil / logo:</label>
+            <input id="perfil-foto" type="text" placeholder="URL da imagem" />
+            <div id="preview-perfil-foto" class="preview-imagem-admin"></div>
+            <div class="upload-inline-admin" data-upload-destino="perfil-foto">
+              <input
+                type="file"
+                accept="image/*"
+                class="upload-inline-arquivo"
+              />
+
+              <button
+                type="button"
+                class="salvar"
+                onclick="enviarImagemInlineAdmin(this)"
+              >
+                📤 Enviar logo
+              </button>
+
+              <small class="upload-inline-status"></small>
+            </div>
+          </div>
 
           <label>Descrição da loja:</label>
           <textarea id="perfil-descricao"></textarea>
@@ -2658,9 +2898,31 @@
             pois a logo ficará sobreposta.
           </small>
 
-          <label>URL do banner:</label>
-          <input id="perfil-banner-url" type="text" />
-          <div id="preview-perfil-banner" class="preview-imagem-admin"></div>
+          <div id="imagem-borde">
+            <label>URL do banner:</label>
+            <input id="perfil-banner-url" type="text" />
+            <div id="preview-perfil-banner" class="preview-imagem-admin"></div>
+            <div
+              class="upload-inline-admin"
+              data-upload-destino="perfil-banner"
+            >
+              <input
+                type="file"
+                accept="image/*"
+                class="upload-inline-arquivo"
+              />
+
+              <button
+                type="button"
+                class="salvar"
+                onclick="enviarImagemInlineAdmin(this)"
+              >
+                📤 Enviar banner
+              </button>
+
+              <small class="upload-inline-status"></small>
+            </div>
+          </div>
 
           <label>Link do banner:</label>
           <input id="perfil-banner-link" type="text" placeholder="Opcional" />
@@ -2703,24 +2965,183 @@
             <textarea id="perfil-retirada-referencia"></textarea>
           </div>
 
-          <label>upload imagens</label>
-          <div class="upload-incorporado">
-            <iframe
-              src="https://script.google.com/macros/s/AKfycbxtEiOTWzHDTC2CO3XKG5rb-KEE2lPr6tz6RBHojLpUfQZHwoi5CS_Y0NOaQDFP71uTVA/exec/exec?pagina=upload"
-              style="
-                width: 100%;
-                height: 360px;
-                border: 2px solid #d28a36;
-                border-radius: 18px;
-                margin-top: 10px;
-                background: #f9e7bc;
-                overflow: hidden;
-              "
-            ></iframe>
-          </div>
-
           <button type="button" class="salvar" id="btn-salvar-perfil-loja">
             Salvar perfil
+          </button>
+
+          <div class="form-card" style="margin-top: 20px">
+            <h2 style="color: #e64b09">Alterar senha</h2>
+
+            <label for="senha-painel-atual"> Senha atual: </label>
+
+            <input
+              id="senha-painel-atual"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Senha atual"
+            />
+
+            <label for="senha-painel-nova"> Nova senha: </label>
+
+            <input
+              id="senha-painel-nova"
+              type="password"
+              autocomplete="new-password"
+              placeholder="Nova senha"
+            />
+
+            <label for="senha-painel-repetir"> Repetir nova senha: </label>
+
+            <input
+              id="senha-painel-repetir"
+              type="password"
+              autocomplete="new-password"
+              placeholder="Repita a nova senha"
+            />
+
+            <div id="mensagem-alterar-senha" class="status"></div>
+
+            <button type="button" class="salvar" id="btn-alterar-senha-painel">
+              Alterar senha
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section id="aba-notificacoes" class="aba">
+        <div class="form-card">
+          <h2 style="color: #e64b09">Notificações Push</h2>
+
+          <label for="push-titulo">Título:</label>
+          <input
+            id="push-titulo"
+            type="text"
+            maxlength="60"
+            placeholder="Ex: Promoção de hoje"
+          />
+
+          <label for="push-mensagem">Mensagem:</label>
+          <textarea
+            id="push-mensagem"
+            maxlength="180"
+            placeholder="Ex: Desconto por tempo limitado."
+          ></textarea>
+          <div id="imagem-borde">
+            <label for="push-imagem">Imagem:</label>
+            <input id="push-imagem" type="text" placeholder="URL da imagem" />
+
+            <div id="preview-push-imagem" class="preview-imagem-admin"></div>
+
+            <label>Upload:</label>
+            <div class="upload-incorporado">
+              <div class="upload-inline-admin" data-upload-destino="push">
+                <input
+                  type="file"
+                  accept="image/*"
+                  class="upload-inline-arquivo"
+                />
+
+                <button
+                  type="button"
+                  class="salvar"
+                  onclick="enviarImagemInlineAdmin(this)"
+                >
+                  📤 Enviar imagem
+                </button>
+
+                <small class="upload-inline-status"></small>
+              </div>
+            </div>
+          </div>
+          <label for="push-link">Link:</label>
+          <input id="push-link" type="text" placeholder="https://..." />
+
+          <div class="switch-area">
+            <input type="checkbox" id="push-usar-botao" />
+            <label for="push-usar-botao">Adicionar botão na notificação</label>
+          </div>
+
+          <div id="box-push-botao" style="display: none">
+            <label for="push-texto-botao">Texto do botão:</label>
+            <input
+              id="push-texto-botao"
+              type="text"
+              maxlength="24"
+              placeholder="Ex: Ver oferta"
+            />
+          </div>
+
+          <label>Enviar para:</label>
+
+          <div class="switch-area">
+            <label style="margin-top: 0">
+              <input type="radio" name="push-filtro" value="todos" checked />
+              Todos
+            </label>
+
+            <label style="margin-top: 0">
+              <input type="radio" name="push-filtro" value="7" />
+              Últimos 7 dias
+            </label>
+
+            <label style="margin-top: 0">
+              <input type="radio" name="push-filtro" value="15" />
+              Últimos 15 dias
+            </label>
+
+            <label style="margin-top: 0">
+              <input type="radio" name="push-filtro" value="30" />
+              Últimos 30 dias
+            </label>
+
+            <label style="margin-top: 0">
+              <input type="radio" name="push-filtro" value="60" />
+              Últimos 60 dias
+            </label>
+          </div>
+
+          <div class="switch-area">
+            <input type="checkbox" id="push-agendar" />
+            <label for="push-agendar">Agendar envio</label>
+          </div>
+
+          <div id="box-push-agendamento" style="display: none">
+            <label for="push-data-agendamento">Data:</label>
+            <input id="push-data-agendamento" type="date" />
+
+            <label for="push-hora-agendamento">Hora:</label>
+            <input id="push-hora-agendamento" type="time" />
+          </div>
+
+          <h3>Preview</h3>
+
+          <div class="preview-push-mobile">
+            <div class="preview-push-topo">
+              <img
+                id="preview-push-logo"
+                class="preview-push-logo"
+                src=""
+                alt="Logo da loja"
+              />
+
+              <div class="preview-push-info-loja">
+                <strong id="preview-push-loja">Loja</strong>
+                <span>agora</span>
+              </div>
+            </div>
+
+            <strong id="preview-push-titulo">Título da notificação</strong>
+            <p id="preview-push-mensagem">Mensagem da notificação</p>
+
+            <img id="preview-push-img" style="display: none" />
+
+            <button id="preview-push-botao" style="display: none">
+              Ver oferta
+            </button>
+          </div>
+
+          <button type="button" class="salvar" id="btn-enviar-push">
+            Enviar Notificação
           </button>
         </div>
       </section>
@@ -2868,34 +3289,170 @@
     </div>
 
     <script>
-      const SENHA = "Manugil@20";
-
-      const senhaDigitada = prompt("Digite a senha do painel");
-
-      if (senhaDigitada !== SENHA) {
-        document.body.innerHTML = `
-          <div style="
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-            background:#120b08;
-            color:white;
-            font-family:Arial;
-            font-size:22px;
-            text-align:center;
-            padding:20px;
-          ">
-            Acesso negado.
-          </div>
-        `;
-
-        throw new Error("Acesso negado");
-      }
-
       const URL_CONTROLE =
         "https://script.google.com/macros/s/AKfycbxtEiOTWzHDTC2CO3XKG5rb-KEE2lPr6tz6RBHojLpUfQZHwoi5CS_Y0NOaQDFP71uTVA/exec";
 
+      const CHAVE_SESSAO_ADMIN = "adminAutenticadoNestaAba";
+
+      function chamarAcaoAdminJsonp(acao, parametros = {}) {
+        return new Promise((resolve, reject) => {
+          const callbackName = `callbackAdmin_${Date.now()}_${Math.floor(
+            Math.random() * 99999,
+          )}`;
+
+          const script = document.createElement("script");
+
+          let finalizado = false;
+
+          const timeout = setTimeout(() => {
+            if (finalizado) return;
+
+            finalizado = true;
+
+            delete window[callbackName];
+            script.remove();
+
+            reject(new Error("A solicitação demorou mais que o esperado."));
+          }, 15000);
+
+          window[callbackName] = function (resultado) {
+            if (finalizado) return;
+
+            finalizado = true;
+
+            clearTimeout(timeout);
+            delete window[callbackName];
+            script.remove();
+
+            resolve(resultado);
+          };
+
+          const query = new URLSearchParams({
+            acao,
+            ...parametros,
+            callback: callbackName,
+            t: String(Date.now()),
+          });
+
+          script.src = `${URL_CONTROLE}?${query.toString()}`;
+
+          script.onerror = () => {
+            if (finalizado) return;
+
+            finalizado = true;
+
+            clearTimeout(timeout);
+            delete window[callbackName];
+            script.remove();
+
+            reject(new Error("Não foi possível conectar com a planilha."));
+          };
+
+          document.body.appendChild(script);
+        });
+      }
+      function mostrarConteudoAdmin() {
+        const login = document.getElementById("login-admin");
+
+        const conteudo = document.getElementById("conteudo-admin");
+
+        if (login) {
+          login.style.display = "none";
+        }
+
+        if (conteudo) {
+          conteudo.style.display = "block";
+        }
+      }
+
+      function mostrarTelaLoginAdmin() {
+        const login = document.getElementById("login-admin");
+
+        const conteudo = document.getElementById("conteudo-admin");
+
+        if (conteudo) {
+          conteudo.style.display = "none";
+        }
+
+        if (login) {
+          login.style.display = "flex";
+        }
+
+        setTimeout(() => {
+          document.getElementById("login-admin-senha")?.focus();
+        }, 100);
+      }
+
+      async function realizarLoginAdmin(event) {
+        event.preventDefault();
+
+        const campoSenha = document.getElementById("login-admin-senha");
+
+        const erro = document.getElementById("login-admin-erro");
+
+        const botao = document.getElementById("btn-login-admin");
+
+        const senha = String(campoSenha?.value || "");
+
+        if (!senha) {
+          erro.textContent = "Digite a senha.";
+
+          campoSenha?.focus();
+          return;
+        }
+
+        erro.textContent = "";
+
+        botao.disabled = true;
+        botao.classList.add("loading-status");
+        botao.textContent = "Verificando...";
+
+        try {
+          const resultado = await chamarAcaoAdminJsonp("verificarSenhaPainel", {
+            senha,
+          });
+
+          if (!resultado || resultado.autenticado !== true) {
+            erro.textContent = resultado?.erro || "Senha incorreta.";
+
+            campoSenha.value = "";
+            campoSenha.focus();
+
+            return;
+          }
+
+          sessionStorage.setItem(CHAVE_SESSAO_ADMIN, "SIM");
+
+          senhaPainelSessao = senha;
+
+          campoSenha.value = "";
+
+          mostrarConteudoAdmin();
+        } catch (erroLogin) {
+          console.error(erroLogin);
+
+          erro.textContent = "Não foi possível validar a senha.";
+        } finally {
+          botao.disabled = false;
+          botao.classList.remove("loading-status");
+
+          botao.textContent = "Entrar";
+        }
+      }
+
+      function iniciarAutenticacaoAdmin() {
+        document
+          .getElementById("form-login-admin")
+          ?.addEventListener("submit", realizarLoginAdmin);
+
+        if (sessionStorage.getItem(CHAVE_SESSAO_ADMIN) === "SIM") {
+          mostrarConteudoAdmin();
+          return;
+        }
+
+        mostrarTelaLoginAdmin();
+      }
+      let senhaPainelSessao = "";
       let dadosPedidos = [];
       let perfilLojaAdmin = {};
       let filtroPedidosAdmin = "ativos";
@@ -2931,6 +3488,7 @@
       let vinculosEstoque = [];
       let popupInsumosAberto = false;
 
+      const API_PUSH = perfilLojaAdmin.ApiPagamentoURL || "";
       const tipo = document.getElementById("tipo");
       const categoria = document.getElementById("categoria");
       const perfilNomeLoja = document.getElementById("perfil-nome-loja");
@@ -3064,6 +3622,35 @@
         "categoria-desktop-linha",
       );
 
+      function iniciarBotaoCarregando(botao, texto = "Salvando...") {
+        if (!botao) return false;
+
+        if (botao.dataset.carregando === "true") {
+          return false;
+        }
+
+        botao.dataset.carregando = "true";
+        botao.dataset.textoOriginal = botao.textContent;
+
+        botao.disabled = true;
+        botao.classList.add("loading-status");
+        botao.textContent = texto;
+
+        return true;
+      }
+
+      function finalizarBotaoCarregando(botao) {
+        if (!botao) return;
+
+        botao.dataset.carregando = "false";
+        botao.disabled = false;
+        botao.classList.remove("loading-status");
+
+        if (botao.dataset.textoOriginal) {
+          botao.textContent = botao.dataset.textoOriginal;
+        }
+      }
+
       function trocarAba(nomeAba) {
         const abaAtual = document.querySelector(".aba.ativa");
 
@@ -3084,8 +3671,122 @@
         if (abaAtual && abaAtual.id === "aba-editar" && nomeAba !== "editar") {
           limparFormularioEdicaoProduto();
         }
+        limparCamposTemporariosAoTrocarAba(nomeAba);
         fecharMenuAdmin();
       }
+
+      function enviarImagemInlineAdmin(botao) {
+        const box = botao.closest(".upload-inline-admin");
+        const arquivoInput = box.querySelector(".upload-inline-arquivo");
+        const statusUpload = box.querySelector(".upload-inline-status");
+        const destino = box.dataset.uploadDestino || "cadastro";
+        const arquivo = arquivoInput.files[0];
+
+        if (!arquivo) {
+          alert("Selecione uma imagem.");
+          return;
+        }
+
+        campoUploadDestino = destino;
+
+        botao.disabled = true;
+        botao.classList.add("loading-status");
+        botao.textContent = "Enviando...";
+        statusUpload.textContent = "Preparando imagem...";
+
+        const leitor = new FileReader();
+
+        leitor.onload = function () {
+          const base64 = String(leitor.result).split(",")[1];
+          const iframeName = "upload_oculto_" + Date.now();
+          const nomeTemp = "upload_" + Date.now();
+
+          const iframe = document.createElement("iframe");
+          iframe.name = iframeName;
+          iframe.style.display = "none";
+          document.body.appendChild(iframe);
+
+          const form = document.createElement("form");
+          form.method = "POST";
+          form.action = URL_CONTROLE;
+          form.target = iframeName;
+          form.style.display = "none";
+
+          const campos = {
+            acao: "uploadImagemPainel",
+            nomeArquivo: arquivo.name,
+            mimeType: arquivo.type,
+            nomeTemp,
+            destino,
+            base64,
+          };
+
+          Object.keys(campos).forEach((chave) => {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = chave;
+            input.value = campos[chave];
+            form.appendChild(input);
+          });
+
+          document.body.appendChild(form);
+
+          form.submit();
+
+          statusUpload.textContent = "Enviando para o Drive...";
+        };
+
+        leitor.readAsDataURL(arquivo);
+      }
+
+      function limparCamposTemporariosAoTrocarAba(nomeAba) {
+        if (nomeAba !== "cadastro") {
+          imagemURL.value = "";
+          atualizarPreviewImagem(imagemURL, "preview-imagem-cadastro");
+
+          const resumoCadastro = document.getElementById(
+            "resumo-complementos-cadastro",
+          );
+          if (resumoCadastro) resumoCadastro.innerHTML = "";
+
+          ordemGruposProdutoCadastro = gruposComplementos.map((g) => g.grupo);
+
+          const areaCadastro = document.getElementById(
+            "grupos-complementos-produto",
+          );
+          if (areaCadastro) {
+            areaCadastro
+              .querySelectorAll('input[type="checkbox"]')
+              .forEach((checkbox) => {
+                checkbox.checked = false;
+              });
+          }
+        }
+
+        if (nomeAba !== "editar") {
+          editarImagemURL.value = "";
+          atualizarPreviewImagem(editarImagemURL, "preview-imagem-editar");
+        }
+
+        if (nomeAba !== "notificacoes") {
+          const pushImagem = document.getElementById("push-imagem");
+
+          if (pushImagem) {
+            pushImagem.value = "";
+
+            const preview = document.getElementById("preview-push-imagem");
+            if (preview) {
+              preview.innerHTML = "";
+              preview.style.display = "none";
+            }
+
+            if (typeof atualizarPreviewPush === "function") {
+              atualizarPreviewPush();
+            }
+          }
+        }
+      }
+
       function abrirMenuAdmin() {
         document.getElementById("menu-admin").classList.add("aberto");
         document.getElementById("overlay-menu-admin").classList.add("aberto");
@@ -3110,9 +3811,9 @@
           return;
         }
 
-        botao.disabled = true;
-        botao.classList.add("loading-status");
-        botao.textContent = "Enviando...";
+        if (!iniciarBotaoCarregando(botao, "Enviando...")) {
+          return;
+        }
 
         fetch(
           `${URL_SUPORTE_CARDAPIO}?acao=salvarFeedbackCardapio` +
@@ -3136,9 +3837,7 @@
             alert("Erro ao conectar com o suporte.");
           })
           .finally(() => {
-            botao.disabled = false;
-            botao.classList.remove("loading-status");
-            botao.textContent = "Enviar relato";
+            finalizarBotaoCarregando(botao);
           });
       }
 
@@ -3160,16 +3859,14 @@
           e.preventDefault();
 
           const botao = e.currentTarget;
-          botao.disabled = true;
-          botao.classList.add("loading-status");
-          botao.textContent = "Atualizando...";
+          if (!iniciarBotaoCarregando(botao, "Atualizando...")) {
+            return;
+          }
 
           carregarPedidosAdmin();
 
           setTimeout(() => {
-            botao.disabled = false;
-            botao.classList.remove("loading-status");
-            botao.textContent = "Atualizar Pedidos";
+            finalizarBotaoCarregando(botao);
           }, 1500);
         });
 
@@ -4017,19 +4714,67 @@
       window.addEventListener("message", (event) => {
         if (!event.data || event.data.tipo !== "imagem-upload") return;
 
-        if (campoUploadDestino === "cadastro") {
-          imagemURL.value = event.data.url;
+        console.log("Retorno upload:", event.data);
+
+        if (!event.data.sucesso) {
+          alert(event.data.erro || "Erro ao enviar imagem.");
+          return;
         }
 
-        if (campoUploadDestino === "edicao") {
-          editarImagemURL.value = event.data.url;
+        const url = event.data.url || "";
+        const destino = event.data.destino || "";
+
+        if (!url) {
+          alert("Upload finalizado, mas a URL não retornou.");
+          return;
         }
 
-        fecharUploadImagem();
+        if (destino === "cadastro") {
+          imagemURL.value = url;
+          atualizarPreviewImagem(imagemURL, "preview-imagem-cadastro");
+        }
+
+        if (destino === "edicao") {
+          editarImagemURL.value = url;
+          atualizarPreviewImagem(editarImagemURL, "preview-imagem-editar");
+        }
+
+        if (destino === "perfil-foto") {
+          perfilFoto.value = url;
+          atualizarPreviewImagem(perfilFoto, "preview-perfil-foto");
+        }
+
+        if (destino === "perfil-banner") {
+          perfilBannerUrl.value = url;
+          atualizarPreviewImagem(perfilBannerUrl, "preview-perfil-banner");
+        }
+
+        if (destino === "push") {
+          document.getElementById("push-imagem").value = url;
+
+          if (typeof atualizarPreviewPush === "function") {
+            atualizarPreviewPush();
+          }
+        }
+
         alert("Imagem adicionada com sucesso!");
       });
+
+      let cadastroEmAndamento = false;
+
       async function cadastrarItem() {
+        if (cadastroEmAndamento) return;
+
+        const botaoCadastrar = document.getElementById("salvar-cadastro");
         const status = document.getElementById("status");
+
+        cadastroEmAndamento = true;
+
+        if (botaoCadastrar) {
+          botaoCadastrar.disabled = true;
+          botaoCadastrar.classList.add("loading-status");
+          botaoCadastrar.textContent = "Cadastrando...";
+        }
 
         const novoItem = {
           categoria: categoria.value,
@@ -4049,20 +4794,19 @@
           !novoItem.tipo
         ) {
           alert("Preencha nome, tipo, categoria e status.");
-
+          liberarCadastroProduto();
           return;
         }
 
         if (!novoItem.preco) {
           alert("Preencha o preço.");
+          liberarCadastroProduto();
           return;
         }
 
         status.textContent = "Cadastrando item...";
 
         try {
-          status.textContent = "Cadastrando item...";
-
           enviarRequisicaoPorIframe({
             acao: "cadastrar",
             categoria: novoItem.categoria,
@@ -4082,38 +4826,67 @@
             );
           }
 
-          if (novoItem.tipo === "Produto") {
-            salvarProdutoComplementosAdmin(
-              novoItem.nome,
-              obterGruposSelecionadosProduto("grupos-complementos-produto"),
-            );
-          }
-
           setTimeout(async () => {
             alert("Item cadastrado com sucesso!");
 
-            nome.value = "";
-            descricao.value = "";
-            preco.value = "";
-            precoPor.value = "";
-            imagemURL.value = "";
-            if (imagemUpload) imagemUpload.value = "";
-
-            statusCadastro.checked = true;
-
-            statusTexto.textContent = "ATIVO";
+            limparFormularioCadastroProduto();
 
             await carregarDados();
 
             document.querySelector('[data-aba="estoque"]').click();
-          }, 3000);
+
+            liberarCadastroProduto();
+
+            status.textContent = "Painel carregado.";
+          }, 2500);
         } catch (error) {
           console.error(error);
 
           alert("Erro ao cadastrar item.");
-
           status.textContent = "Erro ao cadastrar item.";
+
+          liberarCadastroProduto();
         }
+      }
+
+      function liberarCadastroProduto() {
+        const botaoCadastrar = document.getElementById("salvar-cadastro");
+
+        cadastroEmAndamento = false;
+
+        if (botaoCadastrar) {
+          botaoCadastrar.disabled = false;
+          botaoCadastrar.classList.remove("loading-status");
+          botaoCadastrar.textContent = "Cadastrar";
+        }
+      }
+
+      function limparFormularioCadastroProduto() {
+        tipo.value = "Produto";
+        preencherCategorias(categoria, tipo.value);
+
+        if (categoria.options.length > 0) {
+          categoria.selectedIndex = 0;
+        }
+
+        nome.value = "";
+        descricao.value = "";
+        preco.value = "";
+        precoPor.value = "";
+        imagemURL.value = "";
+
+        statusCadastro.checked = true;
+        statusTexto.textContent = "ATIVO";
+
+        ordemGruposProdutoCadastro = gruposComplementos.map((g) => g.grupo);
+
+        renderizarGruposComplementosProduto();
+
+        const resumo = document.getElementById("resumo-complementos-cadastro");
+        if (resumo) resumo.innerHTML = "";
+
+        atualizarPreviewImagem(imagemURL, "preview-imagem-cadastro");
+        atualizarCampos();
       }
 
       function adicionarItemComplementoEditor(item = {}) {
@@ -4782,6 +5555,7 @@
             atualizarPreviewImagem(perfilFoto, "preview-perfil-foto");
             atualizarPreviewImagem(perfilBannerUrl, "preview-perfil-banner");
             aplicarPerfilAdmin();
+            atualizarPreviewPush();
           } finally {
             delete window[callbackName];
 
@@ -4844,9 +5618,9 @@
       function salvarPerfilLojaAdmin() {
         const botao = document.getElementById("btn-salvar-perfil-loja");
 
-        botao.disabled = true;
-        botao.classList.add("loading-status");
-        botao.textContent = "Salvando...";
+        if (!iniciarBotaoCarregando(botao, "Salvando...")) {
+          return;
+        }
 
         enviarRequisicaoPorIframe({
           acao: "salvarPerfilLoja",
@@ -4875,9 +5649,7 @@
         });
 
         setTimeout(() => {
-          botao.disabled = false;
-          botao.classList.remove("loading-status");
-          botao.textContent = "Salvar perfil";
+          finalizarBotaoCarregando(botao);
           alert("Perfil salvo com sucesso.");
           carregarPerfilLojaAdmin();
         }, 1200);
@@ -5246,9 +6018,7 @@
           return;
         }
 
-        botao.disabled = true;
-        botao.classList.add("loading-status");
-        botao.textContent = "Salvando...";
+        iniciarBotaoCarregando(botao, "Salvando...");
 
         enviarRequisicaoPorIframe({
           acao: "salvarGrupoComplementos",
@@ -5307,11 +6077,8 @@
         renderizarGruposComplementosProduto();
 
         setTimeout(() => {
-          limparFormularioGrupoComplemento();
-
-          botao.disabled = false;
-          botao.classList.remove("loading-status");
-          botao.textContent = "Salvar grupo";
+          limparFormularioCategoriaAdmin();
+          finalizarBotaoCarregando(botao);
         }, 600);
 
         setTimeout(() => {
@@ -5542,6 +6309,12 @@
 
       let popupComplementosOrigem = "cadastro";
 
+      function buscarCheckboxPorValor(area, valor) {
+        return Array.from(area.querySelectorAll('input[type="checkbox"]')).find(
+          (input) => input.value === valor,
+        );
+      }
+
       function abrirPopupGruposProduto(origem) {
         popupComplementosOrigem = origem;
 
@@ -5553,13 +6326,41 @@
             ? "grupos-complementos-produto"
             : "editar-grupos-complementos-produto";
 
+        const resumoId =
+          origem === "cadastro"
+            ? "resumo-complementos-cadastro"
+            : "resumo-complementos-editar";
+
         const areaOriginal = document.getElementById(areaId);
+
+        if (!areaOriginal) {
+          alert("Área de complementos não encontrada.");
+          return;
+        }
+
+        if (!gruposComplementos || gruposComplementos.length === 0) {
+          alert(
+            "Os complementos ainda não foram carregados. Aguarde alguns segundos e tente novamente.",
+          );
+          carregarComplementosAdmin();
+          return;
+        }
+
+        if (!areaOriginal.innerHTML.trim()) {
+          renderizarGruposComplementosProduto();
+        }
+
+        if (!areaOriginal.innerHTML.trim()) {
+          alert("Nenhum grupo de complemento cadastrado.");
+          return;
+        }
 
         conteudo.innerHTML = areaOriginal.innerHTML;
 
         conteudo.querySelectorAll("input").forEach((inputPopup) => {
-          const original = areaOriginal.querySelector(
-            `input[value="${inputPopup.value}"]`,
+          const original = buscarCheckboxPorValor(
+            areaOriginal,
+            inputPopup.value,
           );
 
           if (original) {
@@ -5577,6 +6378,7 @@
           });
 
         reorganizarPopupComplementos();
+        registrarEventosOrdenacaoPopupGrupos();
 
         popup.classList.add("aberto");
       }
@@ -5604,8 +6406,9 @@
         const resumo = document.getElementById(resumoId);
 
         conteudo.querySelectorAll("input").forEach((inputPopup) => {
-          const original = areaOriginal.querySelector(
-            `input[value="${inputPopup.value}"]`,
+          const original = buscarCheckboxPorValor(
+            areaOriginal,
+            inputPopup.value,
           );
 
           if (original) {
@@ -5969,6 +6772,23 @@
         });
       }
 
+      function removerProdutosDuplicadosCategoria(lista) {
+        const vistos = new Set();
+
+        return lista.filter((item) => {
+          const nomeProduto = String(item.produto || "").trim();
+
+          if (!nomeProduto) return false;
+
+          const chave = nomeProduto.toLowerCase();
+
+          if (vistos.has(chave)) return false;
+
+          vistos.add(chave);
+          return true;
+        });
+      }
+
       function salvarCategoriaAdmin() {
         const botao = document.getElementById("btn-salvar-categoria-admin");
 
@@ -5977,25 +6797,32 @@
         const status = categoriaStatusAtivo.checked ? "ATIVO" : "PAUSADO";
         const exibirVazia = categoriaExibirVaziaSim.checked ? "SIM" : "NÃO";
 
+        // Primeiro valida. O botão ainda não foi bloqueado.
         if (!categoria) {
           alert("Informe o nome da categoria.");
           return;
         }
 
-        const produtos = produtosCategoriaEditor.map((item, index) => ({
-          produto: item.produto,
-          ordem: index + 1,
-          status: "ATIVO",
-        }));
+        // Bloqueia duplo clique somente depois da validação.
+        if (!iniciarBotaoCarregando(botao, "Salvando...")) {
+          return;
+        }
 
-        botao.disabled = true;
-        botao.classList.add("loading-status");
-        botao.textContent = "Salvando...";
+        // Remove repetições apenas dentro desta categoria.
+        produtosCategoriaEditor = removerProdutosDuplicadosCategoria(
+          produtosCategoriaEditor,
+        );
+
+        const produtos = produtosCategoriaEditor.map((item, index) => ({
+          produto: String(item.produto || "").trim(),
+          ordem: index + 1,
+          status: item.status || "ATIVO",
+        }));
 
         const ordemOriginal =
           categoriasAdmin.find((item) => {
             return (
-              String(item.categoria).trim() ===
+              String(item.categoria || "").trim() ===
               String(categoriaOriginal || categoria).trim()
             );
           })?.ordem || categoriasAdmin.length + 1;
@@ -6027,7 +6854,9 @@
         const nomeBusca = categoriaOriginal || categoria;
 
         const indexCategoria = categoriasAdmin.findIndex((item) => {
-          return String(item.categoria).trim() === String(nomeBusca).trim();
+          return (
+            String(item.categoria || "").trim() === String(nomeBusca).trim()
+          );
         });
 
         if (indexCategoria >= 0) {
@@ -6040,10 +6869,7 @@
 
         setTimeout(() => {
           limparFormularioCategoriaAdmin();
-
-          botao.disabled = false;
-          botao.classList.remove("loading-status");
-          botao.textContent = "Salvar categoria";
+          finalizarBotaoCarregando(botao);
         }, 600);
       }
 
@@ -6434,16 +7260,87 @@
         }
       }
       window.addEventListener("message", (event) => {
-        if (!event.data) return;
+        if (!event.data || event.data.tipo !== "imagem-upload") return;
 
-        if (event.data.tipo === "imagem-upload") {
-          imagemURL.value = event.data.url;
-
-          editarImagemURL.value = event.data.url;
-
-          alert("Imagem adicionada com sucesso!");
+        if (!event.data.sucesso) {
+          alert(event.data.erro || "Erro ao enviar imagem.");
+          return;
         }
+
+        const url = event.data.url || "";
+        const destino = event.data.destino || "";
+
+        if (!url) {
+          alert("Upload finalizado, mas a URL não retornou.");
+          return;
+        }
+
+        if (destino === "cadastro") {
+          imagemURL.value = url;
+          atualizarPreviewImagem(imagemURL, "preview-imagem-cadastro");
+        }
+
+        if (destino === "edicao") {
+          editarImagemURL.value = url;
+          atualizarPreviewImagem(editarImagemURL, "preview-imagem-editar");
+        }
+
+        if (destino === "perfil-foto") {
+          perfilFoto.value = url;
+          atualizarPreviewImagem(perfilFoto, "preview-perfil-foto");
+        }
+
+        if (destino === "perfil-banner") {
+          perfilBannerUrl.value = url;
+          atualizarPreviewImagem(perfilBannerUrl, "preview-perfil-banner");
+        }
+
+        if (destino === "push") {
+          document.getElementById("push-imagem").value = url;
+
+          if (typeof atualizarPreviewPush === "function") {
+            atualizarPreviewPush();
+          }
+        }
+
+        finalizarUploadInlineAdmin(destino);
+
+        alert("Imagem adicionada com sucesso!");
       });
+
+      function finalizarUploadInlineAdmin(destino) {
+        const box = document.querySelector(
+          `.upload-inline-admin[data-upload-destino="${destino}"]`,
+        );
+
+        if (!box) return;
+
+        const botao = box.querySelector("button");
+        const status = box.querySelector(".upload-inline-status");
+        const inputArquivo = box.querySelector(".upload-inline-arquivo");
+
+        if (botao) {
+          botao.disabled = false;
+          botao.classList.remove("loading-status");
+
+          if (destino === "perfil-foto") {
+            botao.textContent = "📤 Enviar logo";
+          } else if (destino === "perfil-banner") {
+            botao.textContent = "📤 Enviar banner";
+          } else {
+            botao.textContent = "📤 Enviar imagem";
+          }
+        }
+
+        if (status) {
+          status.textContent = "";
+        }
+
+        if (inputArquivo) {
+          inputArquivo.value = "";
+        }
+      }
+
       function carregarFretes() {
         const scriptAntigo = document.getElementById("jsonp-fretes");
         if (scriptAntigo) scriptAntigo.remove();
@@ -7617,6 +8514,13 @@
       }
 
       document
+        .getElementById("busca-estoque")
+        .addEventListener("input", (e) => {
+          filtroEstoque = e.target.value.toLowerCase().trim();
+          renderizarPainel();
+        });
+
+      document
         .getElementById("salvar-cadastro")
         .addEventListener("click", cadastrarItem);
 
@@ -7828,32 +8732,93 @@
 
         if (status === "Aguardando confirmação") {
           botoes = `
-    <button type="button" data-status="Em produção">Aceitar</button>
-    <button type="button" data-status="Cancelado" class="cancelar">Cancelar</button>
+    <button type="button" data-status="Em produção">
+      Aceitar
+    </button>
+
+    <button
+      type="button"
+      data-status="Cancelado"
+      class="cancelar"
+    >
+      Cancelar
+    </button>
   `;
         } else if (status === "Em produção") {
           botoes = `
     ${
       pedidoRetirada
-        ? `<button type="button" data-status="Pronto para retirada">Pronto para retirada</button>`
-        : `<button type="button" data-status="Saiu para entrega">Despachado</button>`
+        ? `
+          <button
+            type="button"
+            data-status="Pronto para retirada"
+          >
+            Pronto para retirada
+          </button>
+        `
+        : `
+          <button
+            type="button"
+            data-status="Saiu para entrega"
+          >
+            Despachado
+          </button>
+        `
     }
-    <button type="button" data-status="Entregue">Entregue</button>
-    <button type="button" data-status="Cancelado" class="cancelar">Cancelar</button>
-    <button type="button" class="btn-imprimir-pedido">Imprimir</button>
+
+    <button type="button" data-status="Entregue">
+      Entregue
+    </button>
+
+    <button
+      type="button"
+      data-status="Cancelado"
+      class="cancelar"
+    >
+      Cancelar
+    </button>
+
+    <button
+      type="button"
+      class="btn-imprimir-pedido"
+    >
+      Imprimir
+    </button>
   `;
         } else if (status === "Saiu para entrega") {
+          botoes = `
+    <button type="button" data-status="Entregue">
+      Entregue
+    </button>
+
+    <button
+      type="button"
+      data-status="Cancelado"
+      class="cancelar"
+    >
+      Cancelar
+    </button>
+  `;
         } else if (status === "Pronto para retirada") {
           botoes = `
-    <button type="button" data-status="Entregue">Entregue</button>
-    <button type="button" data-status="Cancelado" class="cancelar">Cancelar</button>
-  `;
-          botoes = `
-    <button type="button" data-status="Entregue">Entregue</button>
-    <button type="button" data-status="Cancelado" class="cancelar">Cancelar</button>
+    <button type="button" data-status="Entregue">
+      Entregue
+    </button>
+
+    <button
+      type="button"
+      data-status="Cancelado"
+      class="cancelar"
+    >
+      Cancelar
+    </button>
   `;
         } else {
-          botoes = `<p><strong>Pedido ${status}</strong></p>`;
+          botoes = `
+    <p>
+      <strong>Pedido ${status}</strong>
+    </p>
+  `;
         }
 
         drawer.innerHTML = `
@@ -7898,10 +8863,18 @@
 </div>
 
     <h3>Cliente</h3>
-    <p>${pedido.Cliente || "Cliente não informado"}</p>
-    ${
-      pedido.WhatsApp
-        ? `
+
+<p class="pedido-cliente-nome">
+  <strong>${pedido.Cliente || "Cliente não informado"}</strong>
+</p>
+
+${
+  pedido.WhatsApp
+    ? `
+      <p class="pedido-cliente-whatsapp">
+        WhatsApp: ${pedido.WhatsApp}
+      </p>
+
       <a
         href="https://wa.me/55${String(pedido.WhatsApp).replace(/\D/g, "")}"
         target="_blank"
@@ -7910,10 +8883,14 @@
         💬 Conversar com cliente
       </a>
     `
-        : ""
-    }
+    : `
+      <p class="pedido-cliente-whatsapp">
+        WhatsApp não informado
+      </p>
+    `
+}
 
-    <h3>Itens</h3>
+<h3>Itens</h3>
     <pre>${pedido.Itens || ""}</pre>
 
     <h3>Endereço</h3>
@@ -8226,9 +9203,35 @@ ${
       trocarAba("pedidos");
       carregarPedidosAdmin();
 
-      setInterval(() => {
-        carregarPedidosAdmin();
-      }, 15000);
+      let intervaloPedidosAdmin = null;
+
+      function iniciarAtualizacaoPedidosAdmin() {
+        if (intervaloPedidosAdmin) {
+          clearInterval(intervaloPedidosAdmin);
+        }
+
+        intervaloPedidosAdmin = setInterval(() => {
+          if (document.visibilityState !== "visible") {
+            return;
+          }
+
+          carregarPedidosAdmin();
+        }, 5000);
+      }
+
+      iniciarAtualizacaoPedidosAdmin();
+
+      function centralizarTextoEtiqueta(texto, largura = 26) {
+        const valor = String(texto || "").trim();
+
+        if (valor.length >= largura) {
+          return valor;
+        }
+
+        const espacos = Math.floor((largura - valor.length) / 2);
+
+        return " ".repeat(espacos) + valor;
+      }
 
       function imprimirFichaPedido(pedido) {
         const numeroPedido = pedido.NumeroPedido || "";
@@ -8242,6 +9245,11 @@ ${
         const cupom = pedido.Cupom || "";
         const total = pedido.Total || "";
         const endereco = pedido.Endereco || pedido["Endereço"] || "";
+        const nomeLojaEtiqueta = centralizarTextoEtiqueta(
+          String(perfilLojaAdmin?.NomeLoja || perfilNomeLoja?.value || "LOJA")
+            .trim()
+            .toUpperCase(),
+        );
 
         let valores =
           "SUBTOTAL: R$" + subtotal + "\n" + "FRETE: R$" + frete + "\n";
@@ -8257,7 +9265,8 @@ ${
         valores += "TOTAL: R$" + total + "\n";
 
         const conteudo =
-          "       CROA PLANET\n" +
+          nomeLojaEtiqueta +
+          "\n" +
           "--------------------------\n" +
           "       #" +
           numeroPedido +
@@ -8441,6 +9450,94 @@ ${
         .getElementById("cancelar-popup-insumos")
         .addEventListener("click", fecharPopupInsumosEstoque);
 
+      document
+        .getElementById("btn-alterar-senha-painel")
+        .addEventListener("click", alterarSenhaPainelAdmin);
+
+      async function alterarSenhaPainelAdmin() {
+        const senhaAtual = document.getElementById("senha-painel-atual");
+
+        const novaSenha = document.getElementById("senha-painel-nova");
+
+        const repetirSenha = document.getElementById("senha-painel-repetir");
+
+        const mensagem = document.getElementById("mensagem-alterar-senha");
+
+        const botao = document.getElementById("btn-alterar-senha-painel");
+
+        const atual = String(senhaAtual.value || "");
+
+        const nova = String(novaSenha.value || "");
+
+        const repetir = String(repetirSenha.value || "");
+
+        mensagem.textContent = "";
+        mensagem.style.color = "#ff8787";
+
+        if (!atual) {
+          mensagem.textContent = "Informe a senha atual.";
+
+          senhaAtual.focus();
+          return;
+        }
+
+        if (nova.length < 6) {
+          mensagem.textContent =
+            "A nova senha deve possuir pelo menos 6 caracteres.";
+
+          novaSenha.focus();
+          return;
+        }
+
+        if (nova !== repetir) {
+          mensagem.textContent = "As novas senhas são diferentes.";
+
+          repetirSenha.focus();
+          return;
+        }
+
+        if (!iniciarBotaoCarregando(botao, "Alterando...")) {
+          return;
+        }
+
+        try {
+          const resultado = await chamarAcaoAdminJsonp("alterarSenhaPainel", {
+            senhaAtual: atual,
+            novaSenha: nova,
+            repetirSenha: repetir,
+          });
+
+          if (!resultado || resultado.sucesso !== true) {
+            mensagem.textContent =
+              resultado?.erro || "Não foi possível alterar a senha.";
+
+            return;
+          }
+
+          senhaAtual.value = "";
+          novaSenha.value = "";
+          repetirSenha.value = "";
+
+          mensagem.style.color = "#7ddc91";
+          mensagem.textContent =
+            "Senha alterada. Entre novamente com a nova senha.";
+
+          sessionStorage.removeItem(CHAVE_SESSAO_ADMIN);
+
+          setTimeout(() => {
+            mensagem.textContent = "";
+
+            mostrarTelaLoginAdmin();
+          }, 1400);
+        } catch (erro) {
+          console.error(erro);
+
+          mensagem.textContent = "Erro ao alterar a senha.";
+        } finally {
+          finalizarBotaoCarregando(botao);
+        }
+      }
+
       perfilFoto.addEventListener("input", () => {
         atualizarPreviewImagem(perfilFoto, "preview-perfil-foto");
       });
@@ -8599,6 +9696,302 @@ ${
           }
         });
       });
+
+      function obterFiltroPushSelecionado() {
+        const selecionado = document.querySelector(
+          'input[name="push-filtro"]:checked',
+        );
+        return selecionado ? selecionado.value : "todos";
+      }
+
+      function atualizarPreviewPush() {
+        const titulo =
+          document.getElementById("push-titulo")?.value.trim() ||
+          "Título da notificação";
+
+        const mensagem =
+          document.getElementById("push-mensagem")?.value.trim() ||
+          "Mensagem da notificação";
+        const imagem =
+          document.getElementById("push-imagem")?.value.trim() || "";
+        const textoBotao =
+          document.getElementById("push-texto-botao")?.value.trim() ||
+          "Ver oferta";
+        const usarBotao = document.getElementById("push-usar-botao")?.checked;
+
+        document.getElementById("preview-push-loja").textContent =
+          perfilLojaAdmin?.NomeLoja || "Loja";
+
+        const logoPreview = document.getElementById("preview-push-logo");
+
+        if (logoPreview) {
+          const logo =
+            perfilLojaAdmin?.IconeNavegador ||
+            perfilLojaAdmin?.FotoPerfil ||
+            "";
+
+          if (logo) {
+            logoPreview.src = logo;
+            logoPreview.style.display = "block";
+          } else {
+            logoPreview.removeAttribute("src");
+            logoPreview.style.display = "none";
+          }
+        }
+
+        document.getElementById("preview-push-titulo").textContent = titulo;
+        document.getElementById("preview-push-mensagem").textContent = mensagem;
+
+        const img = document.getElementById("preview-push-img");
+
+        if (imagem) {
+          img.src = imagem;
+          img.style.display = "block";
+        } else {
+          img.removeAttribute("src");
+          img.style.display = "none";
+        }
+
+        const botaoPreview = document.getElementById("preview-push-botao");
+
+        if (usarBotao) {
+          botaoPreview.textContent = textoBotao;
+          botaoPreview.style.display = "block";
+        } else {
+          botaoPreview.style.display = "none";
+        }
+      }
+
+      async function enviarNotificacaoPush() {
+        const titulo = document.getElementById("push-titulo").value.trim();
+
+        const mensagem = document.getElementById("push-mensagem").value.trim();
+
+        const imagem = document.getElementById("push-imagem").value.trim();
+
+        const link = document.getElementById("push-link").value.trim();
+
+        const usarBotao = document.getElementById("push-usar-botao").checked;
+
+        const textoBotao = document
+          .getElementById("push-texto-botao")
+          .value.trim();
+
+        const filtro = obterFiltroPushSelecionado();
+
+        const agendar = document.getElementById("push-agendar").checked;
+
+        if (!titulo || !mensagem) {
+          alert("Preencha o título e a mensagem.");
+          return;
+        }
+
+        if (usarBotao && !link) {
+          alert("Para adicionar um botão, preencha o link.");
+
+          return;
+        }
+
+        if (usarBotao && !textoBotao) {
+          alert("Informe o texto do botão.");
+          return;
+        }
+
+        if (agendar) {
+          alert("O agendamento será implementado na próxima etapa.");
+
+          return;
+        }
+
+        /*
+         * Quando a página é recarregada, a senha não fica
+         * salva no navegador. Nesse caso, solicitamos novamente.
+         */
+        if (!senhaPainelSessao) {
+          const senhaConfirmacao = prompt(
+            "Confirme a senha do painel para enviar a notificação:",
+          );
+
+          if (!senhaConfirmacao) {
+            return;
+          }
+
+          senhaPainelSessao = String(senhaConfirmacao);
+        }
+
+        const botao = document.getElementById("btn-enviar-push");
+
+        botao.disabled = true;
+        botao.classList.add("loading-status");
+        botao.textContent = "Enviando...";
+
+        try {
+          /*
+           * O navegador chama o Apps Script.
+           *
+           * O Apps Script adiciona secretamente o cabeçalho
+           * X-Admin-Key e chama o Render.
+           */
+          const resposta = await fetch(URL_CONTROLE, {
+            method: "POST",
+            headers: {
+              "Content-Type": "text/plain;charset=utf-8",
+            },
+            body: JSON.stringify({
+              acao: "enviarNotificacaoPushSegura",
+              senhaPainel: senhaPainelSessao,
+              titulo,
+              mensagem,
+              imagem,
+              link,
+              filtro,
+              icone: perfilLojaAdmin.FotoPerfil || "",
+              logo: perfilLojaAdmin.FotoPerfil || "",
+              loja: perfilLojaAdmin.NomeLoja || "Loja",
+              botao: usarBotao
+                ? {
+                    texto: textoBotao,
+                    link,
+                  }
+                : null,
+            }),
+          });
+
+          const textoResposta = await resposta.text();
+
+          let retorno;
+
+          try {
+            retorno = JSON.parse(textoResposta);
+          } catch (erroJson) {
+            throw new Error(
+              "O Apps Script retornou uma resposta inválida: " +
+                textoResposta.slice(0, 300),
+            );
+          }
+
+          console.log("Retorno do Push:", retorno);
+
+          if (!retorno || retorno.sucesso !== true) {
+            const mensagemErro =
+              retorno?.erro || "Erro ao enviar a notificação.";
+
+            /*
+             * Se a senha estiver errada ou antiga,
+             * apagamos da memória para solicitar novamente.
+             */
+            if (mensagemErro.toLowerCase().includes("senha")) {
+              senhaPainelSessao = "";
+            }
+
+            alert(mensagemErro);
+            return;
+          }
+
+          alert(
+            `Notificação enviada.\n\n` +
+              `Total: ${retorno.total || 0}\n` +
+              `Enviados: ${retorno.enviados || 0}\n` +
+              `Falhas: ${retorno.falhas || 0}`,
+          );
+
+          document.getElementById("push-titulo").value = "";
+
+          document.getElementById("push-mensagem").value = "";
+
+          document.getElementById("push-imagem").value = "";
+
+          document.getElementById("push-link").value = "";
+
+          document.getElementById("push-texto-botao").value = "";
+
+          document.getElementById("push-usar-botao").checked = false;
+
+          atualizarPreviewPush();
+        } catch (erro) {
+          console.error("Erro ao chamar o Apps Script:", erro);
+
+          const mensagemErro =
+            erro?.message || erro?.toString?.() || "Erro desconhecido.";
+
+          alert(
+            "Não foi possível enviar a notificação pelo Apps Script.\n\n" +
+              mensagemErro,
+          );
+        } finally {
+          botao.disabled = false;
+          botao.classList.remove("loading-status");
+
+          botao.textContent = "Enviar Notificação";
+        }
+      }
+
+      document
+        .getElementById("btn-enviar-push")
+        .addEventListener("click", enviarNotificacaoPush);
+
+      [
+        "push-titulo",
+        "push-mensagem",
+        "push-imagem",
+        "push-link",
+        "push-texto-botao",
+      ].forEach((id) => {
+        const campo = document.getElementById(id);
+        if (campo) {
+          campo.addEventListener("input", atualizarPreviewPush);
+        }
+      });
+
+      document
+        .getElementById("push-usar-botao")
+        .addEventListener("change", () => {
+          document.getElementById("box-push-botao").style.display =
+            document.getElementById("push-usar-botao").checked
+              ? "block"
+              : "none";
+
+          atualizarPreviewPush();
+        });
+
+      document.getElementById("push-agendar").addEventListener("change", () => {
+        document.getElementById("box-push-agendamento").style.display =
+          document.getElementById("push-agendar").checked ? "block" : "none";
+      });
+
+      let atualizandoPedidosAoRetornar = false;
+
+      async function atualizarPedidosAoRetornarPainel() {
+        if (atualizandoPedidosAoRetornar) return;
+
+        atualizandoPedidosAoRetornar = true;
+
+        try {
+          await carregarPedidosAdmin();
+        } catch (erro) {
+          console.warn(
+            "Erro ao atualizar pedidos ao retornar ao painel:",
+            erro,
+          );
+        } finally {
+          atualizandoPedidosAoRetornar = false;
+        }
+      }
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+          atualizarPedidosAoRetornarPainel();
+        }
+      });
+
+      window.addEventListener("focus", () => {
+        atualizarPedidosAoRetornarPainel();
+      });
+
+      window.addEventListener("pageshow", () => {
+        atualizarPedidosAoRetornarPainel();
+      });
+      iniciarAutenticacaoAdmin();
     </script>
     <div id="areaPedidosLaterais" class="area-pedidos-laterais"></div>
     <div id="modalExcluirFrete" class="modal-frete" style="display: none">
