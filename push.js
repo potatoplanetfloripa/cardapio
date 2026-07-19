@@ -1,4 +1,64 @@
-const API_PUSH_URL = "https://croa-planet-api.onrender.com";
+function obterApiPushUrl() {
+    return new Promise((resolve, reject) => {
+        const urlAtual = String(
+            window.API_CARDAPIO_URL || "",
+        )
+            .trim()
+            .replace(/\/$/, "");
+
+        // A configuração já foi carregada
+        if (urlAtual) {
+            resolve(urlAtual);
+            return;
+        }
+
+        let finalizado = false;
+
+        const timeout = setTimeout(() => {
+            if (finalizado) return;
+
+            finalizado = true;
+
+            window.removeEventListener(
+                "apiCardapioCarregada",
+                receberApi,
+            );
+
+            reject(
+                new Error(
+                    "A URL da API não foi carregada da planilha.",
+                ),
+            );
+        }, 15000);
+
+        function receberApi(evento) {
+            if (finalizado) return;
+
+            const apiUrl = String(
+                evento.detail?.apiUrl || "",
+            )
+                .trim()
+                .replace(/\/$/, "");
+
+            if (!apiUrl) return;
+
+            finalizado = true;
+            clearTimeout(timeout);
+
+            window.removeEventListener(
+                "apiCardapioCarregada",
+                receberApi,
+            );
+
+            resolve(apiUrl);
+        }
+
+        window.addEventListener(
+            "apiCardapioCarregada",
+            receberApi,
+        );
+    });
+}
 
 const COOKIE_PUSH = "pushPermissaoCardapio";
 
@@ -106,6 +166,13 @@ async function iniciarPushCardapio() {
     if (!("serviceWorker" in navigator)) return;
     if (!("PushManager" in window)) return;
     if (!("Notification" in window)) return;
+
+    const API_PUSH_URL = await obterApiPushUrl();
+
+    console.log(
+        "API usada pelo Push:",
+        API_PUSH_URL,
+    );
 
     /*
      * O popup só deixa de aparecer quando
