@@ -1770,10 +1770,22 @@ function aplicarPerfilLojaCardapio() {
   document.body.classList.add(`tema-${tema}`);
 
   if (perfilLoja.ApiPagamentoURL) {
-    API_URL = String(perfilLoja.ApiPagamentoURL)
-      .trim()
-      .replace(/\/$/, "");
-  }
+  API_URL = String(perfilLoja.ApiPagamentoURL)
+    .trim()
+    .replace(/\/$/, "");
+
+  // Disponibiliza a URL para o push.js
+  window.API_CARDAPIO_URL = API_URL;
+
+  // Avisa que a URL foi carregada da planilha
+  window.dispatchEvent(
+    new CustomEvent("apiCardapioCarregada", {
+      detail: {
+        apiUrl: API_URL,
+      },
+    }),
+  );
+}
 
   const favicon = document.getElementById("favicon");
   const shortcutIcon = document.getElementById("shortcut-icon");
