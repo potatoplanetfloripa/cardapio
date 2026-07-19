@@ -1927,6 +1927,23 @@ body.tema-marrom {
   --cor-botao-3: #e29a3b;
 }
 
+body.tema-amarelo {
+--cor-fundo-principal: #2a2507;
+--cor-fundo-secundario: #3d3408;
+
+--cor-card: #ffffff;
+--cor-card-2: #fff2b8;
+
+--cor-texto-card: #3b2f00;
+--cor-texto-claro: #fffbe8;
+
+--cor-destaque: #ffcc00;
+
+--cor-botao: #5d4700;
+--cor-botao-2: #d4a000;
+--cor-botao-3: #ffd84d;
+}
+
 body.tema-preto {
   --cor-fundo-principal: #111;
   --cor-fundo-secundario: #1d1d1d;
