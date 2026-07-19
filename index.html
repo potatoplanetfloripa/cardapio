@@ -39,7 +39,7 @@
     <section id="resumo-pedido">
       <div class="carrinho-header">
         <div>
-          <h2>Seu Pedido</h2>
+          <h2 id="titulo-etapa-carrinho">Seu Pedido</h2>
           <span id="carrinho-header-qtd">0 itens</span>
         </div>
 
@@ -47,135 +47,76 @@
           ✕
         </button>
       </div>
-      <div id="pedido-itens"></div>
 
-      <section class="address-section">
-        <div id="box-tipo-entrega" class="box-tipo-entrega">
-          <div class="opcoes-tipo-entrega">
-            <button
-              type="button"
-              id="btn-tipo-entrega"
-              class="tipo-entrega ativo"
-            >
-              Entrega
-            </button>
+      <!-- INDICADOR DAS ETAPAS -->
+      <div class="etapas-carrinho">
+        <div class="etapa-carrinho ativa" id="indicador-etapa-1">
+          <span>1</span>
+          <strong>Carrinho</strong>
+        </div>
 
-            <button type="button" id="btn-tipo-retirada" class="tipo-entrega">
-              Retirada
-            </button>
-          </div>
+        <div class="linha-etapas-carrinho"></div>
 
-          <div class="tipo-entrega-conteudo">
+        <div class="etapa-carrinho" id="indicador-etapa-2">
+          <span>2</span>
+          <strong>Dados</strong>
+        </div>
+      </div>
+
+      <!-- ===================================== -->
+      <!-- ETAPA 1 — PRODUTOS, ENTREGA E VALORES -->
+      <!-- ===================================== -->
+
+      <div id="etapa-carrinho-1" class="etapa-conteudo-carrinho ativa">
+        <div id="pedido-itens"></div>
+
+        <section class="tipo-entrega-etapa-1 checkout-card">
+          <div id="box-tipo-entrega" class="box-tipo-entrega">
+            
+            <div class="opcoes-tipo-entrega">
+              <button
+                type="button"
+                id="btn-tipo-entrega"
+                class="tipo-entrega ativo"
+              >
+                Entrega
+              </button>
+
+              <button type="button" id="btn-tipo-retirada" class="tipo-entrega">
+                Retirada
+              </button>
+            </div>
+
+            <!-- RETIRADA NA ETAPA 1 -->
             <div
-              id="box-info-retirada"
+              id="box-info-retirada-etapa-1"
               class="box-info-retirada"
               style="display: none"
             >
               <strong>Endereço de retirada</strong>
-              <p id="texto-endereco-retirada"></p>
+              <p id="texto-endereco-retirada-etapa-1"></p>
             </div>
 
-            <div id="box-dados-entrega" class="box-dados-entrega">
-              <strong>Dados de entrega</strong>
+            <!-- CEP RESUMIDO DA ETAPA 1 -->
+            <div id="box-cep-etapa-1" class="box-cep-etapa-1">
+              <label for="cep-carrinho">Consulte a entrega pelo CEP:</label>
 
-              <div class="input-group compacto">
-                <div class="input-half">
-                  <label for="cep-cliente">CEP:</label>
-                  <input
-                    id="cep-cliente"
-                    type="text"
-                    placeholder="00000-000"
-                    required
-                  />
-                </div>
-              </div>
+              <input
+                id="cep-carrinho"
+                type="text"
+                inputmode="numeric"
+                maxlength="9"
+                placeholder="00000-000"
+                autocomplete="postal-code"
+              />
 
-              <div class="input-group compacto">
-                <div class="input-full">
-                  <label for="rua-cliente">Endereço:</label>
-                  <input
-                    id="rua-cliente"
-                    type="text"
-                    placeholder="Rua, Av, etc."
-                    required
-                  />
-                </div>
-              </div>
-
-              <div class="input-group compacto">
-                <div class="input-half">
-                  <label for="numero-cliente">Número:</label>
-                  <input
-                    id="numero-cliente"
-                    type="text"
-                    placeholder="Nº"
-                    required
-                  />
-                </div>
-
-                <div class="input-half">
-                  <label for="complemento-cliente">Complemento:</label>
-                  <input
-                    id="complemento-cliente"
-                    type="text"
-                    placeholder="Opcional"
-                  />
-                </div>
-              </div>
-
-              <div class="input-group compacto">
-                <div class="input-half">
-                  <label for="bairro-cliente">Bairro:</label>
-                  <input
-                    id="bairro-cliente"
-                    type="text"
-                    placeholder="Bairro"
-                    required
-                  />
-                </div>
-
-                <div class="input-half">
-                  <label for="cidade-cliente">Cidade:</label>
-                  <input
-                    id="cidade-cliente"
-                    type="text"
-                    placeholder="Cidade"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="linha-whatsapp-entrega">
-              <div class="input-group compacto">
-                <div class="input-half">
-                  <label for="nome-cliente">Nome:</label>
-                  <input
-                    id="nome-cliente"
-                    type="text"
-                    placeholder="Nome completo"
-                    required
-                  />
-                </div>
-
-                <div class="input-half">
-                  <label for="whatsapp-cliente">WhatsApp:</label>
-                  <input
-                    type="tel"
-                    id="whatsapp-cliente"
-                    name="whatsapp-cliente"
-                    placeholder="(xx) xxxxx-xxxx"
-                    required
-                  />
-                </div>
-              </div>
+              <div id="status-cep-carrinho" class="status-cep-carrinho"></div>
             </div>
           </div>
-        </div>
-        <button id="adicionar-endereco">Adicionar Endereço</button>
-      </section>
-      <div class="carrinho-footer">
-        <div class="cupom-area">
+        </section>
+
+        <!-- CUPOM -->
+        <div class="cupom-area checkout-card">
           <label for="cupom-input">Cupom de desconto:</label>
 
           <div class="cupom-linha">
@@ -192,26 +133,224 @@
           <div id="cupom-mensagem"></div>
         </div>
 
-        <div id="resumo-button">
+        <!-- RESUMO FINANCEIRO DA ETAPA 1 -->
+        <div class="resumo-valores-carrinho">
+          <div class="linha-valor-carrinho">
+            <span>Subtotal</span>
+            <strong id="subtotal-etapa-1">R$0,00</strong>
+          </div>
 
-  <div class="total-carrinho">
-    <span class="titulo-total">Total do pedido</span>
-    <strong id="total-pedido">R$0,00</strong>
-  </div>
+          <div class="linha-valor-carrinho">
+            <span>Frete</span>
+            <strong id="frete-etapa-1">R$0,00</strong>
+          </div>
 
-  <div class="acoes-carrinho">
+          <div
+            class="linha-valor-carrinho linha-desconto-carrinho"
+            id="linha-desconto-etapa-1"
+            style="display: none"
+          >
+            <span>Desconto</span>
+            <strong id="desconto-etapa-1">-R$0,00</strong>
+          </div>
 
-    <button id="limpar-pedido" type="button" class="btn-secundario">
-     Limpar carrinho
-    </button>
+          <div class="linha-total-carrinho">
+            <span>Total</span>
+            <strong id="total-pedido">R$0,00</strong>
+          </div>
+        </div>
 
-    <button id="confirmar-pedido" class="btn-principal">
-      Finalizar Pedido
-    </button>
+        <div class="acoes-etapa-carrinho">
+          <button id="limpar-pedido" type="button" class="btn-secundario">
+            Limpar carrinho
+          </button>
 
-  </div>
+          <button id="continuar-pedido" type="button" class="btn-principal">
+            Continuar
+          </button>
+        </div>
+      </div>
 
-</div>
+      <!-- ================================= -->
+      <!-- ETAPA 2 — DADOS E FINALIZAÇÃO     -->
+      <!-- ================================= -->
+
+      <div id="etapa-carrinho-2" class="etapa-conteudo-carrinho">
+        <section class="dados-cliente-etapa-2 checkout-card">
+          <h3>Dados do cliente</h3>
+
+          <div class="input-group compacto">
+            <div class="input-half">
+              <label for="nome-cliente">Nome:</label>
+
+              <input
+                id="nome-cliente"
+                type="text"
+                placeholder="Nome completo"
+                autocomplete="name"
+                required
+              />
+            </div>
+
+            <div class="input-half">
+              <label for="whatsapp-cliente">WhatsApp:</label>
+
+              <input
+                type="tel"
+                id="whatsapp-cliente"
+                name="whatsapp-cliente"
+                placeholder="(xx) xxxxx-xxxx"
+                autocomplete="tel"
+                required
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- ENTREGA NA ETAPA 2 -->
+        <section
+          id="dados-entrega-etapa-2"
+          class="address-section checkout-card"
+        >
+          <h3>Endereço de entrega</h3>
+
+          <div class="input-group compacto">
+            <div class="input-full">
+              <label for="cep-cliente">CEP:</label>
+
+              <input
+                id="cep-cliente"
+                type="text"
+                inputmode="numeric"
+                maxlength="9"
+                placeholder="00000-000"
+                autocomplete="postal-code"
+                required
+              />
+            </div>
+          </div>
+
+          <div id="status-cep-etapa-2" class="status-cep-carrinho"></div>
+
+          <div class="input-group compacto">
+            <div class="input-full">
+              <label for="rua-cliente">Endereço:</label>
+
+              <input
+                id="rua-cliente"
+                type="text"
+                placeholder="Rua, Av, etc."
+                readonly
+                required
+              />
+            </div>
+          </div>
+
+          <div class="input-group compacto">
+            <div class="input-half">
+              <label for="numero-cliente">Número:</label>
+
+              <input
+                id="numero-cliente"
+                type="text"
+                placeholder="Nº"
+                autocomplete="address-line2"
+                required
+              />
+            </div>
+
+            <div class="input-half">
+              <label for="complemento-cliente">Complemento:</label>
+
+              <input
+                id="complemento-cliente"
+                type="text"
+                placeholder="Opcional"
+                autocomplete="address-line2"
+              />
+            </div>
+          </div>
+
+          <div class="input-group compacto">
+            <div class="input-half">
+              <label for="bairro-cliente">Bairro:</label>
+
+              <input
+                id="bairro-cliente"
+                type="text"
+                placeholder="Bairro"
+                readonly
+                required
+              />
+            </div>
+
+            <div class="input-half">
+              <label for="cidade-cliente">Cidade:</label>
+
+              <input
+                id="cidade-cliente"
+                type="text"
+                placeholder="Cidade"
+                readonly
+                required
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- RETIRADA NA ETAPA 2 -->
+        <section
+          id="dados-retirada-etapa-2"
+          class="box-info-retirada checkout-card"
+          style="display: none"
+        >
+          <h3>Retirada no estabelecimento</h3>
+
+          <strong>Endereço de retirada</strong>
+
+          <p id="texto-endereco-retirada"></p>
+        </section>
+
+        <!-- RESUMO FINANCEIRO DA ETAPA 2 -->
+        <div class="resumo-valores-carrinho">
+          <div class="linha-valor-carrinho">
+            <span>Subtotal</span>
+            <strong id="subtotal-etapa-2">R$0,00</strong>
+          </div>
+
+          <div class="linha-valor-carrinho">
+            <span>Frete</span>
+            <strong id="frete-etapa-2">R$0,00</strong>
+          </div>
+
+          <div
+            class="linha-valor-carrinho linha-desconto-carrinho"
+            id="linha-desconto-etapa-2"
+            style="display: none"
+          >
+            <span>Desconto</span>
+            <strong id="desconto-etapa-2">-R$0,00</strong>
+          </div>
+
+          <div class="linha-total-carrinho">
+            <span>Total</span>
+            <strong id="total-etapa-2">R$0,00</strong>
+          </div>
+        </div>
+
+        <div class="acoes-etapa-carrinho">
+          <button
+            id="voltar-etapa-carrinho"
+            type="button"
+            class="btn-secundario"
+          >
+            Voltar
+          </button>
+
+          <button id="confirmar-pedido" type="button" class="btn-principal">
+            Finalizar Pedido
+          </button>
+        </div>
       </div>
     </section>
 
@@ -281,5 +420,6 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="push.js"></script>
   </body>
 </html>
