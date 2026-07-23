@@ -10499,6 +10499,99 @@ ${
       }
 
       window.financeiroAtual = null;
+
+      function atualizarExibicaoPlanoFinanceiro(plano) {
+  const vitalicio =
+    String(plano || "")
+      .trim()
+      .toUpperCase() === "VITALICIO";
+
+  const botaoPagar = document.getElementById(
+    "btn-pagar-financeiro",
+  );
+
+  const botaoAbrirPagamento = document.getElementById(
+    "btn-abrir-pagamento-financeiro",
+  );
+
+  const abaMensalidades = document.getElementById(
+    "btn-aba-mensalidades",
+  );
+
+  const abaHistorico = document.getElementById(
+    "btn-aba-historico",
+  );
+
+  const listaParcelas = document.getElementById(
+    "financeiro-lista-parcelas",
+  );
+
+  const buscaHistorico = document.getElementById(
+    "busca-historico-financeiro",
+  );
+
+  const campoMensalidade = document.getElementById(
+    "financeiro-valor",
+  );
+
+  if (botaoPagar) {
+    botaoPagar.style.display = vitalicio ? "none" : "";
+  }
+
+  if (botaoAbrirPagamento) {
+    botaoAbrirPagamento.style.display = "none";
+  }
+
+  if (abaMensalidades) {
+    abaMensalidades.style.display = vitalicio ? "none" : "";
+  }
+
+  if (abaHistorico) {
+    abaHistorico.style.display = vitalicio ? "none" : "";
+  }
+
+  if (listaParcelas) {
+    listaParcelas.style.display = vitalicio ? "none" : "";
+  }
+
+  if (buscaHistorico) {
+    buscaHistorico.style.display = "none";
+
+    if (vitalicio) {
+      buscaHistorico.value = "";
+      filtroHistoricoFinanceiro = "";
+    }
+  }
+
+  /*
+   * Esconde toda a linha que contém o valor da mensalidade,
+   * e não somente o texto interno.
+   */
+  if (campoMensalidade) {
+    const linhaMensalidade =
+      campoMensalidade.closest(
+        ".financeiro-resumo-item",
+      ) ||
+      campoMensalidade.parentElement;
+
+    if (linhaMensalidade) {
+      linhaMensalidade.style.display =
+        vitalicio ? "none" : "";
+    }
+  }
+
+  if (vitalicio) {
+    window.abaFinanceira = "mensalidades";
+    window.parcelasFinanceirasSelecionadas = [];
+    window.competenciasAguardandoPagamento = [];
+    window.financeiroAtual = null;
+
+    if (window.monitorFinanceiroPagamento) {
+      clearInterval(window.monitorFinanceiroPagamento);
+      window.monitorFinanceiroPagamento = null;
+    }
+  }
+}
       
       function atualizarFinanceiro(dados) {
         document.getElementById("financeiro-plano").textContent =
@@ -10640,6 +10733,7 @@ function abrirFinanceiroPeloAviso() {
 
         console.log("Financeiro recebido:", resultado);
         renderizarAvisoFinanceiroAdmin(resultado);
+        atualizarExibicaoPlanoFinanceiro(resultado.plano);
 
         if (!resultado.sucesso) {
           console.error(
@@ -10658,17 +10752,34 @@ function abrirFinanceiroPeloAviso() {
           return;
         }
 
-        if (resultado.plano === "VITALICIO") {
-          atualizarFinanceiro({
-            plano: "Vitalício",
-            valor: "Sem cobrança",
-            competencia: "-",
-            status: "Ativo",
-            vencimento: "-",
-          });
+        if (
+  String(resultado.plano || "")
+    .trim()
+    .toUpperCase() === "VITALICIO"
+) {
+  window.financeiroAtual = null;
+  window.parcelasFinanceirasSelecionadas = [];
 
-          return;
-        }
+  atualizarFinanceiro({
+    plano: "Vitalício",
+    valor: "Sem cobrança",
+    competencia: "-",
+    status: "Ativo",
+    vencimento: "-",
+  });
+
+  const listaParcelas = document.getElementById(
+    "financeiro-lista-parcelas",
+  );
+
+  if (listaParcelas) {
+    listaParcelas.innerHTML = "";
+  }
+
+  return;
+}
+
+atualizarExibicaoPlanoFinanceiro("MENSAL");
 
         const mensalidade = resultado.destaque;
 
