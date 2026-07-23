@@ -3,6 +3,61 @@ let timeoutStatusCliente = null;
 const URL_CONTROLE =
   'https://script.google.com/macros/s/AKfycbxtEiOTWzHDTC2CO3XKG5rb-KEE2lPr6tz6RBHojLpUfQZHwoi5CS_Y0NOaQDFP71uTVA/exec';
 
+const URL_LICENCIAMENTO =
+  "https://script.google.com/macros/s/AKfycbwwm9HvLqcAuaw09ssIqZtvNastFXPdAHtPUBjtFZiME8bScF53TiAef6pqFxEENYHT/exec";
+
+const CARDAPIO_ID = "card_54834e968305";
+
+async function verificarLicencaPublica() {
+  const parametros = new URLSearchParams({
+    acao: "consultarLicenca",
+    cardapioId: CARDAPIO_ID,
+    t: Date.now().toString(),
+  });
+
+  const resposta = await fetch(
+    `${URL_LICENCIAMENTO}?${parametros.toString()}`,
+    {
+      cache: "no-store",
+    },
+  );
+
+  if (!resposta.ok) {
+    throw new Error("Não foi possível verificar a licença.");
+  }
+
+  const dados = await resposta.json();
+
+  if (!dados || typeof dados.permitido !== "boolean") {
+    throw new Error("Resposta inválida ao verificar a licença.");
+  }
+
+  return dados;
+}
+
+function mostrarTelaManutencao() {
+  document.body.className = "pagina-manutencao";
+
+  document.body.innerHTML = `
+    <div class="tela-manutencao">
+      <div class="manutencao-conteudo">
+        <div class="manutencao-emoji">
+          🚧
+        </div>
+
+        <div class="manutencao-texto">
+          <h1>Cardápio temporariamente indisponível</h1>
+
+          <p>
+            Estamos realizando uma manutenção temporária em nosso cardápio.
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+
 let API_URL = "";
 const TEMPO_PEDIDO_AGUARDANDO = 1 * 60 * 60 * 1000;
 const TEMPO_PEDIDO_PAGO = 2 * 60 * 60 * 1000;
@@ -1770,22 +1825,22 @@ function aplicarPerfilLojaCardapio() {
   document.body.classList.add(`tema-${tema}`);
 
   if (perfilLoja.ApiPagamentoURL) {
-  API_URL = String(perfilLoja.ApiPagamentoURL)
-    .trim()
-    .replace(/\/$/, "");
+    API_URL = String(perfilLoja.ApiPagamentoURL)
+      .trim()
+      .replace(/\/$/, "");
 
-  // Disponibiliza a URL para o push.js
-  window.API_CARDAPIO_URL = API_URL;
+    // Disponibiliza a URL para o push.js
+    window.API_CARDAPIO_URL = API_URL;
 
-  // Avisa que a URL foi carregada da planilha
-  window.dispatchEvent(
-    new CustomEvent("apiCardapioCarregada", {
-      detail: {
-        apiUrl: API_URL,
-      },
-    }),
-  );
-}
+    // Avisa que a URL foi carregada da planilha
+    window.dispatchEvent(
+      new CustomEvent("apiCardapioCarregada", {
+        detail: {
+          apiUrl: API_URL,
+        },
+      }),
+    );
+  }
 
   const favicon = document.getElementById("favicon");
   const shortcutIcon = document.getElementById("shortcut-icon");
@@ -2380,7 +2435,226 @@ async function confirmarReservaEstoqueCardapio(pedidoId) {
   );
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+/* =========================================================
+   INSTALAÇÃO DO CARDÁPIO NO IOS
+========================================================= */
+
+const CHAVE_POPUP_INSTALACAO_IOS =
+  "popupInstalacaoIOSUltimaExibicao";
+
+const TEMPO_REEXIBICAO_POPUP_IOS =
+  24 * 60 * 60 * 1000;
+
+const ATRASO_POPUP_INSTALACAO_IOS =
+  5 * 1000;
+
+function dispositivoEhIOS() {
+  const userAgent =
+    window.navigator.userAgent || "";
+
+  const dispositivoIOS =
+    /iPad|iPhone|iPod/i.test(userAgent);
+
+  const iPadComModoDesktop =
+    window.navigator.platform === "MacIntel" &&
+    window.navigator.maxTouchPoints > 1;
+
+  return dispositivoIOS || iPadComModoDesktop;
+}
+
+function navegadorEhSafariIOS() {
+  const userAgent =
+    window.navigator.userAgent || "";
+
+  const possuiSafari =
+    /Safari/i.test(userAgent);
+
+  const outroNavegadorIOS =
+    /CriOS|FxiOS|EdgiOS|OPiOS|DuckDuckGo/i.test(
+      userAgent,
+    );
+
+  return possuiSafari && !outroNavegadorIOS;
+}
+
+function cardapioEstaInstalado() {
+  return (
+    window.navigator.standalone === true ||
+    window.matchMedia(
+      "(display-mode: standalone)",
+    ).matches
+  );
+}
+
+function obterUltimaExibicaoPopupIOS() {
+  try {
+    const valorSalvo = localStorage.getItem(
+      CHAVE_POPUP_INSTALACAO_IOS,
+    );
+
+    const dataSalva = Number(valorSalvo);
+
+    return Number.isFinite(dataSalva)
+      ? dataSalva
+      : 0;
+  } catch (erro) {
+    console.warn(
+      "Não foi possível consultar o popup de instalação:",
+      erro,
+    );
+
+    return 0;
+  }
+}
+
+function popupIOSFoiExibidoRecentemente() {
+  const ultimaExibicao =
+    obterUltimaExibicaoPopupIOS();
+
+  if (!ultimaExibicao) {
+    return false;
+  }
+
+  const tempoDecorrido =
+    Date.now() - ultimaExibicao;
+
+  return (
+    tempoDecorrido <
+    TEMPO_REEXIBICAO_POPUP_IOS
+  );
+}
+
+function deveExibirPopupInstalacaoIOS() {
+  if (!dispositivoEhIOS()) {
+    return false;
+  }
+
+  if (!navegadorEhSafariIOS()) {
+    return false;
+  }
+
+  if (cardapioEstaInstalado()) {
+    return false;
+  }
+
+  if (popupIOSFoiExibidoRecentemente()) {
+    return false;
+  }
+
+  return true;
+}
+
+function abrirPopupInstalacaoIOS() {
+  const popup = document.getElementById(
+    "popup-instalacao-ios",
+  );
+
+  if (!popup) {
+    return;
+  }
+
+  configurarEventosPopupInstalacaoIOS();
+
+  popup.classList.add("ativo");
+  popup.setAttribute("aria-hidden", "false");
+}
+
+function registrarExibicaoPopupIOS() {
+  try {
+    localStorage.setItem(
+      CHAVE_POPUP_INSTALACAO_IOS,
+      String(Date.now()),
+    );
+  } catch (erro) {
+    console.warn(
+      "Não foi possível salvar a exibição do popup.",
+      erro,
+    );
+  }
+}
+
+function fecharPopupInstalacaoIOS() {
+  const popup = document.getElementById(
+    "popup-instalacao-ios",
+  );
+
+  if (!popup) return;
+
+  registrarExibicaoPopupIOS();
+
+  popup.classList.remove("ativo");
+  popup.setAttribute("aria-hidden", "true");
+}
+
+function configurarEventosPopupInstalacaoIOS() {
+  const popup = document.getElementById(
+    "popup-instalacao-ios",
+  );
+
+  if (!popup) return;
+
+  const logoPopup =
+    document.getElementById("popup-ios-logo");
+
+  const logoLoja =
+    document.getElementById("logo-loja");
+
+  if (
+    logoPopup &&
+    logoLoja &&
+    logoLoja.src
+  ) {
+    logoPopup.src = logoLoja.src;
+  }
+
+  [
+    "fechar-popup-instalacao-ios",
+    "botao-agora-nao-popup-ios",
+    "botao-entendi-popup-ios",
+  ].forEach((id) => {
+    const botao =
+      document.getElementById(id);
+
+    if (!botao) return;
+
+    botao.addEventListener(
+      "click",
+      fecharPopupInstalacaoIOS,
+    );
+  });
+}
+
+function prepararPopupInstalacaoIOS() {
+  if (!deveExibirPopupInstalacaoIOS()) {
+    return;
+  }
+
+  window.setTimeout(() => {
+    if (cardapioEstaInstalado()) {
+      return;
+    }
+
+    abrirPopupInstalacaoIOS();
+  }, ATRASO_POPUP_INSTALACAO_IOS);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const licenca = await verificarLicencaPublica();
+
+    console.log("Resultado da licença:", licenca);
+
+    if (licenca.permitido !== true) {
+      mostrarTelaManutencao();
+      return;
+    }
+  } catch (erro) {
+    console.error("Erro ao verificar licença:", erro);
+
+    mostrarTelaManutencao();
+    return;
+  }
+  prepararPopupInstalacaoIOS();
   carregarPerfilLojaCardapio();
 
   Promise.all([
@@ -5687,12 +5961,12 @@ async function confirmarPedido() {
       descontoCupom,
     );
 
-const nomeLojaPedido =
-  perfilLoja.NomeLoja || "Loja";
+  const nomeLojaPedido =
+    perfilLoja.NomeLoja || "Loja";
 
-const enderecoPedido =
-  retiradaSelecionada
-    ? {
+  const enderecoPedido =
+    retiradaSelecionada
+      ? {
         nome: dadosRetirada.nome,
         whatsapp:
           dadosRetirada.whatsapp,
@@ -5701,13 +5975,13 @@ const enderecoPedido =
         enderecoRetirada:
           dadosRetirada.enderecoRetirada,
       }
-    : {
+      : {
         ...endereco,
         tipoEntrega: "entrega",
       };
 
-let mensagem = "";
-let itensTexto = "";
+  let mensagem = "";
+  let itensTexto = "";
 
   const enderecoTexto = retiradaSelecionada
     ? `RETIRADA NO ESTABELECIMENTO
