@@ -70,7 +70,7 @@
 
       .form-card,
       .item .strog {
-        color: #875033 !important;
+        color: #f5d0bc !important;
       }
 
       .form-card {
@@ -354,6 +354,7 @@
         flex: 1;
         background: #3a170d;
         color: #fff4d8;
+        border: 2px solid #d28a36;
       }
 
       .excluir-frete {
@@ -375,6 +376,7 @@
 
       .frete-info {
         flex: 1;
+        color: black !important;
       }
 
       .frete-acoes {
@@ -813,14 +815,17 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        color: black;
       }
 
       .horario-topo strong {
         font-size: 16px;
+        color: black;
       }
 
       .lista-horarios-dia {
         margin-top: 6px;
+        color: black;
       }
 
       .linha-horario {
@@ -1342,6 +1347,7 @@
         display: grid;
         grid-template-columns: 115px minmax(120px, 1fr) 46px 90px 104px;
         gap: 8px;
+        color: black;
       }
 
       .item-complemento-grid > div {
@@ -1385,6 +1391,7 @@
         display: flex;
         justify-content: space-between;
         gap: 10px;
+        color: black;
       }
 
       .grupo-complemento-acoes {
@@ -1568,6 +1575,98 @@
         border-radius: 14px;
         display: block;
       }
+
+      .aviso-financeiro-admin {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 14px;
+  padding: 13px 15px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  border-radius: 15px;
+  border: 2px solid transparent;
+
+  cursor: pointer;
+  user-select: none;
+
+  font-weight: bold;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+
+.aviso-financeiro-admin:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.aviso-financeiro-admin:active {
+  transform: scale(0.99);
+}
+
+.aviso-financeiro-admin.amarelo {
+  background: #f6c344;
+  border-color: #ffdc73;
+  color: #3a170d;
+}
+
+.aviso-financeiro-admin.verde {
+  background: #f6c344;
+  border-color: #ffdc73;
+  color: #3a170d;
+}
+
+.aviso-financeiro-admin.vermelho {
+  background: #b91c1c;
+  border-color: #ef4444;
+  color: #ffffff;
+}
+
+.aviso-financeiro-conteudo {
+  flex: 1;
+  min-width: 0;
+}
+
+.aviso-financeiro-conteudo strong,
+.aviso-financeiro-conteudo small {
+  display: block;
+}
+
+.aviso-financeiro-conteudo strong {
+  line-height: 1.25;
+}
+
+.aviso-financeiro-conteudo small {
+  margin-top: 3px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+#aviso-financeiro-icone {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.aviso-financeiro-seta {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .aviso-financeiro-admin {
+    padding: 12px;
+  }
+
+  .aviso-financeiro-conteudo strong {
+    font-size: 14px;
+  }
+}
 
       .topo-painel {
         position: relative;
@@ -1821,6 +1920,7 @@
       .categoria-admin-info {
         flex: 1;
         min-width: 0;
+        color: black;
       }
 
       .categoria-admin-info strong {
@@ -2037,6 +2137,301 @@
         font-size: 13px;
         font-weight: bold;
       }
+      .mensalidade-linha {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 12px 0;
+
+        border-bottom: 1px solid rgba(246, 195, 106, 0.25);
+      }
+
+      .mensalidade-linha:last-of-type {
+        margin-bottom: 18px;
+      }
+
+      .mensalidade-linha span {
+        font-weight: bold;
+        color: #f4d29a;
+      }
+
+      .mensalidade-linha strong {
+        color: #fff4d8;
+        font-size: 15px;
+      }
+
+      .status-pendente {
+        color: #d8a21b !important;
+      }
+
+      .status-pago {
+        color: #1f7a38 !important;
+      }
+
+      .status-bloqueado {
+        color: #b91c1c !important;
+      }
+
+      #btn-pagar-mensalidade {
+        margin-top: 8px;
+      }
+
+      .financeiro-subtitulo {
+        margin: 24px 0 12px;
+        color: white;
+      }
+
+      .financeiro-lista-parcelas {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        color: black;
+      }
+
+      .financeiro-parcela {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+        background: var(--card-bg, #ffffff);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+      }
+
+      .financeiro-parcela-atual {
+        border-width: 2px;
+      }
+
+      .financeiro-parcela-selecionada {
+        outline: 2px solid currentColor;
+      }
+
+      .financeiro-parcela-cabecalho {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .financeiro-parcela-identificacao {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .financeiro-parcela-checkbox {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+      }
+
+      .financeiro-parcela-competencia {
+        font-weight: 700;
+      }
+
+      .financeiro-parcela-dados {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .financeiro-parcela-informacao {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .financeiro-parcela-informacao span {
+        font-size: 0.8rem;
+        opacity: 0.7;
+      }
+
+      .financeiro-status-badge {
+        white-space: nowrap;
+        padding: 5px 9px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      .financeiro-status-pago {
+        background: rgba(34, 197, 94, 0.16);
+        color: #15803d;
+      }
+
+      .financeiro-status-pendente {
+        background: rgba(234, 179, 8, 0.18);
+        color: #a16207;
+      }
+
+      .financeiro-status-vencido {
+        background: rgba(239, 68, 68, 0.16);
+        color: #b91c1c;
+      }
+
+      .financeiro-lista-vazia {
+        color: white;
+        margin: 0;
+        padding: 18px;
+        text-align: center;
+        opacity: 0.7;
+      }
+
+      @media (max-width: 500px) {
+        .financeiro-parcela-dados {
+          flex-direction: column;
+          gap: 8px;
+        }
+      }
+
+      #btn-abrir-pagamento-financeiro {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 10px;
+  padding: 12px 16px;
+
+  border: 2px solid #009ee3;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #007eb5;
+
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+#btn-abrir-pagamento-financeiro:hover {
+  background: #eaf8fe;
+}
+
+#btn-abrir-pagamento-financeiro:active {
+  transform: scale(0.98);
+}
+
+#btn-abrir-pagamento-financeiro[hidden] {
+  display: none !important;
+}
+
+      #btn-pagar-financeiro {
+        position: relative;
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+      }
+
+      #btn-pagar-financeiro:disabled {
+        cursor: not-allowed;
+        opacity: 0.65;
+      }
+
+      #btn-pagar-financeiro.pagamento-carregando {
+        pointer-events: none;
+      }
+
+      .spinner-pagamento {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+        border: 2px solid rgba(255, 255, 255, 0.45);
+        border-top-color: currentColor;
+        border-radius: 50%;
+        vertical-align: middle;
+        animation: girar-spinner-pagamento 0.7s linear infinite;
+      }
+
+      @keyframes girar-spinner-pagamento {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .financeiro-parcela-checkbox:disabled {
+        cursor: not-allowed;
+      }
+
+      .financeiro-abas{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:18px;
+
+    margin-bottom:18px;
+
+}
+
+.financeiro-aba{
+
+    flex:1;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    border:none;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    background:#ececec;
+
+    color:#555;
+
+    transition:.2s;
+
+}
+
+.financeiro-aba:hover{
+
+    transform:translateY(-1px);
+
+}
+
+.financeiro-aba.ativa{
+
+    background:#e64b09;
+
+    color:white;
+}
+
+.resumo-push-card {
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 15px 0 20px;
+}
+
+.resumo-push-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.resumo-push-label{
+    font-size:16px;
+    font-weight:700;
+    color:#000000;
+}
+
+.resumo-push-valor{
+    font-size:28px;
+    font-weight:700;
+    color:#e64b09;
+}
+
     </style>
   </head>
 
@@ -2114,6 +2509,22 @@
       </div>
     </div>
     <div id="conteudo-admin" class="container" style="display: none">
+      <div
+  id="aviso-financeiro-admin"
+  class="aviso-financeiro-admin"
+  role="button"
+  tabindex="0"
+  style="display: none"
+>
+  <span id="aviso-financeiro-icone">⚠️</span>
+
+  <div class="aviso-financeiro-conteudo">
+    <strong id="aviso-financeiro-mensagem"></strong>
+    <small id="aviso-financeiro-detalhes"></small>
+  </div>
+
+  <span class="aviso-financeiro-seta">›</span>
+</div>
       <div class="topo-painel">
         <h1>Painel</h1>
 
@@ -2217,6 +2628,9 @@
 
           <div class="grupo-menu-conteudo">
             <button class="aba-btn" data-aba="perfil">Perfil da Loja</button>
+
+            <button class="aba-btn" data-aba="mensalidade">Financeiro</button>
+
             <button class="aba-btn" data-aba="relatar">Relatar</button>
           </div>
         </div>
@@ -2307,9 +2721,17 @@
         </div>
 
         <div class="form-card">
-          <h2 style="color: #e64b09">Grupos cadastrados</h2>
-          <div id="lista-grupos-complementos">Carregando grupos...</div>
-        </div>
+  <h2 style="color: #e64b09">Grupos cadastrados</h2>
+
+  <input
+    id="busca-grupos-complementos"
+    class="buscador-admin"
+    type="text"
+    placeholder="Buscar grupo..."
+  />
+
+  <div id="lista-grupos-complementos">Carregando grupos...</div>
+</div>
       </section>
 
       <section id="aba-categorias" class="aba">
@@ -2442,9 +2864,17 @@
         </div>
 
         <div class="form-card">
-          <h2 style="color: #e64b09">Categorias cadastradas</h2>
-          <div id="lista-categorias-admin">Carregando categorias...</div>
-        </div>
+  <h2 style="color: #e64b09">Categorias cadastradas</h2>
+
+  <input
+    id="busca-categorias-admin"
+    class="buscador-admin"
+    type="text"
+    placeholder="Buscar categoria..."
+  />
+
+  <div id="lista-categorias-admin">Carregando categorias...</div>
+</div>
       </section>
 
       <section id="aba-pedidos" class="aba ativa">
@@ -2478,10 +2908,17 @@
           <h2 style="color: #e64b09">Estoque de Insumos</h2>
 
           <button type="button" class="salvar" id="btn-criar-insumo">
-            + Criar insumo
-          </button>
+  + Criar insumo
+</button>
 
-          <div id="lista-estoque-insumos">Carregando insumos...</div>
+<input
+  id="busca-estoque-insumos-admin"
+  class="buscador-admin"
+  type="text"
+  placeholder="Buscar insumo..."
+/>
+
+<div id="lista-estoque-insumos">Carregando insumos...</div>
         </div>
       </section>
 
@@ -3009,7 +3446,106 @@
         </div>
       </section>
 
+      <section id="aba-mensalidade" class="aba">
+        <h2>💳 Financeiro</h2>
+
+        <div class="form-card">
+          <div class="mensalidade-linha">
+            <span>Plano</span>
+            <strong id="financeiro-plano">Carregando...</strong>
+          </div>
+
+          <div class="mensalidade-linha">
+            <span>Mensalidade</span>
+            <strong id="financeiro-valor">Carregando...</strong>
+          </div>
+
+          <div class="mensalidade-linha">
+            <span>Competência</span>
+            <strong id="financeiro-competencia">Carregando...</strong>
+          </div>
+
+          <div class="mensalidade-linha">
+            <span>Status</span>
+            <strong
+              id="financeiro-status"
+              class="status-financeiro status-pendente"
+            >
+              🟡 Carregando...
+            </strong>
+          </div>
+
+          <div class="mensalidade-linha">
+            <span>Vencimento</span>
+            <strong id="financeiro-vencimento">Carregando...</strong>
+          </div>
+
+          <button id="btn-pagar-financeiro" class="salvar">
+  Pagar Mensalidade
+</button>
+
+<button
+  id="btn-abrir-pagamento-financeiro"
+  class="abrir-pagamento-financeiro"
+  type="button"
+  hidden
+>
+  Abrir pagamento
+</button>
+
+<div class="financeiro-abas">
+
+    <button
+        id="btn-aba-mensalidades"
+        class="financeiro-aba ativa"
+        type="button"
+        onclick="abrirAbaFinanceira('mensalidades')"
+    >
+        Mensalidades
+    </button>
+
+    <button
+        id="btn-aba-historico"
+        class="financeiro-aba"
+        type="button"
+        onclick="abrirAbaFinanceira('historico')"
+    >
+        Histórico
+    </button>
+
+</div>
+<input
+  id="busca-historico-financeiro"
+  class="buscador-admin"
+  type="text"
+  placeholder="Buscar no histórico..."
+  style="display: none"
+/>
+<div
+    id="financeiro-lista-parcelas"
+    class="financeiro-lista-parcelas"
+>
+    <p class="financeiro-lista-vazia">
+        Carregando parcelas...
+    </p>
+</div>
+      </section>
+      
+
       <section id="aba-notificacoes" class="aba">
+
+        <div class="resumo-push-card">
+  <div class="resumo-push-item">
+    <span class="resumo-push-label">Usuários inscritos</span>
+
+    <span
+      id="push-usuarios-ativos"
+      class="resumo-push-valor"
+    >
+      ...
+    </span>
+  </div>
+</div>
         <div class="form-card">
           <h2 style="color: #e64b09">Notificações Push</h2>
 
@@ -3293,7 +3829,11 @@
       const URL_CONTROLE =
         "https://script.google.com/macros/s/AKfycbxtEiOTWzHDTC2CO3XKG5rb-KEE2lPr6tz6RBHojLpUfQZHwoi5CS_Y0NOaQDFP71uTVA/exec";
 
+      const URL_CONTROLE_CENTRAL =
+        "https://script.google.com/macros/s/AKfycbwwm9HvLqcAuaw09ssIqZtvNastFXPdAHtPUBjtFZiME8bScF53TiAef6pqFxEENYHT/exec";
+      const CARDAPIO_ID = "card_e96778b9de10";
       const CHAVE_SESSAO_ADMIN = "adminAutenticadoNestaAba";
+      const API_KEY = "08d4a6b6ad60bc5d429ce7e33927ae75";
 
       function chamarAcaoAdminJsonp(acao, parametros = {}) {
         return new Promise((resolve, reject) => {
@@ -3353,18 +3893,25 @@
         });
       }
       function mostrarConteudoAdmin() {
-        const login = document.getElementById("login-admin");
+  const login = document.getElementById("login-admin");
 
-        const conteudo = document.getElementById("conteudo-admin");
+  const conteudo = document.getElementById("conteudo-admin");
 
-        if (login) {
-          login.style.display = "none";
-        }
+  if (login) {
+    login.style.display = "none";
+  }
 
-        if (conteudo) {
-          conteudo.style.display = "block";
-        }
-      }
+  if (conteudo) {
+    conteudo.style.display = "block";
+  }
+
+  carregarFinanceiro().catch((erro) => {
+    console.error(
+      "Erro ao carregar aviso financeiro no início do painel:",
+      erro,
+    );
+  });
+}
 
       function mostrarTelaLoginAdmin() {
         const login = document.getElementById("login-admin");
@@ -3475,6 +4022,10 @@
       let dadosHorarios = [];
       let gruposComplementos = [];
       let categoriasAdmin = [];
+      let filtroCategoriasAdmin = "";
+      let filtroGruposComplementos = "";
+      let filtroEstoqueInsumosAdmin = "";
+      let filtroHistoricoFinanceiro = "";
       let produtosCategoriaEditor = [];
       let ordemGruposProdutoCadastro = [];
       let ordemGruposProdutoEdicao = [];
@@ -3488,6 +4039,10 @@
       let estoqueInsumos = [];
       let vinculosEstoque = [];
       let popupInsumosAberto = false;
+      window.monitorFinanceiroPagamento = null;
+      window.competenciasAguardandoPagamento = [];
+      window.consultaFinanceiraMonitorando = false;
+      window.urlPagamentoFinanceiroAtual = "";
 
       const API_PUSH = perfilLojaAdmin.ApiPagamentoURL || "";
       const tipo = document.getElementById("tipo");
@@ -3672,6 +4227,15 @@
         if (abaAtual && abaAtual.id === "aba-editar" && nomeAba !== "editar") {
           limparFormularioEdicaoProduto();
         }
+
+        if (nomeAba === "mensalidade") {
+          carregarFinanceiro();
+        }
+
+        if (nomeAba === "notificacoes") {
+          carregarUsuariosPushAtivos();
+        }
+
         limparCamposTemporariosAoTrocarAba(nomeAba);
         fecharMenuAdmin();
       }
@@ -5661,17 +6225,36 @@
         if (!lista) return;
 
         if (!categoriasAdmin.length) {
-          lista.innerHTML = "<p>Nenhuma categoria cadastrada.</p>";
-          return;
-        }
+  lista.innerHTML = "<p>Nenhuma categoria cadastrada.</p>";
+  return;
+}
 
-        categoriasAdmin.sort((a, b) => {
-          return Number(a.ordem || 9999) - Number(b.ordem || 9999);
-        });
+categoriasAdmin.sort((a, b) => {
+  return Number(a.ordem || 9999) - Number(b.ordem || 9999);
+});
 
-        lista.innerHTML = "";
+const categoriasFiltradas = categoriasAdmin
+  .map((categoria, indexOriginal) => ({
+    categoria,
+    indexOriginal,
+  }))
+  .filter(({ categoria }) => {
+    const nome = String(categoria.categoria || "")
+      .toLowerCase()
+      .trim();
 
-        categoriasAdmin.forEach((categoria, index) => {
+    return nome.includes(filtroCategoriasAdmin);
+  });
+
+if (!categoriasFiltradas.length) {
+  lista.innerHTML = "<p>Nenhuma categoria encontrada.</p>";
+  return;
+}
+
+lista.innerHTML = "";
+
+categoriasFiltradas.forEach(({ categoria, indexOriginal }) => {
+  const index = indexOriginal;
           const div = document.createElement("div");
           div.className = "grupo-complemento-card categoria-admin-card";
 
@@ -5898,13 +6481,33 @@
         if (!lista) return;
 
         if (gruposComplementos.length === 0) {
-          lista.innerHTML = "<p>Nenhum grupo cadastrado.</p>";
-          return;
-        }
+  lista.innerHTML = "<p>Nenhum grupo cadastrado.</p>";
+  return;
+}
 
-        lista.innerHTML = "";
+const gruposFiltrados = gruposComplementos.filter((grupo) => {
+  const nomeGrupo = String(grupo.grupo || "")
+    .toLowerCase()
+    .trim();
 
-        gruposComplementos.forEach((grupo) => {
+  const nomesItens = (grupo.itens || [])
+    .map((item) => String(item.item || "").toLowerCase())
+    .join(" ");
+
+  return (
+    nomeGrupo.includes(filtroGruposComplementos) ||
+    nomesItens.includes(filtroGruposComplementos)
+  );
+});
+
+if (!gruposFiltrados.length) {
+  lista.innerHTML = "<p>Nenhum grupo encontrado.</p>";
+  return;
+}
+
+lista.innerHTML = "";
+
+gruposFiltrados.forEach((grupo) => {
           const div = document.createElement("div");
           div.className = "grupo-complemento-card";
 
@@ -6899,6 +7502,101 @@
         if (botaoCancelar) botaoCancelar.style.display = "none";
       }
 
+      function renderizarEstoqueInsumosAdmin() {
+  const lista = document.getElementById("lista-estoque-insumos");
+  if (!lista) return;
+
+  if (!estoqueInsumos.length) {
+    lista.innerHTML = "<p>Nenhum insumo cadastrado.</p>";
+    return;
+  }
+
+  const insumosFiltrados = estoqueInsumos.filter((item) => {
+    const insumo = String(item.insumo || "")
+      .toLowerCase()
+      .trim();
+
+    const status = String(item.status || "")
+      .toLowerCase()
+      .trim();
+
+    return (
+      insumo.includes(filtroEstoqueInsumosAdmin) ||
+      status.includes(filtroEstoqueInsumosAdmin)
+    );
+  });
+
+  if (!insumosFiltrados.length) {
+    lista.innerHTML = "<p>Nenhum insumo encontrado.</p>";
+    return;
+  }
+
+  lista.innerHTML = insumosFiltrados
+    .map((item) => {
+      const status = String(item.status || "").toUpperCase();
+
+      const classe =
+        status === "ATIVO"
+          ? "ativo"
+          : status === "PAUSADO"
+            ? "pausado"
+            : "processando";
+
+      const quantidadeOriginal =
+        item.quantidade === null || item.quantidade === undefined
+          ? ""
+          : String(item.quantidade);
+
+      return `
+        <div class="item" style="margin-top:10px">
+          <div>
+            <strong>${item.insumo}</strong><br>
+            <small>Status: ${status}</small>
+          </div>
+
+          <input
+            type="number"
+            min="0"
+            value="${quantidadeOriginal}"
+            style="width:80px"
+            placeholder="Livre"
+            onchange="editarQuantidadeInsumo(
+              this,
+              '${item.insumo}',
+              this.value,
+              '${status}'
+            )"
+          />
+
+          <button
+            class="${classe}"
+            onclick="alternarStatusInsumo(
+              this,
+              '${item.insumo}',
+              '${status}',
+              '${quantidadeOriginal}'
+            )"
+          >
+            ${status === "ATIVO" ? "✅" : "❌"}
+          </button>
+
+          <button
+            class="excluir"
+            type="button"
+            title="Excluir insumo"
+            onclick="excluirInsumoAdmin(
+              this,
+              '${item.insumo}'
+            )"
+          >
+            🗑️
+          </button>
+        </div>
+      `;
+    })
+    .join("");
+}
+
       async function carregarEstoqueInsumosAdmin(tentativa = 1) {
         const lista = document.getElementById("lista-estoque-insumos");
         if (!lista) return;
@@ -6925,61 +7623,9 @@
             throw new Error(dadosEstoque.erro || "Erro ao carregar insumos.");
           }
 
-          if (!dadosEstoque.insumos.length) {
-            lista.innerHTML = "<p>Nenhum insumo cadastrado.</p>";
-            return;
-          }
+          estoqueInsumos = dadosEstoque.insumos || [];
 
-          lista.innerHTML = dadosEstoque.insumos
-            .map((item) => {
-              const status = String(item.status || "").toUpperCase();
-              const classe =
-                status === "ATIVO"
-                  ? "ativo"
-                  : status === "PAUSADO"
-                    ? "pausado"
-                    : "processando";
-
-              const quantidadeOriginal =
-                item.quantidade === null || item.quantidade === undefined
-                  ? ""
-                  : String(item.quantidade);
-
-              return `
-  <div class="item" style="margin-top:10px">
-    <div>
-      <strong>${item.insumo}</strong><br>
-      <small>Status: ${status}</small>
-    </div>
-
-    <input
-      type="number"
-      min="0"
-      value="${quantidadeOriginal}"
-      style="width:80px"
-      placeholder="Livre"
-      onchange="editarQuantidadeInsumo(this, '${item.insumo}', this.value, '${status}')"
-    />
-
-    <button
-      class="${classe}"
-      onclick="alternarStatusInsumo(this, '${item.insumo}', '${status}', '${quantidadeOriginal}')"
-    >
-      ${status === "ATIVO" ? "✅" : "❌"}
-    </button>
-
-    <button
-      class="excluir"
-      type="button"
-      title="Excluir insumo"
-      onclick="excluirInsumoAdmin(this, '${item.insumo}')"
-    >
-      🗑️
-    </button>
-  </div>
-`;
-            })
-            .join("");
+          renderizarEstoqueInsumosAdmin();
         } catch (erro) {
           console.error("Erro ao carregar estoque:", erro);
 
@@ -8522,6 +9168,62 @@
         });
 
       document
+  .getElementById("busca-frete")
+  .addEventListener("input", (e) => {
+    filtroFrete = e.target.value.toLowerCase().trim();
+    renderizarFretes();
+  });
+
+  document
+  .getElementById("busca-categorias-admin")
+  ?.addEventListener("input", (e) => {
+    filtroCategoriasAdmin = e.target.value
+      .toLowerCase()
+      .trim();
+
+    renderizarCategoriasAdmin();
+  });
+
+document
+  .getElementById("busca-grupos-complementos")
+  ?.addEventListener("input", (e) => {
+    filtroGruposComplementos = e.target.value
+      .toLowerCase()
+      .trim();
+
+    renderizarListaGruposComplementos();
+  });
+
+document
+  .getElementById("busca-estoque-insumos-admin")
+  ?.addEventListener("input", (e) => {
+    filtroEstoqueInsumosAdmin = e.target.value
+      .toLowerCase()
+      .trim();
+
+    renderizarEstoqueInsumosAdmin();
+  });
+
+document
+  .getElementById("busca-historico-financeiro")
+  ?.addEventListener("input", (e) => {
+    filtroHistoricoFinanceiro = e.target.value
+      .toLowerCase()
+      .trim();
+
+    renderizarParcelasFinanceiras(
+      window.financeiroAtual,
+    );
+  });
+
+document
+  .getElementById("busca-cupons")
+  .addEventListener("input", (e) => {
+    filtroCupons = e.target.value.toLowerCase().trim();
+    renderizarCupons();
+  });
+
+      document
         .getElementById("salvar-cadastro")
         .addEventListener("click", cadastrarItem);
 
@@ -9234,6 +9936,38 @@ ${
         return " ".repeat(espacos) + valor;
       }
 
+      function iniciarCarregamentoPagamento(botao) {
+        if (!botao) return;
+
+        botao.dataset.textoAnterior = botao.textContent.trim();
+
+        botao.disabled = true;
+
+        botao.classList.add("pagamento-carregando");
+
+        botao.innerHTML = `
+    <span
+      class="spinner-pagamento"
+      aria-hidden="true"
+    ></span>
+    Gerando pagamento...
+  `;
+      }
+
+      function finalizarCarregamentoPagamento(botao) {
+        if (!botao) return;
+
+        botao.classList.remove("pagamento-carregando");
+
+        botao.textContent = botao.dataset.textoAnterior || "Pagar Mensalidade";
+
+        /*
+         * Reaplica a regra real do botão:
+         * pago, pendente ou parcelas selecionadas.
+         */
+        atualizarBotaoPagamentoFinanceiro();
+      }
+
       function imprimirFichaPedido(pedido) {
         const numeroPedido = pedido.NumeroPedido || "";
         const pedidoId = pedido.PedidoId || "";
@@ -9323,6 +10057,7 @@ ${
           minute: "2-digit",
         });
       }
+
       function atualizarLinkRastreioAdmin(
         pedidoId,
         linkRastreio,
@@ -9763,6 +10498,1255 @@ ${
         }
       }
 
+      window.financeiroAtual = null;
+      
+      function atualizarFinanceiro(dados) {
+        document.getElementById("financeiro-plano").textContent =
+          dados.plano || "-";
+
+        document.getElementById("financeiro-valor").textContent =
+          dados.valor || "-";
+
+        document.getElementById("financeiro-competencia").textContent =
+          dados.competencia || "-";
+
+        document.getElementById("financeiro-vencimento").textContent =
+          dados.vencimento || "-";
+
+        const status = document.getElementById("financeiro-status");
+
+        status.textContent = dados.status || "-";
+
+        status.className = "status-financeiro";
+
+        if (dados.classe) {
+          status.classList.add(dados.classe);
+        }
+      }
+
+      async function carregarUsuariosPushAtivos() {
+  try {
+    const resposta = await fetch(
+      `${URL_CONTROLE}?acao=obterUsuariosPushAtivos`
+    );
+
+    const dados = await resposta.json();
+
+    document.getElementById("push-usuarios-ativos").textContent =
+      dados.usuariosAtivos || 0;
+
+  } catch (erro) {
+    console.error("Erro ao carregar usuários Push:", erro);
+
+    document.getElementById("push-usuarios-ativos").textContent = "--";
+  }
+}
+
+function renderizarAvisoFinanceiroAdmin(licenca) {
+  const barra = document.getElementById("aviso-financeiro-admin");
+  const mensagem = document.getElementById(
+    "aviso-financeiro-mensagem",
+  );
+  const detalhes = document.getElementById(
+    "aviso-financeiro-detalhes",
+  );
+  const icone = document.getElementById(
+    "aviso-financeiro-icone",
+  );
+
+  if (!barra || !mensagem || !detalhes || !icone) {
+    return;
+  }
+
+  const objetoLicenca =
+  licenca?.licenca ||
+  licenca?.Licenca ||
+  licenca?.cardapio?.Licenca ||
+  licenca;
+
+const aviso = objetoLicenca?.aviso;
+
+console.log("Licença recebida pela barra:", objetoLicenca);
+console.log("Aviso recebido pela barra:", aviso);
+
+  if (!aviso?.exibir || !aviso?.mensagem) {
+    barra.style.display = "none";
+    barra.classList.remove(
+      "amarelo",
+      "verde",
+      "vermelho",
+    );
+
+    mensagem.textContent = "";
+    detalhes.textContent = "";
+
+    return;
+  }
+
+  const tipoRecebido = String(
+    aviso.tipo || "amarelo",
+  ).toLowerCase();
+
+  const tipoVisual =
+  tipoRecebido === "vermelho"
+    ? "vermelho"
+    : tipoRecebido === "verde"
+      ? "verde"
+      : "amarelo";
+
+  barra.classList.remove(
+    "amarelo",
+    "verde",
+    "vermelho",
+  );
+
+  barra.classList.add(tipoVisual);
+
+  mensagem.textContent = aviso.mensagem;
+
+  const partesDetalhes = [];
+
+  if (aviso.vencimento) {
+    partesDetalhes.push(
+      `Vencimento: ${aviso.vencimento}`,
+    );
+  }
+
+  if (
+    aviso.valor !== undefined &&
+    aviso.valor !== null &&
+    aviso.valor !== ""
+  ) {
+    partesDetalhes.push(
+      `Valor: ${formatarMoeda(aviso.valor)}`,
+    );
+  }
+
+  detalhes.textContent = partesDetalhes.join(" • ");
+
+  icone.textContent =
+    tipoVisual === "vermelho" ? "⚠️" : "🔔";
+
+  barra.style.display = "flex";
+}
+
+function abrirFinanceiroPeloAviso() {
+  trocarAba("mensalidade");
+  abrirAbaFinanceira("mensalidades");
+}
+
+      async function carregarFinanceiro() {
+        const resultado = await consultarControle("consultarFinanceiro");
+
+        console.log("Financeiro recebido:", resultado);
+        renderizarAvisoFinanceiroAdmin(resultado);
+
+        if (!resultado.sucesso) {
+          console.error(
+            "Não foi possível carregar o financeiro:",
+            resultado.mensagem,
+          );
+
+          atualizarFinanceiro({
+            plano: "Não identificado",
+            valor: "-",
+            competencia: "-",
+            status: "Erro ao carregar",
+            vencimento: "-",
+          });
+
+          return;
+        }
+
+        if (resultado.plano === "VITALICIO") {
+          atualizarFinanceiro({
+            plano: "Vitalício",
+            valor: "Sem cobrança",
+            competencia: "-",
+            status: "Ativo",
+            vencimento: "-",
+          });
+
+          return;
+        }
+
+        const mensalidade = resultado.destaque;
+
+        window.financeiroAtual = resultado;
+
+        if (!window.parcelasFinanceirasSelecionadas) {
+  window.parcelasFinanceirasSelecionadas =
+    obterSelecaoFinanceiraInicial(resultado);
+} else {
+  const competenciasSelecionadas =
+    window.parcelasFinanceirasSelecionadas.map(
+      (p) => String(p.Competencia),
+    );
+
+  window.parcelasFinanceirasSelecionadas =
+    obterTodasParcelasFinanceiras(resultado).filter(
+      (parcela) =>
+        competenciasSelecionadas.includes(
+          String(parcela.Competencia),
+        ) && !parcelaEstaPaga(parcela),
+    );
+}
+
+        renderizarParcelasFinanceiras(resultado);
+        atualizarBotaoPagamentoFinanceiro();
+
+        if (!mensalidade) {
+          atualizarFinanceiro({
+            plano: resultado.plano || "Mensal",
+            valor: "-",
+            competencia: resultado.competenciaAtual || "-",
+            status: "Mensalidade não localizada",
+            vencimento: "-",
+          });
+
+          return;
+        }
+
+        atualizarFinanceiro({
+          plano: resultado.plano || "Mensal",
+          valor: formatarMoeda(mensalidade.Valor),
+          competencia: formatarCompetencia(mensalidade.Competencia),
+          status: mensalidade.Status,
+          vencimento: formatarDataBrasil(mensalidade.DataVencimento),
+        });
+      }
+
+      function pararMonitoramentoPagamentoFinanceiro() {
+  if (window.monitorFinanceiroPagamento) {
+    clearInterval(window.monitorFinanceiroPagamento);
+    window.monitorFinanceiroPagamento = null;
+  }
+
+  window.competenciasAguardandoPagamento = [];
+  window.consultaFinanceiraMonitorando = false;
+}
+
+async function verificarPagamentoFinanceiro() {
+  if (window.consultaFinanceiraMonitorando) {
+    return;
+  }
+
+  const competencias =
+    window.competenciasAguardandoPagamento || [];
+
+  if (!competencias.length) {
+    pararMonitoramentoPagamentoFinanceiro();
+    return;
+  }
+
+  window.consultaFinanceiraMonitorando = true;
+
+  try {
+    await carregarFinanceiro();
+
+    const dadosFinanceiros = window.financeiroAtual;
+
+    if (!dadosFinanceiros) {
+      return;
+    }
+
+    const todasPagas = competencias.every(
+      (competencia) => {
+        const parcela =
+          localizarParcelaPorCompetencia(
+            dadosFinanceiros,
+            competencia,
+          );
+
+        return parcela && parcelaEstaPaga(parcela);
+      },
+    );
+
+    if (todasPagas) {
+  pararMonitoramentoPagamentoFinanceiro();
+
+  esconderBotaoAbrirPagamentoFinanceiro();
+
+  atualizarBotaoPagamentoFinanceiro();
+}
+  } catch (erro) {
+    console.warn(
+      "Ainda não foi possível atualizar o pagamento:",
+      erro,
+    );
+  } finally {
+    window.consultaFinanceiraMonitorando = false;
+  }
+}
+
+function mostrarBotaoAbrirPagamentoFinanceiro(
+  checkoutUrl,
+) {
+  const botao = document.getElementById(
+    "btn-abrir-pagamento-financeiro",
+  );
+
+  if (!botao || !checkoutUrl) {
+    return;
+  }
+
+  window.urlPagamentoFinanceiroAtual =
+    String(checkoutUrl);
+
+  botao.hidden = false;
+}
+
+function esconderBotaoAbrirPagamentoFinanceiro() {
+  const botao = document.getElementById(
+    "btn-abrir-pagamento-financeiro",
+  );
+
+  window.urlPagamentoFinanceiroAtual = "";
+
+  if (!botao) {
+    return;
+  }
+
+  botao.hidden = true;
+}
+
+function abrirPagamentoFinanceiro() {
+  const checkoutUrl =
+    window.urlPagamentoFinanceiroAtual;
+
+  if (!checkoutUrl) {
+    esconderBotaoAbrirPagamentoFinanceiro();
+
+    alert(
+      "O link de pagamento não está mais disponível. Gere um novo pagamento.",
+    );
+
+    return;
+  }
+
+  window.open(
+    checkoutUrl,
+    "_blank",
+    "noopener,noreferrer",
+  );
+}
+
+function iniciarMonitoramentoPagamentoFinanceiro(
+  competencias,
+) {
+  pararMonitoramentoPagamentoFinanceiro();
+
+  window.competenciasAguardandoPagamento = [
+    ...competencias,
+  ];
+
+  setTimeout(() => {
+    verificarPagamentoFinanceiro();
+  }, 3000);
+
+  window.monitorFinanceiroPagamento = setInterval(
+    () => {
+      verificarPagamentoFinanceiro();
+    },
+    5000,
+  );
+
+  setTimeout(() => {
+    pararMonitoramentoPagamentoFinanceiro();
+  }, 10 * 60 * 1000);
+}
+
+      async function pagarMensalidade() {
+        if (window.pagamentoEmAndamento === true) {
+          return;
+        }
+
+        const botao = document.getElementById("btn-pagar-financeiro");
+
+        if (!botao || botao.disabled) {
+          return;
+        }
+
+        const dadosFinanceiros = window.financeiroAtual;
+
+        if (!dadosFinanceiros) {
+          alert("Aguarde os dados carregarem.");
+          return;
+        }
+
+        const parcelasSelecionadas =
+          window.parcelasFinanceirasSelecionadas || [];
+
+        const mensalidades =
+  parcelasSelecionadas.length
+    ? parcelasSelecionadas
+    : [
+        localizarParcelaPorCompetencia(
+          dadosFinanceiros,
+          dadosFinanceiros.competenciaAtual,
+        ),
+      ];
+
+if (!mensalidades.length || !mensalidades[0]) {
+  alert("Nenhuma mensalidade encontrada.");
+  return;
+}
+
+if (mensalidades.some(parcelaEstaPaga)) {
+  alert("Uma das mensalidades selecionadas já está paga.");
+  return;
+}
+
+const competencias = mensalidades.map(
+  (item) => item.Competencia,
+);
+
+const valorTotal =
+  calcularTotalParcelasFinanceiras(
+    mensalidades,
+  );
+
+        /*
+         * A trava precisa ser ativada antes do fetch.
+         */
+        window.pagamentoEmAndamento = true;
+
+        iniciarCarregamentoPagamento(botao);
+
+        try {
+          const resposta = await fetch(
+            "https://api-pagamentos-cardapios.onrender.com/api/pagamentos",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type": "application/json",
+                "x-api-key": API_KEY,
+              },
+
+              body: JSON.stringify({
+  cardapioId: CARDAPIO_ID,
+
+  competencia: competencias[0],
+
+  competencias,
+
+  valor: valorTotal,
+
+  descricao:
+    competencias.length === 1
+      ? `Mensalidade ${competencias[0]}`
+      : `${competencias.length} mensalidades`,
+}),
+            },
+          );
+
+          const resultado = await resposta.json();
+
+          if (!resposta.ok || !resultado.ok) {
+            throw new Error(resultado.erro || "Erro ao gerar pagamento.");
+          }
+
+          const checkoutUrl =
+  resultado.pagamento?.checkoutUrl;
+
+if (!checkoutUrl) {
+  throw new Error(
+    "O servidor não retornou o link de pagamento.",
+  );
+}
+
+/*
+ * Mantém o link disponível caso o navegador
+ * bloqueie a abertura automática.
+ */
+mostrarBotaoAbrirPagamentoFinanceiro(
+  checkoutUrl,
+);
+
+const janelaPagamento = window.open(
+  checkoutUrl,
+  "_blank",
+  "noopener,noreferrer",
+);
+
+if (!janelaPagamento) {
+  alert(
+    "O navegador bloqueou a abertura automática. Use o botão “Abrir pagamento” abaixo.",
+  );
+}
+
+iniciarMonitoramentoPagamentoFinanceiro(
+  competencias,
+);
+        } catch (erro) {
+          console.error("Erro ao gerar pagamento:", erro);
+
+          alert("Não foi possível gerar o pagamento.\n\n" + erro.message);
+        } finally {
+          window.pagamentoEmAndamento = false;
+
+          finalizarCarregamentoPagamento(botao);
+        }
+      }
+
+      function normalizarStatusFinanceiro(status) {
+        return String(status || "")
+          .trim()
+          .toLowerCase();
+      }
+
+      function parcelaEstaPaga(parcela) {
+        if (!parcela) return false;
+
+        const status = normalizarStatusFinanceiro(parcela.Status);
+
+        return ["pago", "paga", "aprovado", "aprovada", "approved"].includes(
+          status,
+        );
+      }
+
+      function localizarParcelaPorCompetencia(dadosFinanceiros, competencia) {
+        if (!dadosFinanceiros || !competencia) {
+          return null;
+        }
+
+        const parcelas = [
+          dadosFinanceiros.destaque,
+          ...(dadosFinanceiros.abertas || []),
+          ...(dadosFinanceiros.historico || []),
+        ].filter(Boolean);
+
+        return (
+          parcelas.find(
+            (parcela) => String(parcela.Competencia) === String(competencia),
+          ) || null
+        );
+      }
+
+      function obterSelecaoFinanceiraInicial(dados) {
+        if (!dados) {
+          return [];
+        }
+
+        const parcelaAtual = localizarParcelaPorCompetencia(
+          dados,
+          dados.competenciaAtual,
+        );
+
+        if (!parcelaAtual || parcelaEstaPaga(parcelaAtual)) {
+          return [];
+        }
+
+        return [parcelaAtual];
+      }
+
+      function calcularTotalParcelasFinanceiras(parcelas) {
+        return (parcelas || []).reduce((total, parcela) => {
+          const valor = Number(parcela?.Valor) || 0;
+
+          return total + valor;
+        }, 0);
+      }
+
+      function atualizarBotaoPagamentoFinanceiro() {
+        const botao = document.getElementById("btn-pagar-financeiro");
+
+        if (!botao) return;
+        if (window.pagamentoEmAndamento) {
+          botao.disabled = true;
+          return;
+        }
+
+        const dados = window.financeiroAtual;
+
+        const parcelasSelecionadas =
+          window.parcelasFinanceirasSelecionadas || [];
+
+        /*
+         * Parcelas futuras selecionadas
+         */
+        if (parcelasSelecionadas.length === 1) {
+          const parcelaSelecionada = parcelasSelecionadas[0];
+
+          const totalSelecionado =
+            calcularTotalParcelasFinanceiras(parcelasSelecionadas);
+
+          const ehMesAtual =
+            String(parcelaSelecionada.Competencia) ===
+            String(dados?.competenciaAtual);
+
+          botao.disabled = false;
+
+          botao.textContent = ehMesAtual
+            ? `Pagar mensalidade — ${formatarMoeda(totalSelecionado)}`
+            : `Pagar parcela — ${formatarMoeda(totalSelecionado)}`;
+
+          return;
+        }
+
+        if (parcelasSelecionadas.length > 1) {
+          const quantidade = parcelasSelecionadas.length;
+
+          const totalSelecionado =
+            calcularTotalParcelasFinanceiras(parcelasSelecionadas);
+
+          botao.disabled = false;
+
+          botao.textContent =
+            `Pagar ${quantidade} parcelas — ` + formatarMoeda(totalSelecionado);
+
+          return;
+        }
+
+        /*
+         * Nenhuma parcela futura selecionada:
+         * verificar a mensalidade atual
+         */
+        if (!dados) {
+          botao.disabled = true;
+          botao.textContent = "Carregando...";
+          return;
+        }
+
+        const parcelaAtual = localizarParcelaPorCompetencia(
+          dados,
+          dados.competenciaAtual,
+        );
+
+        if (!parcelaAtual) {
+          botao.disabled = true;
+          botao.textContent = "Parcela indisponível";
+          return;
+        }
+
+        if (parcelaEstaPaga(parcelaAtual)) {
+          botao.disabled = true;
+          botao.textContent = "Mensalidade paga";
+          return;
+        }
+
+        botao.disabled = false;
+
+        botao.textContent =
+          `Pagar mensalidade — ` + formatarMoeda(parcelaAtual.Valor);
+      }
+
+      function formatarMoeda(valor) {
+        const numero = Number(valor) || 0;
+
+        return numero.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
+      }
+
+      function formatarCompetencia(competencia) {
+        if (!competencia) return "-";
+
+        const [ano, mes] = competencia.split("-");
+
+        const meses = [
+          "Janeiro",
+          "Fevereiro",
+          "Março",
+          "Abril",
+          "Maio",
+          "Junho",
+          "Julho",
+          "Agosto",
+          "Setembro",
+          "Outubro",
+          "Novembro",
+          "Dezembro",
+        ];
+
+        return `${meses[Number(mes) - 1]}/${ano}`;
+      }
+
+      function formatarDataBrasil(data) {
+        if (!data) return "-";
+
+        const texto = String(data).trim();
+
+        /*
+         * Captura somente a parte da data, ignorando
+         * horário e fuso horário.
+         */
+        const correspondencia = texto.match(/^(\d{4})-(\d{2})-(\d{2})/);
+
+        if (correspondencia) {
+          const [, ano, mes, dia] = correspondencia;
+
+          return `${dia}/${mes}/${ano}`;
+        }
+
+        /*
+         * Caso a planilha retorne a data em outro formato.
+         */
+        const dataConvertida = new Date(data);
+
+        if (Number.isNaN(dataConvertida.getTime())) {
+          return "-";
+        }
+
+        return dataConvertida.toLocaleDateString("pt-BR", {
+          timeZone: "UTC",
+        });
+      }
+
+      async function consultarControle(acao, dados = {}) {
+        try {
+          const parametros = new URLSearchParams({
+  acao,
+  cardapioId: CARDAPIO_ID,
+  ...dados,
+
+  // Evita que o navegador ou o Apps Script reutilize uma resposta antiga
+  t: String(Date.now()),
+});
+
+const url = `${URL_CONTROLE_CENTRAL}?${parametros.toString()}`;
+
+const resposta = await fetch(url, {
+  cache: "no-store",
+});
+
+          if (!resposta.ok) {
+            throw new Error(
+              `Erro HTTP ${resposta.status} ao consultar o Controle Central.`,
+            );
+          }
+
+          return await resposta.json();
+        } catch (erro) {
+          console.error("Erro ao consultar Controle Central:", erro);
+
+          return {
+            sucesso: false,
+            mensagem: erro.message,
+          };
+        }
+      }
+
+      function obterTodasParcelasFinanceiras(dados) {
+        const parcelas = [
+          dados?.destaque,
+          ...(dados?.abertas || []),
+          ...(dados?.historico || []),
+        ].filter(Boolean);
+
+        const parcelasUnicas = new Map();
+
+        parcelas.forEach((parcela) => {
+          const competencia = String(parcela.Competencia || "").trim();
+
+          if (!competencia) return;
+
+          const parcelaExistente = parcelasUnicas.get(competencia);
+
+          /*
+           * Quando a mesma competência aparecer em mais
+           * de uma lista, priorizamos a versão paga.
+           */
+          if (!parcelaExistente || parcelaEstaPaga(parcela)) {
+            parcelasUnicas.set(competencia, parcela);
+          }
+        });
+
+        return Array.from(parcelasUnicas.values()).sort(
+          (parcelaA, parcelaB) => {
+            return String(parcelaA.Competencia).localeCompare(
+              String(parcelaB.Competencia),
+            );
+          },
+        );
+      }
+
+      function parcelaEstaVencida(parcela) {
+        if (!parcela || parcelaEstaPaga(parcela)) {
+          return false;
+        }
+
+        if (!parcela.DataVencimento) {
+          return false;
+        }
+
+        const vencimento = new Date(parcela.DataVencimento);
+
+        if (Number.isNaN(vencimento.getTime())) {
+          return false;
+        }
+
+        const hoje = new Date();
+
+        vencimento.setHours(23, 59, 59, 999);
+        hoje.setHours(0, 0, 0, 0);
+
+        return vencimento < hoje;
+      }
+
+      function obterStatusVisualParcela(parcela) {
+        if (parcelaEstaPaga(parcela)) {
+          return {
+            texto: "Pago",
+            icone: "🟢",
+            classe: "financeiro-status-pago",
+          };
+        }
+
+        const competenciaParcela = String(parcela?.Competencia || "");
+
+        const competenciaAtual = String(
+          window.financeiroAtual?.competenciaAtual || "",
+        );
+
+        /*
+         * Mês anterior que terminou sem pagamento.
+         */
+        if (competenciaAtual && competenciaParcela < competenciaAtual) {
+          return {
+            texto: "Não cobrada",
+            icone: "🔴",
+            classe: "financeiro-status-vencido",
+          };
+        }
+
+        /*
+ * Mês atual ainda não pago.
+ * Só aparece como vencido quando a data realmente passou.
+ */
+if (competenciaAtual && competenciaParcela === competenciaAtual) {
+  if (parcelaEstaVencida(parcela)) {
+    return {
+      texto: "Vencido",
+      icone: "🔴",
+      classe: "financeiro-status-vencido",
+    };
+  }
+
+  return {
+    texto: "Pendente",
+    icone: "🟡",
+    classe: "financeiro-status-pendente",
+  };
+}
+
+/*
+ * Parcelas de meses futuros.
+ */
+return {
+  texto: "Pendente",
+  icone: "🟡",
+  classe: "financeiro-status-pendente",
+};
+      }
+
+      function selecionarParcelaFinanceira(competencia, selecionada) {
+        const dados = window.financeiroAtual;
+
+        if (!dados) return;
+
+        const competenciaAtual = String(dados.competenciaAtual || "");
+
+        /*
+         * O mês atual pendente é obrigatório
+         * e nunca pode ser desmarcado.
+         */
+        if (String(competencia) === competenciaAtual) {
+          renderizarParcelasFinanceiras(dados);
+          atualizarBotaoPagamentoFinanceiro();
+          return;
+        }
+
+        const parcelasFuturas = obterTodasParcelasFinanceiras(dados)
+          .filter((parcela) => {
+            return (
+              !parcelaEstaPaga(parcela) &&
+              String(parcela.Competencia) > competenciaAtual
+            );
+          })
+          .sort((parcelaA, parcelaB) =>
+            String(parcelaA.Competencia).localeCompare(
+              String(parcelaB.Competencia),
+            ),
+          );
+
+        const indiceClicado = parcelasFuturas.findIndex(
+          (parcela) => String(parcela.Competencia) === String(competencia),
+        );
+
+        if (indiceClicado === -1) {
+          renderizarParcelasFinanceiras(dados);
+          return;
+        }
+
+        const selecionadas = window.parcelasFinanceirasSelecionadas || [];
+
+        /*
+         * Separamos somente as futuras selecionadas,
+         * pois o mês atual obrigatório não deve contar
+         * no índice sequencial.
+         */
+        const futurasSelecionadas = selecionadas.filter((parcela) => {
+          return String(parcela.Competencia) > competenciaAtual;
+        });
+
+        if (selecionada) {
+          /*
+           * Só permite selecionar a primeira futura
+           * disponível ou a imediatamente posterior
+           * à última futura selecionada.
+           */
+          if (indiceClicado !== futurasSelecionadas.length) {
+            renderizarParcelasFinanceiras(dados);
+            return;
+          }
+
+          window.parcelasFinanceirasSelecionadas = [
+            ...selecionadas,
+            parcelasFuturas[indiceClicado],
+          ];
+        } else {
+          /*
+           * Mantém obrigatoriamente o mês atual.
+           *
+           * Ao desmarcar uma futura, remove ela
+           * e todas as futuras posteriores.
+           */
+          window.parcelasFinanceirasSelecionadas = selecionadas.filter(
+            (parcela) => {
+              const competenciaParcela = String(parcela.Competencia);
+
+              if (competenciaParcela === competenciaAtual) {
+                return true;
+              }
+
+              const indiceParcela = parcelasFuturas.findIndex(
+                (item) => String(item.Competencia) === competenciaParcela,
+              );
+
+              return indiceParcela < indiceClicado;
+            },
+          );
+        }
+
+        renderizarParcelasFinanceiras(dados);
+        atualizarBotaoPagamentoFinanceiro();
+      }
+
+      function atualizarSelecaoVisualParcelas() {
+        const selecionadas = window.parcelasFinanceirasSelecionadas || [];
+
+        document.querySelectorAll(".financeiro-parcela").forEach((elemento) => {
+          const competencia = elemento.dataset.competencia;
+
+          const estaSelecionada = selecionadas.some(
+            (parcela) => String(parcela.Competencia) === String(competencia),
+          );
+
+          elemento.classList.toggle(
+            "financeiro-parcela-selecionada",
+            estaSelecionada,
+          );
+        });
+      }
+
+      window.abaFinanceira = "mensalidades";
+
+      function abrirAbaFinanceira(aba){
+
+    window.abaFinanceira=aba;
+
+    document
+        .getElementById("btn-aba-mensalidades")
+        ?.classList.toggle(
+            "ativa",
+            aba==="mensalidades"
+        );
+
+    document
+        .getElementById("btn-aba-historico")
+        ?.classList.toggle(
+            "ativa",
+            aba==="historico"
+        );
+
+        const buscaHistorico = document.getElementById(
+  "busca-historico-financeiro",
+);
+
+if (buscaHistorico) {
+  buscaHistorico.style.display =
+    aba === "historico" ? "block" : "none";
+
+  if (aba !== "historico") {
+    buscaHistorico.value = "";
+    filtroHistoricoFinanceiro = "";
+  }
+}
+
+    renderizarParcelasFinanceiras(
+        window.financeiroAtual
+    );
+
+}
+
+      function renderizarParcelasFinanceiras(dados) {
+        const lista = document.getElementById("financeiro-lista-parcelas");
+
+        if (!lista) return;
+
+        const competenciaAtual = String(dados.competenciaAtual || "");
+
+const todasParcelas = obterTodasParcelasFinanceiras(dados);
+
+const parcelas =
+  window.abaFinanceira === "historico"
+    ? todasParcelas.filter((parcela) => {
+        const competencia = String(parcela.Competencia || "");
+
+        const pertenceAoHistorico =
+          competencia < competenciaAtual ||
+          (competencia === competenciaAtual &&
+            parcelaEstaPaga(parcela));
+
+        if (!pertenceAoHistorico) {
+          return false;
+        }
+
+        if (!filtroHistoricoFinanceiro) {
+          return true;
+        }
+
+        const status = obterStatusVisualParcela(parcela);
+
+        const textoPesquisa = [
+          competencia,
+          formatarCompetencia(competencia),
+          parcela.Status,
+          status.texto,
+          parcela.DataVencimento,
+          formatarDataBrasil(parcela.DataVencimento),
+          parcela.Valor,
+          formatarMoeda(parcela.Valor),
+        ]
+          .join(" ")
+          .toLowerCase();
+
+        return textoPesquisa.includes(
+          filtroHistoricoFinanceiro,
+        );
+      })
+    : todasParcelas.filter((parcela) => {
+        const competencia = String(parcela.Competencia || "");
+
+        return (
+          competencia > competenciaAtual ||
+          (competencia === competenciaAtual &&
+            !parcelaEstaPaga(parcela))
+        );
+      });
+
+        if (parcelas.length === 0) {
+          lista.innerHTML = `
+      <p class="financeiro-lista-vazia">
+        Nenhuma parcela encontrada.
+      </p>
+    `;
+
+          return;
+        }
+
+        lista.innerHTML = "";
+
+        if (window.abaFinanceira === "historico") {
+
+  parcelas.sort((a, b) =>
+    String(b.Competencia).localeCompare(
+      String(a.Competencia)
+    )
+  );
+
+} else {
+
+  parcelas.sort((a, b) =>
+    String(a.Competencia).localeCompare(
+      String(b.Competencia)
+    )
+  );
+
+}
+
+        parcelas.forEach((parcela) => {
+          const competencia = String(parcela.Competencia || "");
+
+          const status = obterStatusVisualParcela(parcela);
+
+          const paga = parcelaEstaPaga(parcela);
+
+          const competenciaAtual = String(dados.competenciaAtual || "");
+
+          const ehParcelaAtual = competencia === competenciaAtual;
+
+          /*
+           * A parcela do mês atual não precisa de
+           * checkbox, pois é paga pelo botão principal.
+           *
+           * Apenas parcelas posteriores à competência
+           * atual podem ser selecionadas.
+           */
+          const ehParcelaFutura = competencia > competenciaAtual;
+          const ehHistorico =
+  window.abaFinanceira === "historico";
+
+          const parcelasFuturas = parcelas.filter((item) => {
+            return (
+              !parcelaEstaPaga(item) &&
+              String(item.Competencia) > competenciaAtual
+            );
+          });
+
+          const indiceFutura = parcelasFuturas.findIndex(
+            (item) => String(item.Competencia) === competencia,
+          );
+
+          const selecionadas = window.parcelasFinanceirasSelecionadas || [];
+
+          const estaSelecionada = selecionadas.some(
+            (item) => String(item.Competencia) === competencia,
+          );
+
+          const futurasSelecionadas = selecionadas.filter((item) => {
+            return String(item.Competencia) > competenciaAtual;
+          });
+
+          /*
+           * Primeira futura sempre liberada.
+           * As seguintes só liberam quando todas
+           * as futuras anteriores estiverem selecionadas.
+           *
+           * O mês atual obrigatório não entra nessa contagem.
+           */
+          const podeSelecionar =
+  !ehHistorico &&
+  !paga &&
+  ehParcelaFutura &&
+  (estaSelecionada || indiceFutura === futurasSelecionadas.length);
+
+          const card = document.createElement("div");
+
+          card.className = "financeiro-parcela";
+          card.dataset.competencia = competencia;
+
+          if (ehParcelaAtual) {
+            card.classList.add("financeiro-parcela-atual");
+          }
+
+          if (ehParcelaFutura && !paga && !podeSelecionar) {
+            card.classList.add("financeiro-parcela-bloqueada");
+          }
+
+          card.innerHTML = `
+      <div class="financeiro-parcela-cabecalho">
+
+        <div class="financeiro-parcela-identificacao">
+
+          ${
+            ehParcelaAtual && !paga   
+              ? `
+<input
+  type="checkbox"
+  class="financeiro-parcela-checkbox"
+  aria-label="${formatarCompetencia(competencia)} obrigatória"
+  checked
+  disabled
+>
+`
+              : !ehHistorico &&
+ehParcelaFutura &&
+!paga
+                ? `
+<input
+  type="checkbox"
+  class="financeiro-parcela-checkbox"
+  aria-label="Selecionar ${formatarCompetencia(competencia)}"
+  ${estaSelecionada ? "checked" : ""}
+  ${podeSelecionar ? "" : "disabled"}
+>
+`
+                : paga
+                  ? `<span aria-hidden="true">✔️</span>`
+                  : `<span aria-hidden="true">•</span>`
+          }
+
+          <span class="financeiro-parcela-competencia">
+            ${formatarCompetencia(competencia)}
+          </span>
+
+        </div>
+
+        <span
+          class="financeiro-status-badge ${status.classe}"
+        >
+          ${status.icone} ${status.texto}
+        </span>
+
+      </div>
+
+      <div class="financeiro-parcela-dados">
+
+        <div class="financeiro-parcela-informacao">
+          <span>Valor</span>
+
+          <strong>
+            ${formatarMoeda(parcela.Valor)}
+          </strong>
+        </div>
+
+        <div class="financeiro-parcela-informacao">
+          <span>Vencimento</span>
+
+          <strong>
+            ${formatarDataBrasil(parcela.DataVencimento)}
+          </strong>
+        </div>
+
+      </div>
+    `;
+
+          if (podeSelecionar) {
+            const checkbox = card.querySelector(".financeiro-parcela-checkbox");
+
+            checkbox.addEventListener("change", (evento) => {
+              selecionarParcelaFinanceira(competencia, evento.target.checked);
+            });
+          }
+
+          lista.appendChild(card);
+        });
+
+        if (!parcelas.length) {
+
+    lista.innerHTML = `
+        <p class="financeiro-lista-vazia">
+            ${
+                window.abaFinanceira === "historico"
+                    ? "Nenhum histórico encontrado."
+                    : "Não há mensalidades pendentes."
+            }
+        </p>
+    `;
+
+    atualizarBotaoPagamentoFinanceiro();
+
+    return;
+
+}
+
+        atualizarSelecaoVisualParcelas();
+      }
+
       async function enviarNotificacaoPush() {
         const titulo = document.getElementById("push-titulo").value.trim();
 
@@ -9928,6 +11912,38 @@ ${
       }
 
       document
+  .getElementById("btn-pagar-financeiro")
+  .addEventListener("click", pagarMensalidade);
+
+  document
+  .getElementById(
+    "btn-abrir-pagamento-financeiro",
+  )
+  ?.addEventListener(
+    "click",
+    abrirPagamentoFinanceiro,
+  );
+
+window.addEventListener("focus", () => {
+  if (
+    window.abaFinanceira === "mensalidades" &&
+    window.competenciasAguardandoPagamento?.length
+  ) {
+    verificarPagamentoFinanceiro();
+  }
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (
+    !document.hidden &&
+    window.abaFinanceira === "mensalidades" &&
+    window.competenciasAguardandoPagamento?.length
+  ) {
+    verificarPagamentoFinanceiro();
+  }
+});
+
+      document
         .getElementById("btn-enviar-push")
         .addEventListener("click", enviarNotificacaoPush);
 
@@ -9974,6 +11990,8 @@ ${
             "Erro ao atualizar pedidos ao retornar ao painel:",
             erro,
           );
+
+          await carregarFinanceiro();
         } finally {
           atualizandoPedidosAoRetornar = false;
         }
@@ -9985,13 +12003,43 @@ ${
         }
       });
 
-      window.addEventListener("focus", () => {
-        atualizarPedidosAoRetornarPainel();
-      });
+      document
+  .getElementById("aviso-financeiro-admin")
+  ?.addEventListener("click", abrirFinanceiroPeloAviso);
 
-      window.addEventListener("pageshow", () => {
-        atualizarPedidosAoRetornarPainel();
-      });
+document
+  .getElementById("aviso-financeiro-admin")
+  ?.addEventListener("keydown", (evento) => {
+    if (
+      evento.key === "Enter" ||
+      evento.key === " "
+    ) {
+      evento.preventDefault();
+      abrirFinanceiroPeloAviso();
+    }
+  });
+
+      window.addEventListener("focus", () => {
+  atualizarPedidosAoRetornarPainel();
+
+  carregarFinanceiro().catch((erro) => {
+    console.error(
+      "Erro ao atualizar aviso financeiro:",
+      erro,
+    );
+  });
+});
+
+window.addEventListener("pageshow", () => {
+  atualizarPedidosAoRetornarPainel();
+
+  carregarFinanceiro().catch((erro) => {
+    console.error(
+      "Erro ao atualizar aviso financeiro:",
+      erro,
+    );
+  });
+});
       iniciarAutenticacaoAdmin();
     </script>
     <div id="areaPedidosLaterais" class="area-pedidos-laterais"></div>
