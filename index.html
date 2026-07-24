@@ -29,10 +29,46 @@
 
       <p id="descricao-loja-cardapio" class="descricao-loja-cardapio"></p>
 
-      <p id="info-loja-cardapio" class="info-loja-cardapio"></p>
+      <div class="resumo-loja-cardapio">
+  <div class="linha-horario-loja">
+    <div class="horario-hoje-loja">
+      <span class="icone-info-loja">⏰</span>
+      <span id="horario-hoje-cardapio">Carregando horário...</span>
+    </div>
 
-      <p id="status-horario"></p>
+    <div id="status-horario" class="status-loja status-fechado">
+      <span class="bolinha-status-loja"></span>
+      <span id="texto-status-horario">Fechado</span>
+    </div>
+  </div>
+
+  <div id="info-loja-cardapio" class="info-loja-cardapio">
+    <span class="icone-info-loja">🕘</span>
+    <span id="tempo-preparo-cardapio"></span>
+
+    <span
+      id="separador-info-loja"
+      class="separador-info-loja"
+    >
+      •
+    </span>
+
+    <span id="pedido-minimo-cardapio"></span>
+  </div>
+</div>
     </header>
+
+    <nav
+  id="menu-navegacao-categorias"
+  class="menu-navegacao-categorias"
+  aria-label="Categorias do cardápio"
+  style="display: none"
+>
+  <div
+    id="lista-navegacao-categorias"
+    class="lista-navegacao-categorias"
+  ></div>
+</nav>
 
     <main id="menu-container"></main>
 
@@ -406,7 +442,6 @@
             d="M7 2C4.2 2 2 4.2 2 7v10c0 2.8 2.2 5 5 5h10c2.8 0 5-2.2 5-5V7c0-2.8-2.2-5-5-5zm10.5 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM12 7a5 5 0 110 10 5 5 0 010-10zm0 2a3 3 0 100 6 3 3 0 000-6z"
           />
         </svg>
-        Instagram
       </a>
 
       <a id="rodape-whatsapp" href="#" target="_blank" style="display: none">
@@ -415,7 +450,6 @@
             d="M20 3.9A10 10 0 003.7 16.3L2 22l5.9-1.5A10 10 0 1020 3.9zm-8 16.1a8 8 0 01-4.1-1.1l-.3-.2-3.5.9.9-3.4-.2-.3A8 8 0 1112 20zm4.5-6c-.2-.1-1.3-.6-1.5-.7-.2-.1-.4-.1-.6.1l-.5.7c-.1.2-.3.2-.5.1a6.5 6.5 0 01-3.2-2.8c-.2-.3 0-.4.1-.5l.4-.5c.1-.2.1-.3 0-.5l-.7-1.6c-.2-.4-.3-.3-.5-.3h-.4c-.2 0-.5.1-.7.3s-.9.9-.9 2.1.9 2.4 1 2.6a11 11 0 004.2 3.8c2.5 1.1 2.5.7 2.9.7s1.3-.5 1.5-1 .2-1 .1-1.1-.2-.1-.5-.3z"
           />
         </svg>
-        WhatsApp
       </a>
     </footer>
 
