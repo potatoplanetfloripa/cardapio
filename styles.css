@@ -26,26 +26,78 @@ color: var(--cor-texto-card);
 }
 
 header {
-  background: radial-gradient(
-    circle at top,
-    var(--cor-botao-3) 0%,
-    var(--cor-botao-2) 35%,
-    var(--cor-botao) 100%
-  );
+  position: relative;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 16%,
+      color-mix(
+        in srgb,
+        var(--cor-botao-3) 76%,
+        #f5a623 24%
+      ) 0%,
+      var(--cor-botao-2) 33%,
+      var(--cor-fundo-principal) 74%,
+      #0e0907 100%
+    );
+
   text-align: center;
-  padding-top: 0px;
-  padding-bottom: 24px;
-  border-bottom: 4px solid var(--cor-destaque);
+
+  padding-top: 0;
+  padding-bottom: 28px;
+
+  border-bottom: 3px solid
+    var(--cor-destaque);
+
+  box-shadow:
+    inset 0 -35px 65px rgba(0, 0, 0, 0.24),
+    0 10px 30px rgba(0, 0, 0, 0.28);
+}
+
+header::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.035),
+      transparent 30%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.012) 0,
+      rgba(255, 255, 255, 0.012) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+}
+
+header > * {
+  position: relative;
+  z-index: 1;
 }
 
 
 
 header h1 {
   color: #fff4d8;
-  margin: 10px 0;
-  font-size: 30px;
-  letter-spacing: 1px;
-  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.45);
+
+  margin: 14px 16px 4px;
+
+  font-size: clamp(30px, 6vw, 44px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: 0.5px;
+
+  text-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.55),
+    0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 header p,
@@ -73,12 +125,119 @@ main {
 
 .menu-section h2,
 .address-section h2 {
-  background: linear-gradient(135deg, #5b2d16 0%, #c7772f 55%, #f2b85b 100%);
+  position: relative;
+  overflow: hidden;
+
+  width: 100%;
+  max-width: 840px;
+
+  box-sizing: border-box;
+
+  margin: 0 auto 14px;
+  padding: 12px 18px;
+
+  background:
+    linear-gradient(
+      110deg,
+      var(--cor-botao) 0%,
+      var(--cor-botao-2) 50%,
+      var(--cor-botao-3) 100%
+    );
+
   color: #fff6df;
-  padding: 12px;
-  border-radius: 12px;
+
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--cor-destaque) 75%,
+      white 25%
+    );
+
+  border-radius: 14px;
+
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: 0.2px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -18px 28px rgba(0, 0, 0, 0.13),
+    0 8px 20px rgba(0, 0, 0, 0.32);
+}
+
+.menu-section h2::after,
+.address-section h2::after {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  right: -30px;
+
+  width: 42%;
+  height: 100%;
+
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 236, 194, 0.13)
+  );
+
+  transform: skewX(-18deg);
+
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .menu-section h2,
+  .address-section h2 {
+    width: 100%;
+
+    margin-bottom: 12px;
+    padding: 11px 14px;
+
+    border-radius: 12px;
+
+    font-size: 18px;
+    text-align: center;
+  }
+}
+
+.menu-section h2::after,
+.address-section h2::after {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  right: -30px;
+
+  width: 42%;
+  height: 100%;
+
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 236, 194, 0.13)
+  );
+
+  transform: skewX(-18deg);
+
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .menu-section h2,
+  .address-section h2 {
+    margin-bottom: 16px;
+    padding: 14px 18px;
+
+    border-radius: 14px;
+
+    text-align: left;
+    font-size: 23px;
+  }
 }
 
 .dish,
@@ -789,50 +948,203 @@ ENDEREÇO NO RESUMO
   }
 }
 
-#status-horario {
-  width: 100%;
-  max-width: 320px;
-  min-height: 58px;
-  margin: 10px auto 0;
-  padding: 10px 14px;
-  box-sizing: border-box;
+/* ===================================
+   RESUMO SUPERIOR DA LOJA
+=================================== */
 
-  border-radius: 18px;
+.resumo-loja-cardapio {
+  width: calc(100% - 30px);
+  max-width: 680px;
+
+  margin: 14px auto 0;
+  padding: 12px 0 2px;
+
+  color: #fff4d8;
+
+  border-top: 1px solid
+    rgba(246, 195, 106, 0.28);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.linha-horario-loja {
+  width: auto;
+  max-width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  margin: 0 auto;
+}
+
+.horario-hoje-loja {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 3px;
+
+  min-width: 0;
+
+  color: #fff4d8;
+
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+
+  white-space: nowrap;
+}
+
+.icone-info-loja {
+  flex-shrink: 0;
+
+  font-size: 17px;
+  line-height: 1;
+
+  filter: sepia(1) saturate(1.6);
+}
+
+.status-loja {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  flex-shrink: 0;
+
+  margin: 0;
+  padding: 5px 12px;
+
+  border: 1px solid transparent;
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+
+  white-space: nowrap;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 4px 10px rgba(0,0,0,.18);
+}
+
+.bolinha-status-loja {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-loja.status-aberto {
+  color: #53e37b;
+  background: rgba(28, 112, 54, .18);
+  border-color: rgba(83, 227, 123, .45);
+}
+
+.status-loja.status-aberto .bolinha-status-loja {
+  background: #53e37b;
+  box-shadow: 0 0 8px #53e37b;
+}
+
+.status-loja.status-fechado {
+  color: #ff6b62;
+  background: rgba(153, 34, 34, .18);
+  border-color: rgba(255, 107, 98, .45);
+}
+
+.status-loja.status-fechado .bolinha-status-loja {
+  background: #ff6b62;
+  box-shadow: 0 0 8px #ff6b62;
+}
+
+.info-loja-cardapio {
+  width: auto;
+  max-width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 4px;
+
+  margin: 6px auto 0;
+  padding: 0;
+
+  color: #fff4d8 !important;
+
   font-size: 14px;
-  font-weight: bold;
-  line-height: 1.35;
+  font-weight: 500;
+  line-height: 1.2;
+
   text-align: center;
-
-  display: block;
+  white-space: nowrap;
 }
 
-#status-horario strong {
-  display: block;
-  margin-bottom: 4px;
+.separador-info-loja {
+  margin: 0 3px;
+
+  color: var(--cor-destaque);
+
+  font-weight: 900;
 }
 
-#status-horario span {
-  display: block;
-  margin-top: 6px;
-}
+@media (max-width: 600px) {
+  .resumo-loja-cardapio {
+    width: calc(100% - 20px);
 
-.status-aberto {
-  background: linear-gradient(135deg, #1f7a38, #46b968);
-  color: #fff;
-  box-shadow: 0 6px 14px rgba(31, 122, 56, 0.35);
-}
+    margin-top: 12px;
+    padding-top: 10px;
+  }
 
-.status-fechado {
-  background: linear-gradient(135deg, #7a1515, #b42323);
-  color: #fff;
-  box-shadow: 0 6px 14px rgba(122, 21, 21, 0.35);
-}
+  .linha-horario-loja {
+    gap: 8px;
+  }
 
-@media (max-width: 480px) {
-  #status-horario {
-    max-width: 300px;
+  .horario-hoje-loja {
     font-size: 13px;
-    padding: 10px 12px;
+  }
+
+  .icone-info-loja {
+    font-size: 15px;
+  }
+
+  .status-loja {
+    font-size: 13px;
+  }
+
+  .info-loja-cardapio {
+    margin-top: 5px;
+
+    gap: 3px;
+
+    font-size: 13px;
+  }
+
+  .separador-info-loja {
+    margin: 0 2px;
+  }
+}
+
+@media (max-width: 390px) {
+  .linha-horario-loja {
+    gap: 6px;
+  }
+
+  .horario-hoje-loja,
+  .status-loja,
+  .info-loja-cardapio {
+    font-size: 12px;
+  }
+
+  .icone-info-loja {
+    font-size: 14px;
   }
 }
 
@@ -1731,10 +2043,23 @@ border: 2px solid var(--cor-destaque) !important;
 }
 
 #categorias-dinamicas-cardapio h2 {
+  width: 100%;
+  max-width: 840px;
+
+  box-sizing: border-box;
+
+  margin: 22px auto 12px;
+
   color: #fff4d8;
-  font-size: 22px;
-  margin: 22px 0 12px;
-  text-align: left;
+
+  font-size: 20px;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  #categorias-dinamicas-cardapio h2 {
+    font-size: 18px;
+  }
 }
 
 .categoria-dinamica-cardapio {
@@ -4895,5 +5220,609 @@ body.pagina-manutencao {
   .popup-instalacao-ios-card,
   .popup-ios-botao {
     transition: none;
+  }
+}
+
+/* ===================================
+   NAVEGAÇÃO DE CATEGORIAS
+=================================== */
+
+.menu-navegacao-categorias {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 10px 0;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--cor-fundo-principal) 92%,
+      transparent
+    );
+
+  border-bottom: 1px solid
+    color-mix(
+      in srgb,
+      var(--cor-destaque) 30%,
+      transparent
+    );
+
+  box-shadow:
+    0 7px 18px rgba(0, 0, 0, 0.22);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.lista-navegacao-categorias {
+  width: auto;
+  max-width: 880px;
+
+  margin: 0 auto;
+  padding: 0 14px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+
+  gap: 8px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  white-space: nowrap;
+
+  scroll-padding-left: 14px;
+  scroll-padding-right: 14px;
+
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.lista-navegacao-categorias::-webkit-scrollbar {
+  display: none;
+}
+
+.botao-navegacao-categoria {
+  flex: 0 0 auto;
+
+  min-width: max-content;
+
+  margin: 0;
+  padding: 10px 17px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--cor-fundo-secundario) 82%,
+      black 18%
+    );
+
+  color: var(--cor-texto-claro);
+
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--cor-destaque) 24%,
+      transparent
+    );
+
+  border-radius: 12px;
+
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.1;
+
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  scroll-snap-align: start;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 3px 9px rgba(0, 0, 0, 0.2);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.botao-navegacao-categoria:hover {
+  transform: translateY(-1px);
+
+  border-color: var(--cor-destaque);
+}
+
+.botao-navegacao-categoria.ativo {
+  background:
+    linear-gradient(
+      135deg,
+      var(--cor-botao) 0%,
+      var(--cor-botao-2) 55%,
+      var(--cor-botao-3) 100%
+    );
+
+  color: var(--cor-texto-claro);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--cor-destaque) 82%,
+      white 18%
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 5px 13px
+      color-mix(
+        in srgb,
+        var(--cor-botao-2) 38%,
+        transparent
+      );
+}
+
+/*
+ * Evita que o título fique escondido
+ * atrás do menu sticky ao navegar.
+ */
+.menu-section {
+  scroll-margin-top: 82px;
+}
+
+@media (max-width: 600px) {
+  .menu-navegacao-categorias {
+    padding: 8px 0;
+  }
+
+  .lista-navegacao-categorias {
+  width: auto;
+  max-width: none;
+
+  margin: 0;
+
+  padding-left: 12px;
+  padding-right: 12px;
+
+  gap: 7px;
+
+  scroll-padding-left: 12px;
+  scroll-padding-right: 12px;
+}
+
+.lista-navegacao-categorias::before,
+.lista-navegacao-categorias::after {
+  content: "";
+  flex: 0 0 1px;
+}
+
+  .botao-navegacao-categoria {
+    padding: 9px 14px;
+
+    border-radius: 11px;
+
+    font-size: 12px;
+  }
+
+  .menu-section {
+    scroll-margin-top: 72px;
+  }
+}
+
+/* =========================================
+   CARDÁPIO COMPACTO — SOMENTE MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  /* -----------------------------------------
+     TOPO DA LOJA
+  ----------------------------------------- */
+
+  header {
+    padding-bottom: 15px;
+  }
+
+  header .logo {
+    width: 102px;
+    height: 102px;
+
+    border-width: 3px;
+
+    box-shadow:
+      0 7px 18px rgba(0, 0, 0, 0.32),
+      0 0 0 2px var(--cor-destaque);
+  }
+
+  header.sem-banner .logo {
+    margin: 10px auto 0;
+  }
+
+  header.com-banner .logo {
+    margin: -38px auto 0;
+  }
+
+  header h1 {
+    margin: 9px 12px 2px;
+
+    font-size: 27px;
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+
+  .descricao-loja-cardapio {
+    margin: 4px auto;
+
+    padding: 0 14px;
+
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  /* -----------------------------------------
+     HORÁRIO, STATUS E INFORMAÇÕES
+  ----------------------------------------- */
+
+  .resumo-loja-cardapio {
+    width: calc(100% - 24px);
+    max-width: 520px;
+
+    margin: 9px auto 0;
+    padding: 8px 0 0;
+  }
+
+  .linha-horario-loja {
+    width: 100%;
+
+    gap: 7px;
+
+    justify-content: center;
+  }
+
+  .horario-hoje-loja {
+    gap: 3px;
+
+    font-size: 12px;
+    line-height: 1.15;
+  }
+
+  .icone-info-loja {
+    font-size: 14px;
+  }
+
+  .status-loja {
+    gap: 5px;
+
+    padding: 4px 9px;
+
+    font-size: 11px;
+    line-height: 1;
+
+    border-radius: 999px;
+  }
+
+  .bolinha-status-loja {
+    width: 7px;
+    height: 7px;
+  }
+
+  .info-loja-cardapio {
+    gap: 3px;
+
+    margin-top: 5px;
+
+    font-size: 12px;
+    line-height: 1.15;
+  }
+
+  .separador-info-loja {
+    margin: 0 2px;
+  }
+
+  /* -----------------------------------------
+     MENU HORIZONTAL DE CATEGORIAS
+  ----------------------------------------- */
+
+  .menu-navegacao-categorias {
+    padding: 6px 0;
+
+    border-bottom-width: 1px;
+
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .lista-navegacao-categorias {
+    width: 100%;
+    max-width: 100%;
+
+    margin: 0;
+
+    padding: 0 10px;
+
+    gap: 6px;
+
+    box-sizing: border-box;
+
+    justify-content: flex-start;
+
+    scroll-padding-left: 10px;
+    scroll-padding-right: 10px;
+  }
+
+  .botao-navegacao-categoria {
+    flex: 0 0 auto;
+
+    min-height: 34px;
+
+    margin: 0;
+    padding: 7px 11px;
+
+    border-width: 1px;
+    border-radius: 9px;
+
+    font-size: 10px;
+    line-height: 1;
+
+    letter-spacing: 0.1px;
+  }
+
+  /* -----------------------------------------
+     CONTEÚDO PRINCIPAL
+  ----------------------------------------- */
+
+  main {
+    padding: 9px;
+  }
+
+  .menu-section {
+    margin-bottom: 22px;
+
+    scroll-margin-top: 58px;
+  }
+
+  /* -----------------------------------------
+     TÍTULO DA CATEGORIA
+  ----------------------------------------- */
+
+  .menu-section h2,
+  .address-section h2,
+  #categorias-dinamicas-cardapio h2 {
+    width: 100%;
+    max-width: 840px;
+
+    box-sizing: border-box;
+
+    margin: 0 auto 8px;
+    padding: 9px 13px;
+
+    border-width: 1px;
+    border-radius: 10px;
+
+    font-size: 16px;
+    line-height: 1.1;
+    letter-spacing: 0;
+
+    text-align: left;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.11),
+      inset 0 -10px 18px rgba(0, 0, 0, 0.1),
+      0 4px 10px rgba(0, 0, 0, 0.24);
+  }
+
+  #categorias-dinamicas-cardapio h2 {
+    margin-top: 14px;
+  }
+
+  /* -----------------------------------------
+     PRODUTO EM FORMATO LISTA
+  ----------------------------------------- */
+
+  .dish,
+  .drink {
+    width: 100%;
+    max-width: 840px;
+
+    min-height: 96px;
+
+    box-sizing: border-box;
+
+    margin: 0 auto 7px;
+    padding: 8px;
+
+    align-items: center;
+
+    border-width: 1px;
+    border-radius: 11px;
+
+    box-shadow:
+      0 3px 9px rgba(0, 0, 0, 0.24);
+  }
+
+  .dish img,
+  .drink img {
+    width: 82px;
+    height: 82px;
+
+    flex: 0 0 82px;
+
+    margin-right: 9px;
+
+    border-width: 1px;
+    border-radius: 9px;
+  }
+
+  .dish-info,
+  .drink-info {
+    min-width: 0;
+
+    padding: 0;
+  }
+
+  .dish-info h3,
+  .drink-info h3 {
+    margin: 0 0 3px;
+
+    font-size: 15px;
+    line-height: 1.15;
+  }
+
+  .dish-info p,
+  .drink-info p {
+    margin: 3px 0 0;
+
+    font-size: 11px;
+    line-height: 1.25;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    overflow: hidden;
+  }
+
+  .dish-info .preco-normal,
+  .drink-info .preco-normal {
+    margin: 2px 0;
+
+    font-size: 14px;
+    line-height: 1.1;
+  }
+
+  .dish-info .preco-produto,
+  .drink-info .preco-produto {
+    gap: 1px;
+
+    margin: 2px 0;
+  }
+
+  .dish-info .preco-de,
+  .drink-info .preco-de {
+    font-size: 10px;
+  }
+
+  .dish-info .preco-por,
+  .drink-info .preco-por {
+    font-size: 14px;
+  }
+
+  /* -----------------------------------------
+     BEBIDAS — EVITA ALTURA EXTRA
+  ----------------------------------------- */
+
+  .drink-info {
+    min-height: 0;
+
+    padding-right: 0;
+  }
+
+  .drink-acoes {
+    position: static;
+
+    margin: 5px 0 0;
+
+    transform: none;
+
+    justify-content: flex-start;
+  }
+
+  .drink-acoes .add-drink {
+    min-width: 72px;
+
+    margin: 0;
+    padding: 7px 10px;
+
+    font-size: 11px;
+  }
+
+  .drink-acoes .quantidade-container {
+    height: 25px;
+  }
+
+  .drink-acoes .qtd-btn,
+  .drink-acoes .qtd-input {
+    width: 25px;
+    height: 25px;
+
+    font-size: 13px;
+  }
+
+  /* -----------------------------------------
+     PRODUTO EM FORMATO GRADE
+  ----------------------------------------- */
+
+  .menu-grade {
+    gap: 7px;
+  }
+
+  .produto-grade-card {
+    margin-bottom: 0;
+
+    border-width: 1px;
+    border-radius: 10px;
+
+    box-shadow:
+      0 3px 9px rgba(0, 0, 0, 0.24);
+  }
+
+  .produto-grade-card img {
+    border-width: 0;
+    border-radius: 0;
+  }
+
+  .produto-grade-info {
+    padding: 7px;
+  }
+
+  .produto-grade-info h3 {
+    margin: 0 0 3px;
+
+    font-size: 13px;
+    line-height: 1.15;
+  }
+
+  .produto-grade-info .preco-normal {
+    margin: 2px 0;
+
+    font-size: 13px;
+  }
+
+  .produto-grade-info .preco-produto {
+    margin: 2px 0;
+
+    gap: 1px;
+  }
+
+  .produto-grade-info .preco-de {
+    font-size: 9px;
+  }
+
+  .produto-grade-info .preco-por {
+    font-size: 13px;
+  }
+
+  .produto-grade-info p {
+    margin: 3px 0 0;
+
+    font-size: 10px;
+    line-height: 1.22;
+
+    -webkit-line-clamp: 2;
   }
 }
