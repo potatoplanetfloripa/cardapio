@@ -3832,7 +3832,6 @@
       const URL_CONTROLE_CENTRAL =
         "https://script.google.com/macros/s/AKfycbwwm9HvLqcAuaw09ssIqZtvNastFXPdAHtPUBjtFZiME8bScF53TiAef6pqFxEENYHT/exec";
       const CARDAPIO_ID = "card_54834e968305";
-      
       const CHAVE_SESSAO_ADMIN = "adminAutenticadoNestaAba";
       const API_KEY = "08d4a6b6ad60bc5d429ce7e33927ae75";
 
@@ -4677,13 +4676,24 @@
 
         atualizarCamposEdicao();
 
-        carregarProdutosComplementosAdmin(() => {
-          marcarGruposProdutoEdicao(item.Nome);
-          atualizarResumoComplementosProduto(
-            "editar-grupos-complementos-produto",
-            "resumo-complementos-editar",
-          );
-        });
+/*
+ * Recria os checkboxes dos grupos antes de tentar
+ * marcar os complementos vinculados ao produto.
+ */
+ordemGruposProdutoEdicao = gruposComplementos.map(
+  (grupo) => grupo.grupo,
+);
+
+renderizarGruposComplementosProduto();
+
+carregarProdutosComplementosAdmin(() => {
+  marcarGruposProdutoEdicao(item.Nome);
+
+  atualizarResumoComplementosProduto(
+    "editar-grupos-complementos-produto",
+    "resumo-complementos-editar",
+  );
+});
       }
 
       function enviarRequisicaoPorIframe(params) {
@@ -6898,19 +6908,41 @@ gruposFiltrados.forEach((grupo) => {
       }
 
       function marcarGruposProdutoEdicao(nomeProduto) {
-        const area = document.getElementById(
-          "editar-grupos-complementos-produto",
-        );
-        if (!area) return;
+  const area = document.getElementById(
+    "editar-grupos-complementos-produto",
+  );
 
-        const gruposDoProduto = produtoComplementos
-          .filter((item) => String(item.produto) === String(nomeProduto))
-          .map((item) => item.grupo);
+  if (!area) return;
 
-        area.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
-          checkbox.checked = gruposDoProduto.includes(checkbox.value);
-        });
-      }
+  const nomeProdutoNormalizado = String(nomeProduto || "")
+    .trim()
+    .toLowerCase();
+
+  const gruposDoProduto = produtoComplementos
+    .filter((item) => {
+      return (
+        String(item.produto || "")
+          .trim()
+          .toLowerCase() === nomeProdutoNormalizado
+      );
+    })
+    .map((item) =>
+      String(item.grupo || "")
+        .trim()
+        .toLowerCase(),
+    );
+
+  area
+    .querySelectorAll('input[type="checkbox"]')
+    .forEach((checkbox) => {
+      const nomeGrupo = String(checkbox.value || "")
+        .trim()
+        .toLowerCase();
+
+      checkbox.checked =
+        gruposDoProduto.includes(nomeGrupo);
+    });
+}
 
       let popupComplementosOrigem = "cadastro";
 
@@ -7859,15 +7891,6 @@ gruposFiltrados.forEach((grupo) => {
             precoPor: itemEditado.precoPor,
             imagemURL: itemEditado.imagemURL,
           });
-
-          if (itemEditado.tipo === "Produto") {
-            salvarProdutoComplementosAdmin(
-              itemEditado.nome,
-              obterGruposSelecionadosProduto(
-                "editar-grupos-complementos-produto",
-              ),
-            );
-          }
 
           if (itemEditado.tipo === "Produto") {
             salvarProdutoComplementosAdmin(
