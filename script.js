@@ -1871,20 +1871,63 @@ function aplicarPerfilLojaCardapio() {
     descricao.style.display = perfilLoja.DescricaoLoja ? "block" : "none";
   }
 
-  const info = document.getElementById("info-loja-cardapio");
+  const info = document.getElementById(
+    "info-loja-cardapio",
+  );
+
+  const tempoPreparo = document.getElementById(
+    "tempo-preparo-cardapio",
+  );
+
+  const pedidoMinimo = document.getElementById(
+    "pedido-minimo-cardapio",
+  );
+
+  const separadorInfo = document.getElementById(
+    "separador-info-loja",
+  );
+
+  const possuiTempoPreparo = Boolean(
+    String(perfilLoja.TempoPreparo || "").trim(),
+  );
+
+  const possuiPedidoMinimo =
+    converterValorCardapio(perfilLoja.PedidoMinimo) > 0;
+
+  if (tempoPreparo) {
+    tempoPreparo.textContent = possuiTempoPreparo
+      ? perfilLoja.TempoPreparo
+      : "";
+
+    tempoPreparo.style.display = possuiTempoPreparo
+      ? ""
+      : "none";
+  }
+
+  if (pedidoMinimo) {
+    pedidoMinimo.textContent = possuiPedidoMinimo
+      ? `Pedido mín. R$${formatarPreco(
+        converterValorCardapio(perfilLoja.PedidoMinimo),
+      )}`
+      : "";
+
+    pedidoMinimo.style.display = possuiPedidoMinimo
+      ? ""
+      : "none";
+  }
+
+  if (separadorInfo) {
+    separadorInfo.style.display =
+      possuiTempoPreparo && possuiPedidoMinimo
+        ? ""
+        : "none";
+  }
+
   if (info) {
-    const partes = [];
-
-    if (perfilLoja.TempoPreparo) {
-      partes.push(`⏱ ${perfilLoja.TempoPreparo}`);
-    }
-
-    if (perfilLoja.PedidoMinimo) {
-      partes.push(`Pedido mínimo R$${formatarPreco(perfilLoja.PedidoMinimo)}`);
-    }
-
-    info.textContent = partes.join(" • ");
-    info.style.display = partes.length ? "block" : "none";
+    info.style.display =
+      possuiTempoPreparo || possuiPedidoMinimo
+        ? "flex"
+        : "none";
   }
 
   const mensagemTopo = document.getElementById("mensagem-topo-loja");
@@ -2096,6 +2139,113 @@ function carregarCategoriasCardapio() {
   });
 }
 
+function criarIdCategoria(nomeCategoria, indice) {
+  const nomeNormalizado = String(nomeCategoria || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return `categoria-${nomeNormalizado || indice}`;
+}
+
+function renderizarMenuCategorias() {
+  const navegacao = document.getElementById(
+    "menu-navegacao-categorias",
+  );
+
+  const lista = document.getElementById(
+    "lista-navegacao-categorias",
+  );
+
+  const secoes = Array.from(
+    document.querySelectorAll(
+      "#menu-container .menu-section",
+    ),
+  );
+
+  if (!navegacao || !lista) return;
+
+  lista.innerHTML = "";
+
+  if (secoes.length === 0) {
+    navegacao.style.display = "none";
+    return;
+  }
+
+  secoes.forEach((secao, indice) => {
+    const titulo = secao.querySelector("h2");
+
+    if (!titulo) return;
+
+    const nomeCategoria =
+      String(titulo.textContent || "").trim();
+
+    if (!nomeCategoria) return;
+
+    if (!secao.id) {
+      secao.id = criarIdCategoria(
+        nomeCategoria,
+        indice,
+      );
+    }
+
+    const botao = document.createElement("button");
+
+    botao.type = "button";
+    botao.className =
+      "botao-navegacao-categoria";
+
+    botao.textContent = nomeCategoria;
+
+    botao.dataset.categoriaId = secao.id;
+
+    botao.setAttribute(
+      "aria-label",
+      `Ir para a categoria ${nomeCategoria}`,
+    );
+
+    botao.addEventListener("click", () => {
+      document
+        .querySelectorAll(
+          ".botao-navegacao-categoria",
+        )
+        .forEach((item) => {
+          item.classList.remove("ativo");
+        });
+
+      botao.classList.add("ativo");
+
+      secao.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+
+      botao.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    });
+
+    lista.appendChild(botao);
+  });
+
+  const primeiroBotao = lista.querySelector(
+    ".botao-navegacao-categoria",
+  );
+
+  if (primeiroBotao) {
+    primeiroBotao.classList.add("ativo");
+  }
+
+  navegacao.style.display = lista.children.length
+    ? "block"
+    : "none";
+}
+
 function renderizarProdutos() {
   const container = document.getElementById("menu-container");
   if (!container) return;
@@ -2121,16 +2271,27 @@ function renderizarProdutos() {
         return produto && produtoAtivo(produto) && produto.Tipo === "Produto";
       });
 
-    const exibirVazia = String(categoria.exibirVazia || "NÃO").trim() === "SIM";
-
-    if (produtosCategoria.length === 0 && !exibirVazia) {
+    if (produtosCategoria.length === 0) {
       return;
     }
 
     const secao = document.createElement("section");
+
     secao.className = "menu-section";
 
-    const formatoCategoria = String(categoria.formato || "LISTA").trim();
+    secao.id = criarIdCategoria(
+      categoria.categoria,
+      container.querySelectorAll(
+        ".menu-section",
+      ).length,
+    );
+
+    secao.dataset.nomeCategoria =
+      String(categoria.categoria || "").trim();
+
+    const formatoCategoria = String(
+      categoria.formato || "LISTA",
+    ).trim();
 
     secao.innerHTML = `
     <h2>${categoria.categoria}</h2>
@@ -2145,10 +2306,6 @@ function renderizarProdutos() {
 
     const lista = secao.querySelector(".menu-items");
 
-    if (produtosCategoria.length === 0) {
-      lista.innerHTML = `<p class="categoria-vazia">Em breve.</p>`;
-    }
-
     produtosCategoria.forEach((produto) => {
       lista.innerHTML += montarHtmlProdutoCategoria(
         produto,
@@ -2160,6 +2317,7 @@ function renderizarProdutos() {
     container.appendChild(secao);
   });
 
+  renderizarMenuCategorias();
   ativarEventosProdutos();
 }
 
@@ -2172,7 +2330,17 @@ function montarHtmlProdutoCategoria(produto, nomeCategoria, formatoCategoria = "
     precoPor > 0 && precoPor < precoDe
       ? precoPor
       : precoDe;
-  const descricao = produto.Descrição || produto.Descricao || "";
+  const descricaoCompleta =
+  String(
+    produto.Descrição ||
+    produto.Descricao ||
+    "",
+  ).trim();
+
+const descricaoLista =
+  descricaoCompleta.length > 58
+    ? `${descricaoCompleta.slice(0, 58).trim()}...`
+    : descricaoCompleta;
   const imagem = produto.ImagemURL || "";
 
   const categoriaNormalizada = normalizarTexto(nomeCategoria);
@@ -2210,7 +2378,7 @@ function montarHtmlProdutoCategoria(produto, nomeCategoria, formatoCategoria = "
         <div class="produto-grade-info">
           <h3>${nome}</h3>
           ${htmlPreco}
-          <p>${descricao}</p>
+          <p>${descricaoLista}</p>
         </div>
       </div>
     `;
@@ -2259,7 +2427,7 @@ function montarHtmlProdutoCategoria(produto, nomeCategoria, formatoCategoria = "
         <div class="dish-info">
           <h3>${nome}</h3>
           ${htmlPreco}
-          <p>${descricao}</p>
+          <p>${descricaoLista}</p>
         </div>
       </div>
     `;
@@ -5126,14 +5294,28 @@ function horarioParaMinutos(horario) {
 }
 
 function atualizarStatusHorarioLoja() {
-  const status = document.getElementById("status-horario");
-  const botaoConfirmar = document.getElementById("confirmar-pedido");
+  const status = document.getElementById(
+    "status-horario",
+  );
 
-  if (!status) return;
+  const textoStatus = document.getElementById(
+    "texto-status-horario",
+  );
+
+  const horarioHoje = document.getElementById(
+    "horario-hoje-cardapio",
+  );
+
+  if (!status || !textoStatus || !horarioHoje) {
+    return;
+  }
 
   const agora = new Date();
   const diaAtual = obterNomeDiaAtual();
-  const minutosAgora = agora.getHours() * 60 + agora.getMinutes();
+
+  const minutosAgora =
+    agora.getHours() * 60 +
+    agora.getMinutes();
 
   const horariosHoje = horariosLoja
     .filter((item) => {
@@ -5145,60 +5327,47 @@ function atualizarStatusHorarioLoja() {
       );
     })
     .sort((a, b) => {
-      return horarioParaMinutos(a.abertura) - horarioParaMinutos(b.abertura);
+      return (
+        horarioParaMinutos(a.abertura) -
+        horarioParaMinutos(b.abertura)
+      );
     });
 
   const horarioAtual = horariosHoje.find((item) => {
     const inicio = horarioParaMinutos(item.abertura);
     const fim = horarioParaMinutos(item.fechamento);
 
-    return minutosAgora >= inicio && minutosAgora <= fim;
+    return (
+      minutosAgora >= inicio &&
+      minutosAgora <= fim
+    );
   });
 
-  lojaAbertaAgora = !!horarioAtual;
-
-  let htmlHorarios = `<strong>${diaAtual} (hoje)</strong><br>`;
+  lojaAbertaAgora = Boolean(horarioAtual);
 
   if (horariosHoje.length > 0) {
-    htmlHorarios += horariosHoje
-      .map((item) => `${item.abertura} - ${item.fechamento}`)
-      .join("<br>");
+    horarioHoje.textContent = horariosHoje
+      .map((item) => {
+        return `${item.abertura} - ${item.fechamento}`;
+      })
+      .join(" / ");
   } else {
-    htmlHorarios += "Fechado hoje";
+    horarioHoje.textContent = "Fechado hoje";
   }
 
-  if (lojaAbertaAgora) {
-    status.innerHTML = `${htmlHorarios}<br><span>Aberto agora</span>`;
-    status.className = "status-aberto";
+  status.classList.remove(
+    "status-aberto",
+    "status-fechado",
+  );
 
+  if (lojaAbertaAgora) {
+    textoStatus.textContent = "Aberto agora";
+    status.classList.add("status-aberto");
     return;
   }
 
-  let textoProximo = "";
-
-  const horariosFuturosHoje = horariosHoje.filter((item) => {
-    const inicio = horarioParaMinutos(item.abertura);
-    return inicio > minutosAgora;
-  });
-
-  const ultimoHorarioHoje = horariosHoje[horariosHoje.length - 1];
-
-  const fimUltimoHorarioHoje = ultimoHorarioHoje
-    ? horarioParaMinutos(ultimoHorarioHoje.fechamento)
-    : null;
-
-  if (
-    ultimoHorarioHoje &&
-    fimUltimoHorarioHoje !== null &&
-    minutosAgora > fimUltimoHorarioHoje &&
-    horariosFuturosHoje.length > 0
-  ) {
-    textoProximo = `<br>Próxima abertura: ${horariosFuturosHoje[0].abertura}`;
-  }
-
-  status.innerHTML = `${htmlHorarios}<br><span>Fechado</span>${textoProximo}`;
-  status.className = "status-fechado";
-
+  textoStatus.textContent = "Fechado";
+  status.classList.add("status-fechado");
 }
 
 function obterPedidosEmAndamento() {
