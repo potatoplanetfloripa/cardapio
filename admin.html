@@ -2432,6 +2432,31 @@
     color:#e64b09;
 }
 
+.salvar.salvando {
+  pointer-events: none;
+  opacity: .75;
+  cursor: wait;
+}
+
+.salvar.salvando::after {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-left: 8px;
+  border: 2px solid rgba(255,255,255,.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: girarSalvar .8s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes girarSalvar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
     </style>
   </head>
 
@@ -3158,7 +3183,12 @@
             </div>
           </div>
 
-          <button class="salvar" id="salvar-edicao">Salvar Alterações</button>
+          <button
+    id="btn-salvar-edicao"
+    class="salvar"
+    type="button">
+    Salvar Alterações
+</button>
         </div>
       </section>
       <section id="aba-frete" class="aba">
@@ -4695,6 +4725,25 @@ carregarProdutosComplementosAdmin(() => {
   );
 });
       }
+
+      function iniciarSalvamento(botao, texto = "Salvando...") {
+  if (!botao || botao.disabled) return false;
+
+  botao.disabled = true;
+  botao.dataset.textoOriginal = botao.innerHTML;
+  botao.innerHTML = texto;
+  botao.classList.add("salvando");
+
+  return true;
+}
+
+function finalizarSalvamento(botao) {
+  if (!botao) return;
+
+  botao.disabled = false;
+  botao.innerHTML = botao.dataset.textoOriginal || "Salvar";
+  botao.classList.remove("salvando");
+}
 
       function enviarRequisicaoPorIframe(params) {
         const url =
@@ -7856,13 +7905,17 @@ gruposFiltrados.forEach((grupo) => {
       }
 
       async function salvarEdicao() {
-        const status = document.getElementById("status");
+  const botaoSalvar = document.getElementById("btn-salvar-edicao");
+  const status = document.getElementById("status");
 
-        if (!itemEditandoOriginal) {
-          alert("Selecione um item para editar.");
+  if (!itemEditandoOriginal) {
+    alert("Selecione um item para editar.");
+    return;
+  }
 
-          return;
-        }
+  if (!iniciarSalvamento(botaoSalvar)) {
+    return;
+  }
 
         const itemEditado = {
           nomeOriginal: itemEditandoOriginal,
@@ -7902,6 +7955,7 @@ gruposFiltrados.forEach((grupo) => {
           }
 
           setTimeout(async () => {
+            finalizarSalvamento(botaoSalvar);
             alert("Item editado com sucesso!");
 
             itemEditandoOriginal = "";
@@ -7923,6 +7977,7 @@ gruposFiltrados.forEach((grupo) => {
             document.querySelector('[data-aba="estoque"]').click();
           }, 3000);
         } catch (error) {
+          finalizarSalvamento(botaoSalvar);
           console.error(error);
 
           alert("Erro ao editar item.");
@@ -9252,8 +9307,8 @@ document
         .addEventListener("click", cadastrarItem);
 
       document
-        .getElementById("salvar-edicao")
-        .addEventListener("click", salvarEdicao);
+  .getElementById("btn-salvar-edicao")
+  .addEventListener("click", salvarEdicao);
 
       document.getElementById("editar-busca").addEventListener("input", (e) => {
         renderizarListaBuscaEdicao(e.target.value);
