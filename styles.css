@@ -5922,3 +5922,552 @@ body.pagina-manutencao {
   overflow: hidden;
 }
 }
+
+/* =========================================
+   ETAPA 2 — REFINAMENTO MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  /* =====================================
+     CARDS DE PRODUTO MAIS LEVES
+  ===================================== */
+
+  .dish,
+  .drink,
+  .produto-grade-card {
+    border-color:
+      color-mix(
+        in srgb,
+        var(--cor-destaque) 72%,
+        transparent
+      ) !important;
+
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.18) !important;
+
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease;
+  }
+
+  .dish:active,
+  .drink:active,
+  .produto-grade-card:active {
+    transform: scale(0.985);
+
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.16) !important;
+  }
+
+  /* Produtos em lista */
+
+  .dish,
+  .drink {
+    min-height: 88px;
+
+    padding: 7px;
+
+    margin-bottom: 6px;
+
+    border-radius: 10px;
+  }
+
+  .dish img,
+  .drink img {
+    width: 76px;
+    height: 76px;
+
+    flex-basis: 76px;
+
+    margin-right: 8px;
+
+    border-radius: 8px;
+  }
+
+  .dish-info h3,
+  .drink-info h3 {
+    margin-bottom: 2px;
+
+    font-size: 14px;
+    line-height: 1.12;
+  }
+
+  .dish-info p,
+  .drink-info p {
+    margin-top: 2px;
+
+    font-size: 10.5px;
+    line-height: 1.22;
+  }
+
+  .dish-info .preco-normal,
+  .drink-info .preco-normal {
+    margin: 2px 0;
+
+    font-size: 13px;
+  }
+
+  .dish-info .preco-por,
+  .drink-info .preco-por {
+    font-size: 13px;
+  }
+
+  /* Grade */
+
+  .produto-grade-card {
+    border-radius: 10px;
+
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.18) !important;
+  }
+
+  .produto-grade-card img {
+    border-radius: 8px;
+  }
+
+  .produto-grade-info {
+    padding: 6px 3px 4px;
+  }
+
+  .produto-grade-info h3 {
+    margin-bottom: 3px;
+
+    font-size: 12.5px;
+    line-height: 1.12;
+  }
+
+  .produto-grade-info p {
+    margin-top: 3px;
+
+    font-size: 9.5px;
+    line-height: 1.2;
+  }
+
+  /* =====================================
+     CARRINHO FLUTUANTE COMPACTO
+  ===================================== */
+
+  .carrinho-flutuante {
+    left: 10px;
+    right: 10px;
+    bottom:
+      calc(
+        10px +
+        env(safe-area-inset-bottom)
+      );
+
+    max-width: 460px;
+
+    gap: 8px;
+
+    padding: 9px 13px;
+
+    border-width: 1px;
+    border-radius: 999px;
+
+    font-size: 12px;
+
+    box-shadow:
+      0 6px 18px rgba(0, 0, 0, 0.32);
+  }
+
+  .carrinho-info,
+  .carrinho-total {
+    gap: 5px;
+  }
+
+  .carrinho-icone {
+    font-size: 17px;
+  }
+
+  .carrinho-seta {
+    font-size: 19px;
+  }
+
+  body {
+    padding-bottom:
+      calc(
+        68px +
+        env(safe-area-inset-bottom)
+      );
+  }
+
+  /* =====================================
+     MODAL DO PRODUTO
+  ===================================== */
+
+  .modal {
+    padding:
+      8px
+      0
+      calc(
+        8px +
+        env(safe-area-inset-bottom)
+      );
+  }
+
+  .modal-content {
+    width: calc(100% - 16px);
+    max-width: 520px;
+
+    max-height:
+      calc(
+        100dvh -
+        16px -
+        env(safe-area-inset-bottom)
+      );
+
+    border-width: 1px;
+    border-radius: 16px;
+
+    box-shadow:
+      0 14px 38px rgba(0, 0, 0, 0.46);
+  }
+
+  #modal-body {
+    max-height:
+      calc(
+        100dvh -
+        16px -
+        env(safe-area-inset-bottom)
+      );
+  }
+
+  .modal-conteudo-rolavel {
+    padding: 12px 12px 16px;
+  }
+
+  /* Topo do produto aberto */
+
+  .modal-produto-topo {
+    margin-bottom: 12px;
+
+    text-align: left;
+  }
+
+  .modal-produto-topo img {
+    width: 100%;
+    height: auto;
+    max-height: 230px;
+
+    aspect-ratio: 16 / 10;
+
+    margin: 0 0 11px;
+
+    object-fit: cover;
+    object-position: center;
+
+    border:
+      1px solid
+      color-mix(
+        in srgb,
+        var(--cor-destaque) 70%,
+        transparent
+      );
+
+    border-radius: 12px;
+
+    box-sizing: border-box;
+  }
+
+  .modal-produto-topo h3 {
+    margin: 0 0 4px;
+
+    font-size: 20px;
+    line-height: 1.15;
+    text-align: left;
+  }
+
+  .modal-produto-preco {
+    margin: 3px 0 0;
+
+    font-size: 18px;
+    line-height: 1.1;
+    text-align: left;
+
+    color:
+      var(--cor-botao-2) !important;
+  }
+
+  .modal-produto-descricao {
+    margin: 8px 0 0;
+
+    font-size: 13px;
+    line-height: 1.4;
+    text-align: left;
+  }
+
+  /* Complementos no modal */
+
+  #complementos-produto-modal {
+    margin-top: 4px;
+  }
+
+  #complementos-produto-modal fieldset {
+    margin: 10px 0 0;
+    padding: 0;
+  }
+
+  #complementos-produto-modal legend {
+    margin-bottom: 7px;
+
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .option-list li,
+  .adicionais-lista li,
+  .drink-option,
+  .item-complemento {
+    min-height: 42px;
+
+    margin-bottom: 6px;
+    padding: 9px 10px;
+
+    border-width: 1px;
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    box-sizing: border-box;
+  }
+
+  /* =====================================
+     BARRA INFERIOR DO MODAL
+  ===================================== */
+
+  .modal-acoes {
+    gap: 8px;
+
+    padding:
+      9px
+      12px
+      calc(
+        10px +
+        env(safe-area-inset-bottom)
+      );
+
+    border-radius: 0 0 15px 15px;
+
+    box-shadow:
+      0 -5px 14px rgba(0, 0, 0, 0.08);
+  }
+
+  .modal-acoes .quantidade-container {
+    height: 40px;
+
+    border-width: 1px;
+  }
+
+  .modal-acoes .qtd-btn {
+    width: 34px;
+    height: 40px;
+
+    font-size: 17px;
+  }
+
+  .modal-acoes .qtd-input {
+    width: 34px;
+    height: 40px;
+
+    font-size: 14px;
+  }
+
+  .modal-acoes .add-pedido {
+    height: 40px;
+
+    padding: 0 12px;
+
+    border-width: 1px;
+    border-radius: 999px;
+
+    font-size: 14px;
+
+    box-shadow:
+      0 3px 9px rgba(0, 0, 0, 0.22);
+  }
+
+  /* Botão de fechar */
+
+  .close {
+    position: sticky;
+    top: 0;
+
+    z-index: 30;
+
+    width: 34px;
+    height: 34px;
+
+    margin: 6px 6px -40px auto;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+      color-mix(
+        in srgb,
+        var(--cor-card) 90%,
+        transparent
+      );
+
+    color: var(--cor-texto-card);
+
+    border:
+      1px solid
+      color-mix(
+        in srgb,
+        var(--cor-destaque) 60%,
+        transparent
+      );
+
+    border-radius: 50%;
+
+    font-size: 24px;
+    line-height: 1;
+
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.22);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+
+@media (max-width: 390px) {
+  .dish,
+  .drink {
+    min-height: 82px;
+  }
+
+  .dish img,
+  .drink img {
+    width: 70px;
+    height: 70px;
+
+    flex-basis: 70px;
+  }
+
+  .modal-produto-topo img {
+    max-height: 200px;
+  }
+
+  .modal-produto-topo h3 {
+    font-size: 18px;
+  }
+
+  .modal-produto-preco {
+    font-size: 16px;
+  }
+
+  .modal-produto-descricao {
+    font-size: 12px;
+  }
+
+  .carrinho-flutuante {
+    padding: 8px 11px;
+    font-size: 11px;
+  }
+}
+
+/* =========================================
+   ADIÇÃO DIRETA POR PRODUTO
+========================================= */
+
+.produto-adicao-direta {
+  cursor: default;
+}
+
+.produto-adicao-direta .add-drink,
+.produto-adicao-direta .qtd-btn {
+  cursor: pointer;
+}
+
+/* Ações em produtos no modo grade */
+
+.produto-grade-card.produto-adicao-direta
+  .produto-grade-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.produto-grade-card
+  .produto-acoes-diretas {
+  position: static;
+
+  width: 100%;
+
+  margin: auto 0 0;
+  padding-top: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 6px;
+
+  transform: none;
+}
+
+.produto-grade-card
+  .produto-acoes-diretas
+  .quantidade-container {
+  margin: 0;
+}
+
+.produto-grade-card
+  .produto-acoes-diretas
+  .add-drink {
+  min-width: 90px;
+
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .produto-grade-card
+    .produto-acoes-diretas {
+    gap: 5px;
+
+    padding-top: 6px;
+  }
+
+  .produto-grade-card
+    .produto-acoes-diretas
+    .quantidade-container {
+    height: 29px;
+  }
+
+  .produto-grade-card
+    .produto-acoes-diretas
+    .qtd-btn {
+    width: 25px;
+    height: 29px;
+
+    font-size: 13px;
+  }
+
+  .produto-grade-card
+    .produto-acoes-diretas
+    .qtd-input {
+    width: 27px;
+    height: 29px;
+
+    font-size: 12px;
+  }
+
+  .produto-grade-card
+    .produto-acoes-diretas
+    .add-drink {
+    min-width: 78px;
+    min-height: 29px;
+
+    padding: 6px 8px;
+
+    font-size: 10px;
+    line-height: 1;
+  }
+}
