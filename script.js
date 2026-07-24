@@ -2321,116 +2321,201 @@ function renderizarProdutos() {
   ativarEventosProdutos();
 }
 
-function montarHtmlProdutoCategoria(produto, nomeCategoria, formatoCategoria = "LISTA") {
+function montarHtmlProdutoCategoria(
+  produto,
+  nomeCategoria,
+  formatoCategoria = "LISTA",
+) {
   const nome = produto.Nome;
-  const precoDe = converterValorCardapio(produto.Preço || produto.Preco || 0);
-  const precoPor = converterValorCardapio(produto.PrecoPor || produto["Preço Por"] || 0);
+
+  const precoDe = converterValorCardapio(
+    produto.Preço ||
+    produto.Preco ||
+    0,
+  );
+
+  const precoPor = converterValorCardapio(
+    produto.PrecoPor ||
+    produto["Preço Por"] ||
+    0,
+  );
 
   const preco =
     precoPor > 0 && precoPor < precoDe
       ? precoPor
       : precoDe;
-  const descricaoCompleta =
-  String(
+
+  const descricaoCompleta = String(
     produto.Descrição ||
     produto.Descricao ||
     "",
   ).trim();
 
-const descricaoLista =
-  descricaoCompleta.length > 58
-    ? `${descricaoCompleta.slice(0, 58).trim()}...`
-    : descricaoCompleta;
-  const imagem = produto.ImagemURL || "";
+  const descricaoLista =
+    descricaoCompleta.length > 58
+      ? `${descricaoCompleta.slice(0, 58).trim()}...`
+      : descricaoCompleta;
 
-  const categoriaNormalizada = normalizarTexto(nomeCategoria);
+  const imagem =
+    produto.ImagemURL || "";
 
-  const categoriaPedido = categoriaNormalizada.includes("bebida")
-    ? "bebida"
-    : categoriaNormalizada.includes("doce")
-      ? "doce"
-      : "salgado";
+  const categoriaNormalizada =
+    normalizarTexto(nomeCategoria);
 
-  const classe = categoriaPedido === "bebida" ? "drink" : "dish";
+  const categoriaPedido =
+    categoriaNormalizada.includes("bebida")
+      ? "bebida"
+      : categoriaNormalizada.includes("doce")
+        ? "doce"
+        : "salgado";
+
+  const temComplementos =
+    produtoTemComplementosAtivos(nome);
+
+  const adicaoDireta =
+    !temComplementos;
 
   const htmlPreco =
     precoPor > 0 && precoPor < precoDe
       ? `
           <div class="preco-produto">
-            <span class="preco-de">De R$${formatarPreco(precoDe)}</span>
-            <strong class="preco-por">Por R$${formatarPreco(precoPor)}</strong>
+            <span class="preco-de">
+              De R$${formatarPreco(precoDe)}
+            </span>
+
+            <strong class="preco-por">
+              Por R$${formatarPreco(precoPor)}
+            </strong>
           </div>
         `
-      : `<p class="preco-normal">R$${formatarPreco(precoDe)}</p>`;
+      : `
+          <p class="preco-normal">
+            R$${formatarPreco(precoDe)}
+          </p>
+        `;
 
-  if (String(formatoCategoria).trim() === "GRADE") {
+  const htmlAcoesDiretas = `
+    <div class="drink-acoes produto-acoes-diretas">
+      <div class="quantidade-container">
+        <button
+          type="button"
+          class="qtd-btn qtd-menos"
+          aria-label="Diminuir quantidade"
+        >
+          −
+        </button>
+
+        <input
+          type="number"
+          class="qtd-input"
+          value="1"
+          min="1"
+          inputmode="numeric"
+          aria-label="Quantidade"
+        />
+
+        <button
+          type="button"
+          class="qtd-btn qtd-mais"
+          aria-label="Aumentar quantidade"
+        >
+          +
+        </button>
+      </div>
+
+      <button
+        type="button"
+        class="add-drink"
+      >
+        Adicionar
+      </button>
+    </div>
+  `;
+
+  if (
+    String(formatoCategoria)
+      .trim()
+      .toUpperCase() === "GRADE"
+  ) {
+    const classesProduto =
+      adicaoDireta
+        ? "drink produto-grade-card produto-adicao-direta"
+        : "dish produto-grade-card produto-com-complementos";
+
     return `
       <div
-        class="dish produto-grade-card"
+        class="${classesProduto}"
         data-name="${nome}"
         data-price="${preco}"
         data-price-de="${precoDe}"
         data-price-por="${precoPor}"
         data-category="${categoriaPedido}"
       >
-        <img src="${imagem}" alt="${nome}" />
+        <img
+          src="${imagem}"
+          alt="${nome}"
+        />
 
         <div class="produto-grade-info">
           <h3>${nome}</h3>
+
           ${htmlPreco}
-          <p>${descricaoLista}</p>
+
+          ${descricaoLista
+        ? `<p>${descricaoLista}</p>`
+        : ""
+      }
+
+          ${adicaoDireta
+        ? htmlAcoesDiretas
+        : ""
+      }
         </div>
       </div>
     `;
   }
 
-  if (categoriaPedido === "bebida") {
-    return `
-        <div
-          class="${classe}"
-          data-name="${nome}"
-          data-price="${preco}"
-          data-price-de="${precoDe}"
-          data-price-por="${precoPor}"
-        >
-          <img src="${imagem}" alt="${nome}" />
+  const classesProduto =
+    adicaoDireta
+      ? "drink produto-adicao-direta"
+      : "dish produto-com-complementos";
 
-          <div class="drink-info">
-            <h3>${nome}</h3>
-            ${htmlPreco}
-
-            <div class="drink-acoes">
-              <div class="quantidade-container">
-                <button type="button" class="qtd-btn qtd-menos">−</button>
-                <input type="number" class="qtd-input" value="1" min="1" />
-                <button type="button" class="qtd-btn qtd-mais">+</button>
-              </div>
-
-              <button class="add-drink">Adicionar</button>
-            </div>
-          </div>
-        </div>
-      `;
-  }
+  const classeInformacoes =
+    adicaoDireta
+      ? "drink-info"
+      : "dish-info";
 
   return `
-      <div
-        class="${classe}"
-        data-name="${nome}"
-        data-price="${preco}"
-        data-price-de="${precoDe}"
-        data-price-por="${precoPor}"
-        data-category="${categoriaPedido}"
-      >
-        <img src="${imagem}" alt="${nome}" />
+    <div
+      class="${classesProduto}"
+      data-name="${nome}"
+      data-price="${preco}"
+      data-price-de="${precoDe}"
+      data-price-por="${precoPor}"
+      data-category="${categoriaPedido}"
+    >
+      <img
+        src="${imagem}"
+        alt="${nome}"
+      />
 
-        <div class="dish-info">
-          <h3>${nome}</h3>
-          ${htmlPreco}
-          <p>${descricaoLista}</p>
-        </div>
+      <div class="${classeInformacoes}">
+        <h3>${nome}</h3>
+
+        ${htmlPreco}
+
+        ${descricaoLista
+      ? `<p>${descricaoLista}</p>`
+      : ""
+    }
+
+        ${adicaoDireta
+      ? htmlAcoesDiretas
+      : ""
+    }
       </div>
-    `;
+    </div>
+  `;
 }
 
 async function carregarEstoqueCardapio() {
@@ -3321,6 +3406,14 @@ function obterGrupoComplemento(nomeGrupo) {
   });
 }
 
+function produtoTemComplementosAtivos(nomeProduto) {
+  return Boolean(
+    montarHtmlComplementosProduto(
+      nomeProduto,
+    ).trim(),
+  );
+}
+
 function montarHtmlComplementosProduto(nomeProduto) {
   const gruposProduto = obterGruposDoProduto(nomeProduto);
 
@@ -3873,9 +3966,13 @@ function ativarEventosProdutos() {
           ) || 0;
 
         try {
+          const category =
+            drink.dataset.category ||
+            "salgado";
+
           addPedido({
             name,
-            category: "bebida",
+            category,
             price,
             priceDe,
             pricePor,
@@ -3897,12 +3994,12 @@ function ativarEventosProdutos() {
           }
         } catch (erro) {
           console.error(
-            "Erro ao adicionar bebida:",
+            "Erro ao adicionar produto:",
             erro,
           );
 
           mostrarAlerta(
-            "Não foi possível adicionar a bebida. Tente novamente.",
+            "Não foi possível adicionar o produto. Tente novamente.",
             "erro",
           );
         }
@@ -6637,3 +6734,4 @@ ${dadosRetirada.enderecoRetirada}`
     );
   }
 }
+
