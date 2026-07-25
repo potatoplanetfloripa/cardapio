@@ -6967,6 +6967,7 @@ gruposFiltrados.forEach((grupo) => {
     .trim()
     .toLowerCase();
 
+  // Grupos vinculados ao produto, preservando a ordem salva
   const gruposDoProduto = produtoComplementos
     .filter((item) => {
       return (
@@ -6975,21 +6976,32 @@ gruposFiltrados.forEach((grupo) => {
           .toLowerCase() === nomeProdutoNormalizado
       );
     })
-    .map((item) =>
-      String(item.grupo || "")
-        .trim()
-        .toLowerCase(),
-    );
+    .map((item) => String(item.grupo || "").trim());
+
+  // Atualiza a ordem da edição
+  ordemGruposProdutoEdicao = [...gruposDoProduto];
+
+  gruposComplementos.forEach((g) => {
+    if (!ordemGruposProdutoEdicao.some(
+      nome => nome.toLowerCase() === g.grupo.toLowerCase()
+    )) {
+      ordemGruposProdutoEdicao.push(g.grupo);
+    }
+  });
+
+  // Recria os checkboxes na ordem correta
+  renderizarGruposComplementosProduto();
+
+  const gruposMarcados = gruposDoProduto.map(g =>
+    g.toLowerCase()
+  );
 
   area
     .querySelectorAll('input[type="checkbox"]')
     .forEach((checkbox) => {
-      const nomeGrupo = String(checkbox.value || "")
-        .trim()
-        .toLowerCase();
-
-      checkbox.checked =
-        gruposDoProduto.includes(nomeGrupo);
+      checkbox.checked = gruposMarcados.includes(
+        checkbox.value.trim().toLowerCase()
+      );
     });
 }
 
