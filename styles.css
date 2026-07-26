@@ -6471,3 +6471,308 @@ body.pagina-manutencao {
     line-height: 1;
   }
 }
+
+.nome-complemento {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #2d2d2d;
+}
+
+.seletor-quantidade-complemento {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 108px;
+    height: 42px;
+    padding: 0 6px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e4e4;
+    border-radius: 999px;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,.06);
+
+    flex-shrink: 0;
+}
+
+.quantidade-complemento {
+    flex:1 !important;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:15px;
+    font-weight:700;
+
+    border-left:1px solid rgba(0,0,0,.08);
+    border-right:1px solid rgba(0,0,0,.08);
+}
+
+.item-complemento-quantidade
+.diminuir-complemento,
+.item-complemento-quantidade
+.aumentar-complemento{
+
+    flex:0 0 34px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin:0;
+    padding:0;
+
+    border:none;
+    background:transparent;
+
+    font-size:22px;
+    font-weight:500;
+    line-height:1;
+
+    cursor:pointer;
+    transition:.15s;
+}
+
+.aumentar-complemento{
+    color: #2e7d32;
+}
+
+.diminuir-complemento{
+    color: #d84343;
+}
+
+.aumentar-complemento:hover{
+    background:#2ecc7120;
+}
+
+.diminuir-complemento:hover{
+     background:#e74c3c20;
+}
+
+.diminuir-complemento:disabled{
+
+    opacity:.35;
+    cursor:default;
+
+    background:transparent;
+}
+
+/* =====================================================
+   CONTROLE DE QUANTIDADE DOS COMPLEMENTOS
+===================================================== */
+
+.item-complemento.item-complemento-quantidade {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  width: 100%;
+  min-height: 58px;
+
+  margin-bottom: 8px;
+  padding: 10px 12px;
+
+  background: var(--cor-card) !important;
+  border: 1px solid var(--cor-destaque) !important;
+  border-radius: 12px;
+
+  box-sizing: border-box;
+  cursor: default;
+}
+
+.item-complemento.item-complemento-quantidade:hover {
+  background: var(--cor-card) !important;
+  color: var(--cor-texto-card) !important;
+  border-color: var(--cor-destaque) !important;
+}
+
+/* Nome e preço do complemento */
+.item-complemento-quantidade > .nome-complemento {
+  flex: 1;
+  min-width: 0;
+
+  color: var(--cor-texto-card) !important;
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Cápsula − 0 + */
+.item-complemento-quantidade
+> .seletor-quantidade-complemento{
+    display:flex;
+    align-items:center;
+
+    width:108px;
+    height:36px;
+
+    overflow:hidden;
+
+    border:1px solid color-mix(
+        in srgb,
+        var(--cor-destaque) 70%,
+        transparent
+    );
+
+    border-radius:999px;
+
+    background:var(--cor-card);
+
+    padding:0;
+}
+
+/* Impede o flex: 1 herdado de .item-complemento span */
+.item-complemento-quantidade
+  .quantidade-complemento {
+  flex:1 !important;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:15px;
+    font-weight:700;
+
+    color:var(--cor-texto-card);
+
+    user-select:none;
+}          
+
+/* Botões − e + */
+.item-complemento-quantidade
+  .diminuir-complemento,
+.item-complemento-quantidade
+  .aumentar-complemento {
+  flex:0 0 34px;
+
+    border:none;
+    background:transparent;
+
+    font-size:22px;
+    font-weight:500;
+
+    cursor:pointer;
+
+    transition:.15s;
+}
+
+
+.item-complemento-quantidade
+  .diminuir-complemento:hover,
+.item-complemento-quantidade
+  .aumentar-complemento:hover {
+  background:
+    color-mix(
+      in srgb,
+      var(--cor-botao) 10%,
+      transparent
+    );
+}
+
+.item-complemento-quantidade
+  .diminuir-complemento:active,
+.item-complemento-quantidade
+  .aumentar-complemento:active {
+  transform: scale(0.88);
+}
+
+.item-complemento-quantidade
+  .diminuir-complemento:disabled {
+  color:
+    color-mix(
+      in srgb,
+      var(--cor-texto-card) 30%,
+      transparent
+    );
+
+  background: transparent;
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* O item não deve ficar inteiro selecionado */
+.item-complemento.item-complemento-quantidade:has(input:checked) {
+  background: var(--cor-card) !important;
+  color: var(--cor-texto-card) !important;
+  border-color: var(--cor-destaque) !important;
+}
+
+.item-complemento.item-complemento-quantidade:has(input:checked)
+  span {
+  color: var(--cor-texto-card) !important;
+}
+
+.seletor-quantidade-complemento {
+  display: inline-flex;
+  align-items: center;
+
+  height: 36px;
+
+  padding: 0;
+  margin: 0;
+
+  overflow: hidden;
+
+  background: var(--cor-card);
+  border: 1px solid var(--cor-destaque);
+  border-radius: 999px;
+
+  box-shadow: none;
+}
+
+.seletor-quantidade-complemento
+.diminuir-complemento,
+.seletor-quantidade-complemento
+.aumentar-complemento {
+  all: unset;
+
+  width: 34px;
+  height: 55px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  color: var(--cor-texto-claro) !important;
+
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.seletor-quantidade-complemento
+.quantidade-complemento {
+  width: 34px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 34px !important;
+
+  color: var(--cor-texto-card);
+
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+
+  user-select: none;
+}
+
+.seletor-quantidade-complemento
+.diminuir-complemento:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
