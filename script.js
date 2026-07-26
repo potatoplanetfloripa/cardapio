@@ -3461,14 +3461,58 @@ function montarHtmlComplementosProduto(nomeProduto) {
             const idSeguro =
               normalizarTexto(`${grupo.grupo}-${item.item}`).replace(/\s+/g, "-");
 
+            if (maximo > 1) {
+              return `
+    <div class="item-complemento item-complemento-quantidade">
+      <input
+        type="checkbox"
+        class="complemento-checkbox-quantidade"
+        id="${idSeguro}"
+        value="${item.item}"
+        data-grupo="${grupo.grupo}"
+        data-price="${precoItem}"
+        data-quantidade="0"
+        hidden
+      >
+
+      <span class="nome-complemento">
+        ${item.item}
+        ${precoItem > 0 ? `(R$${formatarPreco(precoItem)})` : ""}
+      </span>
+
+      <div class="seletor-quantidade-complemento">
+        <button
+          type="button"
+          class="diminuir-complemento"
+          onclick="alterarQuantidadeComplemento(this, -1)"
+          disabled
+        >
+          −
+        </button>
+
+        <span class="quantidade-complemento">0</span>
+
+        <button
+          type="button"
+          class="aumentar-complemento"
+          onclick="alterarQuantidadeComplemento(this, 1)"
+        >
+          +
+        </button>
+      </div>
+    </div>
+  `;
+            }
+
             return `
-                    <label class="item-complemento">
+  <label class="item-complemento">
     <input
       type="checkbox"
       id="${idSeguro}"
       value="${item.item}"
       data-grupo="${grupo.grupo}"
       data-price="${precoItem}"
+      data-quantidade="1"
     >
 
     <span>
@@ -3476,7 +3520,7 @@ function montarHtmlComplementosProduto(nomeProduto) {
       ${precoItem > 0 ? `(R$${formatarPreco(precoItem)})` : ""}
     </span>
   </label>
-                  `;
+`;
           })
           .join("")}
             </ul>
@@ -3484,6 +3528,149 @@ function montarHtmlComplementosProduto(nomeProduto) {
         `;
     })
     .join("");
+}
+
+function alterarQuantidadeComplemento(botao, alteracao) {
+  const itemComplemento = botao.closest(".item-complemento-quantidade");
+  const grupoComplemento = botao.closest(".grupo-complemento-dinamico");
+
+  if (!itemComplemento || !grupoComplemento) return;
+
+  const input = itemComplemento.querySelector(
+    ".complemento-checkbox-quantidade"
+  );
+
+  const quantidadeVisual = itemComplemento.querySelector(
+    ".quantidade-complemento"
+  );
+
+  if (!input || !quantidadeVisual) return;
+
+  const maximoGrupo = Number(grupoComplemento.dataset.maximo || 0);
+  const quantidadeAtual = Number(input.dataset.quantidade || 0);
+
+  const quantidadeTotalGrupo = Array.from(
+    grupoComplemento.querySelectorAll(".complemento-checkbox-quantidade")
+  ).reduce((total, complemento) => {
+    return total + Number(complemento.dataset.quantidade || 0);
+  }, 0);
+
+  let novaQuantidade = quantidadeAtual + alteracao;
+
+  if (novaQuantidade < 0) {
+    novaQuantidade = 0;
+  }
+
+  if (
+    alteracao > 0 &&
+    maximoGrupo > 0 &&
+    quantidadeTotalGrupo >= maximoGrupo
+  ) {
+    return;
+  }
+
+  input.dataset.quantidade = String(novaQuantidade);
+  input.checked = novaQuantidade > 0;
+  quantidadeVisual.textContent = String(novaQuantidade);
+
+  atualizarControlesQuantidadeComplemento(grupoComplemento);
+  const modalBody =
+    grupoComplemento.closest("#modal-body");
+
+  atualizarTotalModalProduto(modalBody);
+}
+
+function atualizarControlesQuantidadeComplemento(grupoComplemento) {
+  if (!grupoComplemento) return;
+
+  const maximoGrupo = Number(grupoComplemento.dataset.maximo || 0);
+
+  const complementos = Array.from(
+    grupoComplemento.querySelectorAll(".complemento-checkbox-quantidade")
+  );
+
+  const quantidadeTotalGrupo = complementos.reduce((total, complemento) => {
+    return total + Number(complemento.dataset.quantidade || 0);
+  }, 0);
+
+  complementos.forEach((input) => {
+    const itemComplemento = input.closest(".item-complemento-quantidade");
+
+    if (!itemComplemento) return;
+
+    const botaoDiminuir = itemComplemento.querySelector(
+      ".diminuir-complemento"
+    );
+
+    const botaoAumentar = itemComplemento.querySelector(
+      ".aumentar-complemento"
+    );
+
+    const quantidade = Number(input.dataset.quantidade || 0);
+
+    if (botaoDiminuir) {
+      botaoDiminuir.disabled = quantidade <= 0;
+    }
+
+    if (botaoAumentar) {
+      botaoAumentar.disabled =
+        maximoGrupo > 0 && quantidadeTotalGrupo >= maximoGrupo;
+    }
+  });
+}
+
+function atualizarTotalModalProduto(modalBody) {
+  if (!modalBody) return;
+
+  const botaoAdicionar =
+    modalBody.querySelector("#add-produto");
+
+  if (!botaoAdicionar) return;
+
+  const precoBase =
+    Number(modalBody.dataset.precoBase || 0);
+
+  const campoQuantidade =
+    modalBody.querySelector(".qtd-input");
+
+  const quantidadeProduto =
+    Math.max(
+      1,
+      parseInt(campoQuantidade?.value) || 1
+    );
+
+  let totalComplementos = 0;
+
+  modalBody
+    .querySelectorAll(
+      ".grupo-complemento-dinamico input"
+    )
+    .forEach((item) => {
+      const preco =
+        Number(item.dataset.price || 0);
+
+      const quantidade =
+        Number(item.dataset.quantidade || 0);
+
+      if (quantidade > 0) {
+        totalComplementos +=
+          preco * quantidade;
+      } else if (item.checked) {
+        totalComplementos += preco;
+      }
+    });
+
+  const totalUnitario =
+    precoBase + totalComplementos;
+
+  const totalFinal =
+    totalUnitario * quantidadeProduto;
+
+  botaoAdicionar.dataset.totalAtual =
+    String(totalFinal);
+
+  botaoAdicionar.textContent =
+    `Adicionar • R$ ${formatarPreco(totalFinal)}`;
 }
 
 function atualizarComplementosModalAberto() {
@@ -3712,6 +3899,9 @@ function ativarEventosProdutos() {
       modalBody.innerHTML =
         modalContent;
 
+      modalBody.dataset.precoBase =
+        String(price);
+
       modal.dataset.produtoAberto =
         name;
 
@@ -3734,6 +3924,50 @@ function ativarEventosProdutos() {
       ativarRegrasComplementosModal(
         modalBody,
       );
+
+      atualizarTotalModalProduto(
+        modalBody
+      );
+
+      const campoQuantidadeModal =
+        modalBody.querySelector(
+          ".qtd-input"
+        );
+
+      if (campoQuantidadeModal) {
+        campoQuantidadeModal.addEventListener(
+          "input",
+          () => {
+            atualizarTotalModalProduto(
+              modalBody
+            );
+          }
+        );
+
+        campoQuantidadeModal.addEventListener(
+          "change",
+          () => {
+            atualizarTotalModalProduto(
+              modalBody
+            );
+          }
+        );
+      }
+
+      modalBody
+        .querySelectorAll(
+          '.grupo-complemento-dinamico input[type="checkbox"]'
+        )
+        .forEach((item) => {
+          item.addEventListener(
+            "change",
+            () => {
+              atualizarTotalModalProduto(
+                modalBody
+              );
+            }
+          );
+        });
 
       const botaoAdicionarProduto =
         document.getElementById(
@@ -3779,15 +4013,26 @@ function ativarEventosProdutos() {
                 grupo.dataset.minimo || 0,
               );
 
-            const selecionadosGrupo =
-              grupo.querySelectorAll(
-                'input[type="checkbox"]:checked',
-              );
+            let quantidadeSelecionadaGrupo = 0;
+
+            grupo
+              .querySelectorAll('input[type="checkbox"]')
+              .forEach((item) => {
+
+                const quantidade =
+                  Number(item.dataset.quantidade || 0);
+
+                if (quantidade > 0) {
+                  quantidadeSelecionadaGrupo += quantidade;
+                } else if (item.checked) {
+                  quantidadeSelecionadaGrupo++;
+                }
+
+              });
 
             if (
               minimo > 0 &&
-              selecionadosGrupo.length <
-              minimo
+              quantidadeSelecionadaGrupo < minimo
             ) {
               mostrarAlerta(
                 `Selecione pelo menos ${minimo} ${minimo === 1
@@ -3816,30 +4061,34 @@ function ativarEventosProdutos() {
             "botao-carregando",
           );
 
-          const adicionaisSelecionados =
-            Array.from(
-              modalBody.querySelectorAll(
-                '.grupo-complemento-dinamico input[type="checkbox"]:checked',
-              ),
-            );
+          const adicionais = [];
 
-          const adicionais =
-            adicionaisSelecionados.map(
-              (item) => {
-                return `${item.dataset.grupo}: ${item.value}`;
-              },
-            );
+          modal
+            .querySelectorAll(".grupo-complemento-dinamico input")
+            .forEach((item) => {
 
-          const adicionaisPrecos =
-            adicionaisSelecionados.map(
-              (item) => {
-                return (
-                  parseFloat(
-                    item.dataset.price,
-                  ) || 0
-                );
-              },
-            );
+              const quantidade = Number(item.dataset.quantidade || 0);
+
+              if (quantidade <= 0 && !item.checked) return;
+
+              adicionais.push({
+                grupo: item.dataset.grupo,
+                nome: item.value,
+                quantidade: quantidade > 0 ? quantidade : 1,
+                preco: (parseFloat(item.dataset.price) || 0)
+              });
+
+            });
+
+          const adicionaisPrecos = [];
+
+          adicionais.forEach((item) => {
+
+            for (let i = 0; i < item.quantidade; i++) {
+              adicionaisPrecos.push(item.preco);
+            }
+
+          });
 
           const totalPrice =
             adicionaisPrecos.reduce(
@@ -4538,9 +4787,7 @@ function addPedido(pedidoNovo) {
     priceDe: pedidoNovo.priceDe || pedidoNovo.price,
     pricePor: pedidoNovo.pricePor || "",
     queijo: pedidoNovo.queijo || '',
-    adicionais: pedidoNovo.adicionais?.length
-      ? pedidoNovo.adicionais.join('\n')
-      : '',
+    adicionais: pedidoNovo.adicionais || [],
     totalPrice: Number(pedidoNovo.totalPrice).toFixed(2),
     quantidade: pedidoNovo.quantidade || 1
   };
@@ -4871,12 +5118,22 @@ function atualizarResumoPedido() {
       <div class="carrinho-item-info">
         <h4>${pedido.name}</h4>
 
-        ${pedido.adicionais
+        ${Array.isArray(pedido.adicionais)
           ? pedido.adicionais
-            .split('\n')
-            .map((linha) => `<p>${linha}</p>`)
-            .join('')
-          : ''}
+            .map((item) => {
+              if (typeof item === "string") {
+                return `<p>${item}</p>`;
+              }
+
+              return `<p>${item.grupo}: ${item.quantidade}x ${item.nome}</p>`;
+            })
+            .join("")
+          : pedido.adicionais
+            ? pedido.adicionais
+              .split("\n")
+              .map((linha) => `<p>${linha}</p>`)
+              .join("")
+            : ""}
         ${pedido.pricePor && Number(pedido.pricePor) > 0 && Number(pedido.pricePor) < Number(pedido.priceDe)
           ? `
         <div class="preco-carrinho-promocional">
@@ -5767,11 +6024,11 @@ function renderizarAcompanhamentoPedido(pedido) {
             <div>
               <strong>${quantidade}x ${item.name}</strong>
               ${item.adicionais
-          ? String(item.adicionais)
-            .split('\n')
-            .map((linha) => `<p>${linha}</p>`)
-            .join('')
-          : ""}
+  ? formatarComplementosParaPedido(item.adicionais)
+      .split("\n")
+      .map((linha) => `<p>${linha}</p>`)
+      .join("")
+  : ""}
             </div>
 
             <span>R$${formatarPreco(valorTotal)}</span>
@@ -6029,6 +6286,30 @@ function salvarPedidoNaPlanilha(pedido) {
 function formatarComplementosParaPedido(adicionais) {
   if (!adicionais) return "";
 
+  // Novo formato
+  if (Array.isArray(adicionais)) {
+    return adicionais
+      .map((adicional) => {
+        if (typeof adicional === "string") {
+          return adicional.trim();
+        }
+
+        const grupo = String(adicional.grupo || "").trim();
+        const nome = String(adicional.nome || adicional.item || "").trim();
+        const quantidade = Math.max(
+          1,
+          Number(adicional.quantidade || 1)
+        );
+
+        if (!nome) return "";
+
+        return `${grupo ? grupo + ": " : ""}${quantidade}x ${nome}`;
+      })
+      .filter(Boolean)
+      .join("\n");
+  }
+
+  // Compatibilidade com pedidos antigos
   return String(adicionais)
     .replace(/^Adicional:\s*/i, "")
     .split(", ")
@@ -6734,4 +7015,3 @@ ${dadosRetirada.enderecoRetirada}`
     );
   }
 }
-
