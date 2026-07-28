@@ -1229,6 +1229,204 @@
         color: #3a170d;
       }
 
+      /* =========================================================
+   MODAL DE CANCELAMENTO E ESTORNO
+========================================================= */
+
+.modal-cancelamento-pedido {
+  position: fixed;
+  inset: 0;
+  z-index: 10050;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px;
+  box-sizing: border-box;
+
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.modal-cancelamento-pedido.aberto {
+  display: flex;
+}
+
+.modal-cancelamento-card {
+  width: min(94vw, 520px);
+  max-height: 90vh;
+  overflow-y: auto;
+
+  box-sizing: border-box;
+  padding: 20px;
+
+  background: #fffaf2;
+  border: 2px solid #d28a36;
+  border-radius: 20px;
+
+  color: #3a170d;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+}
+
+.modal-cancelamento-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modal-cancelamento-topo h2 {
+  margin: 0;
+  color: #3a170d;
+  text-align: left;
+}
+
+.fechar-modal-cancelamento {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+
+  padding: 0;
+  border-radius: 50%;
+
+  background: #9b1d1d;
+  color: #fff;
+
+  font-size: 20px !important;
+}
+
+.resumo-cancelamento-pedido {
+  margin-top: 14px;
+  padding: 12px;
+
+  background: #f9e7bc;
+  border: 1px solid #d28a36;
+  border-radius: 14px;
+}
+
+.resumo-cancelamento-pedido p {
+  margin: 5px 0;
+}
+
+.opcoes-cancelamento {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  margin-top: 14px;
+}
+
+.opcao-cancelamento {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  margin: 0;
+  padding: 12px;
+
+  background: #fff;
+  border: 2px solid #eadcc9;
+  border-radius: 14px;
+
+  cursor: pointer;
+}
+
+.opcao-cancelamento:hover {
+  border-color: #d28a36;
+}
+
+.opcao-cancelamento input {
+  width: auto;
+  margin: 3px 0 0;
+  flex-shrink: 0;
+}
+
+.opcao-cancelamento-conteudo {
+  flex: 1;
+}
+
+.opcao-cancelamento-conteudo strong,
+.opcao-cancelamento-conteudo small {
+  display: block;
+}
+
+.opcao-cancelamento-conteudo small {
+  margin-top: 4px;
+  color: #666;
+  font-weight: normal;
+}
+
+.campo-estorno-parcial {
+  display: none;
+  margin-top: 12px;
+}
+
+.campo-estorno-parcial.visivel {
+  display: block;
+}
+
+.campo-estorno-parcial .campo-moeda {
+  height: 46px;
+}
+
+.campo-estorno-parcial input {
+  text-align: left;
+}
+
+.aviso-cancelamento-pedido {
+  display: none;
+
+  margin-top: 12px;
+  padding: 10px;
+
+  border-radius: 12px;
+
+  background: #fee2e2;
+  border: 1px solid #ef4444;
+  color: #991b1b;
+
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.aviso-cancelamento-pedido.visivel {
+  display: block;
+}
+
+.acoes-modal-cancelamento {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+
+  margin-top: 18px;
+}
+
+.btn-voltar-cancelamento {
+  background: #e5e7eb;
+  color: #111;
+}
+
+.btn-confirmar-cancelamento {
+  background: #9b1d1d;
+  color: #fff;
+}
+
+.btn-confirmar-cancelamento:disabled {
+  opacity: 0.55;
+}
+
+@media (max-width: 600px) {
+  .modal-cancelamento-card {
+    width: 100%;
+    max-height: 88vh;
+    padding: 16px;
+  }
+
+  .acoes-modal-cancelamento {
+    grid-template-columns: 1fr;
+  }
+}
+
       .pedido-lateral-acoes {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -2457,6 +2655,1463 @@
   }
 }
 
+/* ===========================
+   RELATÓRIOS
+=========================== */
+
+.relatorios-container{
+    background:#2b1a11;
+    border:2px solid #d28a36;
+    border-radius:18px;
+    padding:18px;
+    color:#fff4d8;
+}
+
+.relatorios-container h2{
+    margin-top:0;
+    color:#fff4d8;
+}
+
+.relatorios-subtitulo{
+    color:#f4d29a;
+    text-align:center;
+    margin:30px 0;
+    font-size:15px;
+}
+
+.relatorio-cards{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+
+gap:12px;
+
+margin-bottom:18px;
+
+}
+
+.relatorio-card{
+
+background:#f9e7bc;
+
+border:2px solid #d28a36;
+
+border-radius:16px;
+
+padding:14px;
+
+color:#3a170d;
+
+}
+
+.relatorio-card h3{
+
+margin:0;
+
+font-size:14px;
+
+}
+
+.relatorio-card strong{
+
+display:block;
+
+margin-top:8px;
+
+font-size:28px;
+
+}
+
+/* Resumo de hoje */
+
+.relatorio-carregando {
+  background: #f9e7bc;
+  border: 2px solid #d28a36;
+  border-radius: 16px;
+  padding: 20px;
+  color: #3a170d;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 18px;
+}
+
+.relatorio-secao-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.relatorio-secao-topo h3 {
+  margin: 0;
+  color: #fff4d8;
+  font-size: 19px;
+}
+
+.relatorio-secao-topo span {
+  display: block;
+  color: #f4d29a;
+  font-size: 13px;
+  margin-top: 4px;
+  text-transform: capitalize;
+}
+
+.btn-atualizar-relatorio {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  padding: 0;
+  border-radius: 50%;
+  background: #f9e7bc;
+  color: #3a170d;
+  border: 2px solid #d28a36;
+  font-size: 22px !important;
+}
+
+.btn-atualizar-relatorio:hover {
+  transform: rotate(25deg);
+}
+
+.relatorio-cards-hoje {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.relatorio-card-destaque {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 82px;
+  box-sizing: border-box;
+}
+
+.relatorio-card-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 14px;
+  background: rgba(58, 23, 13, 0.12);
+  font-size: 23px;
+}
+
+.relatorio-card-destaque h3 {
+  color: #3a170d;
+}
+
+.relatorio-card-destaque strong {
+  font-size: 25px;
+  line-height: 1.15;
+}
+
+@media (max-width: 600px) {
+  .relatorio-cards-hoje {
+    grid-template-columns: 1fr;
+  }
+
+  .relatorio-card-destaque {
+    min-height: 76px;
+  }
+
+  .relatorio-card-destaque strong {
+    font-size: 23px;
+  }
+}
+
+.resumo-hoje{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    margin:18px 0 22px;
+}
+
+@media(max-width:768px){
+
+.resumo-hoje{
+    grid-template-columns:1fr;
+}
+
+.card-resumo-hoje strong{
+    font-size:26px;
+}
+
+}
+
+.relatorio-filtros{
+
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+
+margin:20px 0;
+
+}
+
+.btn-periodo-relatorio{
+
+background:#f9e7bc;
+
+border:2px solid #d28a36;
+
+color:#3a170d;
+
+padding:10px 16px;
+
+border-radius:999px;
+
+font-weight:bold;
+
+transition:.2s;
+
+}
+
+.btn-periodo-relatorio.ativo{
+
+background:#3a170d;
+
+color:#fff4d8;
+
+border-color:#f6c36a;
+
+}
+
+.relatorio-titulo-periodo {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 22px 0 10px;
+}
+
+.relatorio-titulo-periodo h3 {
+  margin: 0;
+  color: #fff4d8;
+}
+
+.relatorio-titulo-periodo span {
+  color: #f4d29a;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.relatorio-cards-indicadores {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.relatorio-card-total {
+  border-color: #f6c36a;
+  background: linear-gradient(
+    135deg,
+    #3a170d 0%,
+    #6f3218 55%,
+    #9b4b1d 100%
+  );
+  color: #fff4d8;
+}
+
+.relatorio-card-total h3,
+.relatorio-card-total strong {
+  color: #fff4d8;
+}
+
+@media (max-width: 600px) {
+  .relatorio-titulo-periodo {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .relatorio-cards-indicadores {
+    grid-template-columns: 1fr;
+  }
+}
+
+.relatorio-secao {
+  margin-top: 20px;
+  background: #fffaf0;
+  border: 1px solid rgba(94, 48, 25, 0.16);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 5px 16px rgba(61, 29, 13, 0.08);
+}
+
+.relatorio-produtos-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.relatorio-produtos-topo h3 {
+  margin: 0;
+  color: #4a2314;
+  font-size: 19px;
+}
+
+.relatorio-produtos-topo p {
+  margin: 4px 0 0;
+  color: #806250;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.relatorio-produtos-lista {
+  max-height: 704px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 7px;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.relatorio-produtos-lista::-webkit-scrollbar {
+  width: 7px;
+}
+
+.relatorio-produtos-lista::-webkit-scrollbar-track {
+  background: rgba(94, 48, 25, 0.08);
+  border-radius: 20px;
+}
+
+.relatorio-produtos-lista::-webkit-scrollbar-thumb {
+  background: rgba(126, 72, 40, 0.55);
+  border-radius: 20px;
+}
+
+.relatorio-produto-item {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 4px;
+  border-bottom: 1px solid rgba(94, 48, 25, 0.12);
+  box-sizing: border-box;
+}
+
+.relatorio-produto-item:last-child {
+  border-bottom: none;
+}
+
+.relatorio-produto-posicao {
+  flex: 0 0 38px;
+  width: 38px;
+  text-align: center;
+  color: #6b351e;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.relatorio-produto-conteudo {
+  flex: 1;
+  min-width: 0;
+}
+
+.relatorio-produto-cabecalho,
+.relatorio-produto-detalhes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.relatorio-produto-cabecalho strong {
+  min-width: 0;
+  overflow: hidden;
+  color: #462112;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.relatorio-produto-cabecalho span {
+  flex: 0 0 auto;
+  color: #8b4c29;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.relatorio-produto-barra {
+  width: 100%;
+  height: 7px;
+  margin: 8px 0;
+  overflow: hidden;
+  background: rgba(113, 62, 33, 0.12);
+  border-radius: 999px;
+}
+
+.relatorio-produto-barra-preenchimento {
+  min-width: 4px;
+  height: 100%;
+  background: linear-gradient(90deg, #d76b28, #e99a45);
+  border-radius: 999px;
+}
+
+.relatorio-produto-detalhes {
+  color: #806250;
+  font-size: 12px;
+}
+
+.relatorio-produto-detalhes > strong {
+  color: #5c2d19;
+  font-size: 13px;
+}
+
+.relatorio-sem-dados {
+  padding: 25px 12px;
+  color: #806250;
+  text-align: center;
+}
+
+.relatorio-origens-cabecalho {
+  display: grid;
+  grid-template-columns:
+    minmax(140px, 1fr)
+    100px
+    minmax(130px, 1fr);
+  gap: 14px;
+  padding: 0 12px 9px;
+  border-bottom: 1px solid
+    rgba(94, 48, 25, 0.12);
+}
+
+.relatorio-origens-cabecalho span {
+  color: #806250;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.relatorio-origens-cabecalho span:nth-child(2) {
+  text-align: center;
+}
+
+.relatorio-origens-lista {
+  max-height: 440px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 7px;
+  scrollbar-width: thin;
+}
+
+.relatorio-origens-lista::-webkit-scrollbar {
+  width: 7px;
+}
+
+.relatorio-origens-lista::-webkit-scrollbar-track {
+  background: rgba(94, 48, 25, 0.08);
+  border-radius: 20px;
+}
+
+.relatorio-origens-lista::-webkit-scrollbar-thumb {
+  background: rgba(126, 72, 40, 0.55);
+  border-radius: 20px;
+}
+
+.relatorio-origem-item {
+  display: grid;
+  grid-template-columns:
+    minmax(140px, 1fr)
+    100px
+    minmax(130px, 1fr);
+  align-items: center;
+  gap: 14px;
+  min-height: 66px;
+  padding: 10px 12px;
+  border-bottom: 1px solid
+    rgba(94, 48, 25, 0.1);
+  box-sizing: border-box;
+}
+
+.relatorio-origem-item:last-child {
+  border-bottom: none;
+}
+
+.relatorio-origem-nome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.relatorio-origem-nome strong {
+  color: #4a2314;
+  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.relatorio-origem-icone {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(126, 72, 40, 0.1);
+  border-radius: 11px;
+  font-size: 19px;
+}
+
+.relatorio-origem-visitas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.relatorio-origem-visitas strong {
+  color: #5c2d19;
+  font-size: 18px;
+}
+
+.relatorio-origem-visitas span {
+  color: #806250;
+  font-size: 11px;
+}
+
+.relatorio-origem-campanha {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.relatorio-origem-campanha span {
+  display: none;
+  color: #806250;
+  font-size: 11px;
+}
+
+.relatorio-origem-campanha strong {
+  color: #5c2d19;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .relatorio-origens-cabecalho {
+    display: none;
+  }
+
+  .relatorio-origem-item {
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto;
+    gap: 8px 12px;
+    padding: 13px 5px;
+  }
+
+  .relatorio-origem-nome {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .relatorio-origem-visitas {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 58px;
+  }
+
+  .relatorio-origem-campanha {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    padding-left: 46px;
+  }
+
+  .relatorio-origem-campanha span {
+    display: block;
+  }
+
+  .relatorio-origem-campanha strong {
+    margin-top: 2px;
+  }
+}
+
+@media (max-width: 768px) {
+  .relatorio-secao {
+    padding: 15px 12px;
+  }
+
+  .relatorio-produtos-lista {
+    max-height: 704px;
+  }
+
+  .relatorio-produto-item {
+    min-height: 88px;
+  }
+
+  .relatorio-produto-posicao {
+    flex-basis: 32px;
+    width: 32px;
+    font-size: 16px;
+  }
+
+  .relatorio-produto-cabecalho strong {
+    font-size: 14px;
+  }
+}
+
+.relatorio-secao-horarios {
+  overflow: hidden;
+}
+
+.relatorio-horarios-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 15px;
+}
+
+.relatorio-horarios-titulo h3 {
+  margin: 0;
+  color: #4a2314;
+  font-size: 19px;
+}
+
+.relatorio-horarios-titulo p {
+  margin: 4px 0 0;
+  color: #806250;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.relatorio-horarios-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  background: rgba(215, 107, 40, 0.12);
+  border-radius: 14px;
+  font-size: 22px;
+}
+
+.relatorio-horario-destaque {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 18px;
+  padding: 15px;
+  background: linear-gradient(
+    135deg,
+    rgba(215, 107, 40, 0.16),
+    rgba(233, 154, 69, 0.08)
+  );
+  border: 1px solid rgba(215, 107, 40, 0.25);
+  border-radius: 15px;
+}
+
+.relatorio-horario-destaque-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  background: #fffaf0;
+  border-radius: 13px;
+  font-size: 23px;
+}
+
+.relatorio-horario-destaque div {
+  min-width: 0;
+}
+
+.relatorio-horario-destaque small {
+  display: block;
+  margin-bottom: 2px;
+  color: #8b4c29;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.relatorio-horario-destaque strong {
+  display: block;
+  color: #482112;
+  font-size: 18px;
+}
+
+.relatorio-horario-destaque p {
+  margin: 3px 0 0;
+  color: #71503d;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.relatorio-horarios-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.relatorio-horario-item {
+  padding: 12px 4px;
+  border-bottom: 1px solid rgba(94, 48, 25, 0.11);
+}
+
+.relatorio-horario-item:last-child {
+  border-bottom: none;
+}
+
+.relatorio-horario-linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.relatorio-horario-faixa {
+  color: #512818;
+  font-size: 14px;
+}
+
+.relatorio-horario-valores {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-align: right;
+}
+
+.relatorio-horario-valores strong {
+  color: #4a2314;
+  font-size: 13px;
+}
+
+.relatorio-horario-valores span {
+  min-width: 42px;
+  color: #926349;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.relatorio-horario-barra {
+  width: 100%;
+  height: 9px;
+  margin-top: 9px;
+  overflow: hidden;
+  background: rgba(113, 62, 33, 0.11);
+  border-radius: 999px;
+}
+
+.relatorio-horario-barra-preenchimento {
+  min-width: 5px;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #d76b28,
+    #e99a45
+  );
+  border-radius: 999px;
+  transition: width 0.35s ease;
+}
+
+.relatorio-horario-rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 18px;
+  margin-top: 5px;
+  color: #806250;
+  font-size: 12px;
+}
+
+.relatorio-horario-rodape strong {
+  color: #c15b20;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.relatorio-horario-pico {
+  margin: 0 -5px;
+  padding-right: 9px;
+  padding-left: 9px;
+  background: rgba(230, 118, 42, 0.07);
+  border-radius: 12px;
+}
+
+.relatorio-horario-pico
+  .relatorio-horario-barra-preenchimento {
+  background: linear-gradient(
+    90deg,
+    #c65318,
+    #ef8b32
+  );
+}
+
+@media (max-width: 768px) {
+  .relatorio-horario-linha {
+    align-items: flex-start;
+  }
+
+  .relatorio-horario-faixa {
+    font-size: 13px;
+  }
+
+  .relatorio-horario-valores {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1px;
+  }
+
+  .relatorio-horario-valores span {
+    min-width: auto;
+  }
+
+  .relatorio-horario-destaque {
+    padding: 13px;
+  }
+
+  .relatorio-horario-destaque strong {
+    font-size: 16px;
+  }
+}
+
+.relatorio-bloco-titulo{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin:30px 0 18px;
+    padding:18px 22px;
+    border-radius:18px;
+    background:#fff8ef;
+    border:1px solid rgba(94,48,25,.12);
+}
+
+.relatorio-bloco-titulo span{
+    width:54px;
+    height:54px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+    border-radius:16px;
+    background:#fff;
+}
+
+.relatorio-bloco-titulo h2{
+    margin:0;
+    color:#4b2413;
+    font-size:22px;
+}
+
+.relatorio-bloco-titulo p{
+    margin:4px 0 0;
+    color:#7d5c4c;
+    font-size:14px;
+}
+
+.relatorio-mapa-secao {
+  overflow: hidden;
+}
+
+.relatorio-mapa-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 15px;
+}
+
+.relatorio-mapa-titulo h3 {
+  margin: 0;
+  color: #4a2314;
+  font-size: 19px;
+}
+
+.relatorio-mapa-titulo p {
+  margin: 4px 0 0;
+  color: #806250;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.relatorio-mapa-titulo > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  background: rgba(215, 107, 40, 0.12);
+  border-radius: 14px;
+  font-size: 22px;
+}
+
+.relatorio-mapa-pico {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 18px;
+  padding: 14px;
+  background: linear-gradient(
+    135deg,
+    rgba(215, 107, 40, 0.16),
+    rgba(233, 154, 69, 0.08)
+  );
+  border: 1px solid rgba(215, 107, 40, 0.25);
+  border-radius: 15px;
+}
+
+.relatorio-mapa-pico > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  background: #fffaf0;
+  border-radius: 13px;
+  font-size: 22px;
+}
+
+.relatorio-mapa-pico small {
+  display: block;
+  color: #8b4c29;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.relatorio-mapa-pico strong {
+  display: block;
+  margin-top: 2px;
+  color: #482112;
+  font-size: 16px;
+}
+
+.relatorio-mapa-pico p {
+  margin: 3px 0 0;
+  color: #71503d;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.relatorio-mapa-scroll {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 5px;
+}
+
+.relatorio-mapa-grade {
+  display: grid;
+  grid-template-columns: 100px repeat(7, minmax(72px, 1fr));
+  gap: 7px;
+  min-width: 660px;
+}
+
+.relatorio-mapa-canto,
+.relatorio-mapa-dia-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 35px;
+  color: #6d4633;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.relatorio-mapa-linha {
+  display: contents;
+}
+
+.relatorio-mapa-periodo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 65px;
+  padding: 8px;
+  color: #56301e;
+  font-size: 13px;
+}
+
+.relatorio-mapa-periodo span {
+  font-size: 17px;
+}
+
+.relatorio-mapa-celula {
+  all: unset;
+  box-sizing: border-box;
+  min-height: 65px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid rgba(113, 62, 33, 0.1);
+  border-radius: 12px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.relatorio-mapa-celula:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(78, 37, 17, 0.12);
+}
+
+.relatorio-mapa-celula:focus-visible {
+  outline: 3px solid rgba(215, 107, 40, 0.35);
+  outline-offset: 2px;
+}
+
+.relatorio-mapa-celula strong {
+  font-size: 18px;
+}
+
+.relatorio-mapa-celula small {
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.relatorio-mapa-intensidade-0 {
+  background: #f7f2ec;
+  color: #957c6d;
+}
+
+.relatorio-mapa-intensidade-1 {
+  background: #fce8d6;
+  color: #764225;
+}
+
+.relatorio-mapa-intensidade-2 {
+  background: #f8c89c;
+  color: #623219;
+}
+
+.relatorio-mapa-intensidade-3 {
+  background: #ee9c58;
+  color: #51250f;
+}
+
+.relatorio-mapa-intensidade-4 {
+  background: #db6f2d;
+  color: #ffffff;
+}
+
+.relatorio-mapa-intensidade-5 {
+  background: #af4618;
+  color: #ffffff;
+}
+
+.relatorio-mapa-legenda {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+  color: #806250;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.relatorio-mapa-legenda-cores {
+  display: flex;
+  gap: 3px;
+}
+
+.relatorio-mapa-legenda-cores i {
+  display: block;
+  width: 18px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.relatorio-mapa-instrucao {
+  margin: 10px 0 0;
+  color: #92705d;
+  font-size: 11px;
+  text-align: center;
+}
+
+#relatorio-mapa-detalhe {
+  display: none;
+  margin-top: 15px;
+}
+
+#relatorio-mapa-detalhe.ativo {
+  display: block;
+}
+
+.relatorio-mapa-detalhe-conteudo {
+  padding: 15px;
+  background: #fff8ef;
+  border: 1px solid rgba(113, 62, 33, 0.15);
+  border-radius: 15px;
+}
+
+.relatorio-mapa-detalhe-topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.relatorio-mapa-detalhe-topo small {
+  display: block;
+  color: #92705d;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.relatorio-mapa-detalhe-topo strong {
+  display: block;
+  margin-top: 3px;
+  color: #4a2314;
+  font-size: 16px;
+}
+
+.relatorio-mapa-detalhe-fechar {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  color: #7b533e;
+  background: rgba(113, 62, 33, 0.08);
+  border-radius: 50%;
+  font-size: 20px;
+}
+
+.relatorio-mapa-detalhe-indicadores {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.relatorio-mapa-detalhe-indicadores div {
+  padding: 11px;
+  background: #ffffff;
+  border: 1px solid rgba(113, 62, 33, 0.1);
+  border-radius: 11px;
+}
+
+.relatorio-mapa-detalhe-indicadores span {
+  display: block;
+  color: #8b6a58;
+  font-size: 11px;
+}
+
+.relatorio-mapa-detalhe-indicadores strong {
+  display: block;
+  margin-top: 4px;
+  color: #4c2514;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .relatorio-mapa-grade {
+    grid-template-columns:
+      82px repeat(7, 67px);
+    min-width: 600px;
+  }
+
+  .relatorio-mapa-periodo {
+    padding: 5px;
+    font-size: 12px;
+  }
+
+  .relatorio-mapa-celula {
+    min-height: 61px;
+  }
+
+  .relatorio-mapa-celula strong {
+    font-size: 16px;
+  }
+
+  .relatorio-mapa-detalhe-indicadores {
+    grid-template-columns: 1fr;
+  }
+
+  .relatorio-mapa-legenda {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+/* ================================
+   COMPARAÇÃO COM PERÍODO ANTERIOR
+================================ */
+
+#relatorio-comparativo {
+  margin-top: 22px;
+}
+
+.relatorio-comparativo-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  margin-bottom: 16px;
+}
+
+.relatorio-comparativo-topo h3 {
+  margin: 0;
+  color: #000000;
+  font-size: 20px;
+}
+
+.relatorio-comparativo-topo p {
+  margin: 5px 0 0;
+  color: #353434;
+  font-size: 13px;
+}
+
+.relatorio-comparativo-topo > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+
+  border-radius: 14px;
+  background: #f9e7bc;
+  border: 2px solid #d28a36;
+
+  font-size: 24px;
+}
+
+.relatorio-comparativo-lista {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.comparativo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  min-height: 68px;
+  padding: 14px 16px;
+  box-sizing: border-box;
+
+  background: #f9e7bc;
+  border: 2px solid #d28a36;
+  border-radius: 16px;
+
+  color: #3a170d;
+}
+
+.comparativo-esquerda {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  min-width: 0;
+}
+
+.comparativo-esquerda > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+
+  border-radius: 11px;
+  background: rgba(58, 23, 13, 0.1);
+
+  font-size: 20px;
+}
+
+.comparativo-esquerda strong {
+  color: #3a170d;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.comparativo-direita {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  min-width: 92px;
+  padding: 8px 10px;
+
+  border-radius: 999px;
+
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.comparativo-direita.positivo {
+  color: #166534;
+  background: #dcfce7;
+  border: 1px solid #86efac;
+}
+
+.comparativo-direita.negativo {
+  color: #991b1b;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+}
+
+.comparativo-direita.igual {
+  color: #57534e;
+  background: #e7e5e4;
+  border: 1px solid #a8a29e;
+}
+
+/* Caso apareça texto longo como "Sem alteração" */
+.comparativo-direita {
+  text-align: center;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 700px) {
+  .relatorio-comparativo-lista {
+    grid-template-columns: 1fr;
+  }
+
+  .comparativo-item {
+    min-height: 64px;
+    padding: 12px;
+  }
+
+  .comparativo-direita {
+    min-width: 84px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 400px) {
+  .comparativo-esquerda {
+    gap: 8px;
+  }
+
+  .comparativo-esquerda > span {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    font-size: 18px;
+  }
+
+  .comparativo-esquerda strong {
+    font-size: 13px;
+  }
+
+  .comparativo-direita {
+    min-width: 74px;
+    padding: 7px 8px;
+    font-size: 12px;
+  }
+}
+
+/* Valores atual e anterior do comparativo */
+
+.comparativo-item {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.comparativo-item-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.comparativo-valores {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+
+  margin-top: 14px;
+  padding-top: 14px;
+
+  border-top: 1px solid rgba(58, 23, 13, 0.15);
+}
+
+.comparativo-valor {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.comparativo-valor small {
+  color: #795548;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.comparativo-valor strong {
+  color: #3a170d;
+  font-size: 16px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.comparativo-valor.anterior {
+  text-align: right;
+}
+
+.comparativo-divisor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  border-radius: 50%;
+
+  background: rgba(58, 23, 13, 0.1);
+  color: #6b321a;
+
+  font-size: 14px;
+  font-weight: 900;
+}
+
+@media (max-width: 480px) {
+  .comparativo-valores {
+    gap: 6px;
+  }
+
+  .comparativo-valor strong {
+    font-size: 14px;
+  }
+
+  .comparativo-valor small {
+    font-size: 10px;
+  }
+
+  .comparativo-divisor {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+}
+
     </style>
   </head>
 
@@ -2627,6 +4282,8 @@
             <button class="aba-btn" data-aba="frete">Frete</button>
 
             <button class="aba-btn" data-aba="cupons">Cupons</button>
+
+            <button class="aba-btn" data-aba="relatorios">📊 Relatórios</button>
           </div>
         </div>
 
@@ -3475,7 +5132,52 @@
           </div>
         </div>
       </section>
+      <section id="aba-relatorios" class="aba">
 
+      <div class="relatorios-container">
+
+    <h2>Relatórios</h2>
+
+    <div id="relatorio-hoje">
+
+    </div>
+
+    <div id="relatorio-filtro">
+
+    </div>
+
+    <div id="relatorio-indicadores">
+
+    </div>
+
+    <div id="relatorio-comparativo">
+
+    </div>
+
+    <div id="relatorio-analise-vendas">
+
+  <div class="relatorio-bloco-titulo">
+    <span>📈</span>
+    <div>
+      <h2>Análise das vendas</h2>
+      <p>Descubra padrões de venda do seu negócio.</p>
+    </div>
+  </div>
+
+  <div id="relatorio-origens"></div>
+
+<div id="relatorio-produtos"></div>
+
+<div id="relatorio-horarios"></div>
+
+  <div id="relatorio-semana"></div>
+
+</div>
+
+    </div>
+
+</div>
+</section>
       <section id="aba-mensalidade" class="aba">
         <h2>💳 Financeiro</h2>
 
@@ -3922,6 +5624,2261 @@
           document.body.appendChild(script);
         });
       }
+
+      async function carregarAcessosAdmin() {
+  try {
+    const resultado =
+      await chamarAcaoAdminJsonp(
+        "obterAcessos",
+        {
+          cardapioId: CARDAPIO_ID
+        }
+      );
+
+    if (
+      resultado &&
+      resultado.sucesso &&
+      Array.isArray(resultado.acessos)
+    ) {
+      dadosAcessos = resultado.acessos;
+    } else {
+      dadosAcessos = [];
+    }
+  } catch (erro) {
+    console.error(
+      "Erro ao carregar acessos:",
+      erro
+    );
+
+    dadosAcessos = [];
+  }
+}
+
+        async function montarTelaRelatorios() {
+  const areaHoje =
+    document.getElementById(
+      "relatorio-hoje"
+    );
+
+  if (!areaHoje) return;
+
+  areaHoje.innerHTML = `
+    <div class="relatorio-carregando">
+      Carregando informações...
+    </div>
+  `;
+
+  try {
+    await carregarAcessosAdmin();
+
+    carregarPedidosAdmin(() => {
+  renderizarResumoHojeRelatorios();
+  renderizarFiltroRelatorios();
+  renderizarIndicadoresRelatorios();
+  renderizarComparativoRelatorios();
+  renderizarOrigensRelatorios();
+  renderizarProdutosRelatorios();
+  renderizarHorariosRelatorios();
+  renderizarMapaCalorRelatorios();
+});
+
+  } catch (erro) {
+    console.error(
+      "Erro ao montar relatórios:",
+      erro
+    );
+  }
+}
+
+function normalizarStatusRelatorio(status) {
+  return String(status || "")
+    .trim()
+    .toLowerCase();
+}
+
+function converterValorRelatorio(valor) {
+  if (
+    valor === null ||
+    valor === undefined ||
+    valor === ""
+  ) {
+    return 0;
+  }
+
+  if (typeof valor === "number") {
+    return Number.isFinite(valor) ? valor : 0;
+  }
+
+  let texto = String(valor)
+    .replace("R$", "")
+    .trim();
+
+  if (texto.includes(",") && texto.includes(".")) {
+    texto = texto
+      .replace(/\./g, "")
+      .replace(",", ".");
+  } else if (texto.includes(",")) {
+    texto = texto.replace(",", ".");
+  }
+
+  const numero = Number(texto);
+
+  return Number.isFinite(numero) ? numero : 0;
+}
+
+function formatarMoedaRelatorio(valor) {
+  return Number(valor || 0).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
+}
+
+function pedidoEhDeHojeRelatorio(pedido) {
+  const dataPedido = obterDataPedidoAdmin(pedido);
+
+  if (!dataPedido) return false;
+
+  const hoje = new Date();
+
+  return (
+    dataPedido.getFullYear() === hoje.getFullYear() &&
+    dataPedido.getMonth() === hoje.getMonth() &&
+    dataPedido.getDate() === hoje.getDate()
+  );
+}
+
+function pedidoCanceladoRelatorio(pedido) {
+  const status = normalizarStatusRelatorio(
+    pedido?.Status
+  );
+
+  return status === "cancelado";
+}
+
+function obterDataAcessoRelatorio(acesso) {
+  const dataTexto =
+    acesso?.Data ||
+    acesso?.DataHora ||
+    "";
+
+  if (!dataTexto) return null;
+
+  if (
+    /^\d{4}-\d{2}-\d{2}$/.test(
+      String(dataTexto)
+    )
+  ) {
+    const partes =
+      String(dataTexto).split("-");
+
+    return new Date(
+      Number(partes[0]),
+      Number(partes[1]) - 1,
+      Number(partes[2])
+    );
+  }
+
+  const data = new Date(dataTexto);
+
+  if (isNaN(data.getTime())) {
+    return null;
+  }
+
+  return data;
+}
+
+function acessoEhDeHojeRelatorio(acesso) {
+  const dataAcesso =
+    obterDataAcessoRelatorio(acesso);
+
+  if (!dataAcesso) return false;
+
+  const hoje = new Date();
+
+  return (
+    dataAcesso.getFullYear() ===
+      hoje.getFullYear() &&
+    dataAcesso.getMonth() ===
+      hoje.getMonth() &&
+    dataAcesso.getDate() ===
+      hoje.getDate()
+  );
+}
+
+function obterAcessosDoPeriodoRelatorio() {
+  const hoje = new Date();
+
+  const inicioHoje = new Date(
+    hoje.getFullYear(),
+    hoje.getMonth(),
+    hoje.getDate()
+  );
+
+  const inicioPeriodo = new Date(
+    inicioHoje
+  );
+
+  inicioPeriodo.setDate(
+    inicioPeriodo.getDate() -
+      (periodoRelatorio - 1)
+  );
+
+  return (dadosAcessos || []).filter(
+    (acesso) => {
+      const dataAcesso =
+        obterDataAcessoRelatorio(acesso);
+
+      if (!dataAcesso) return false;
+
+      const dataNormalizada = new Date(
+        dataAcesso.getFullYear(),
+        dataAcesso.getMonth(),
+        dataAcesso.getDate()
+      );
+
+      return (
+        dataNormalizada >= inicioPeriodo &&
+        dataNormalizada <= inicioHoje
+      );
+    }
+  );
+}
+
+function calcularTaxaConversaoRelatorio(
+  quantidadePedidos,
+  quantidadeVisitas
+) {
+  if (quantidadeVisitas <= 0) {
+    return 0;
+  }
+
+  return (
+    quantidadePedidos /
+    quantidadeVisitas
+  ) * 100;
+}
+
+function formatarPorcentagemRelatorio(valor) {
+  return Number(valor || 0)
+    .toLocaleString(
+      "pt-BR",
+      {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1
+      }
+    ) + "%";
+}
+
+function renderizarResumoHojeRelatorios() {
+  const areaHoje = document.getElementById("relatorio-hoje");
+
+  if (!areaHoje) return;
+
+  const pedidosHoje = (dadosPedidos || []).filter((pedido) => {
+    return (
+      pedidoEhDeHojeRelatorio(pedido) &&
+      !pedidoCanceladoRelatorio(pedido)
+    );
+  });
+
+  const quantidadePedidosHoje = pedidosHoje.length;
+
+  const visitasHoje =
+  (dadosAcessos || []).filter(
+    acessoEhDeHojeRelatorio
+  ).length;
+
+const taxaConversaoHoje =
+  calcularTaxaConversaoRelatorio(
+    quantidadePedidosHoje,
+    visitasHoje
+  );
+
+  const faturamentoHoje = pedidosHoje.reduce(
+    (total, pedido) => {
+      return total + converterValorRelatorio(pedido.Total);
+    },
+    0
+  );
+
+  areaHoje.innerHTML = `
+    <div class="relatorio-secao-topo">
+      <div>
+        <h3>Resumo de hoje</h3>
+        <span>${formatarDataResumoRelatorio()}</span>
+      </div>
+
+      <button
+        type="button"
+        class="btn-atualizar-relatorio"
+        onclick="montarTelaRelatorios()"
+        title="Atualizar relatório"
+      >
+        ↻
+      </button>
+    </div>
+
+    <div class="relatorio-cards relatorio-cards-hoje">
+      <div class="relatorio-card relatorio-card-destaque">
+        <span class="relatorio-card-icone">🛍️</span>
+
+        <div>
+          <h3>Pedidos hoje</h3>
+          <strong>${quantidadePedidosHoje}</strong>
+        </div>
+      </div>
+
+      <div class="relatorio-card relatorio-card-destaque">
+        <span class="relatorio-card-icone">💰</span>
+
+        <div>
+          <h3>Faturamento hoje</h3>
+          <strong>
+            ${formatarMoedaRelatorio(faturamentoHoje)}
+          </strong>
+        </div>
+      </div>
+      <div class="relatorio-card relatorio-card-destaque">
+  <span class="relatorio-card-icone">👁️</span>
+
+  <div>
+    <h3>Visitas hoje</h3>
+    <strong>${visitasHoje}</strong>
+  </div>
+</div>
+
+<div class="relatorio-card relatorio-card-destaque">
+  <span class="relatorio-card-icone">📈</span>
+
+  <div>
+    <h3>Taxa de conversão hoje</h3>
+    <strong>
+      ${formatarPorcentagemRelatorio(
+        taxaConversaoHoje
+      )}
+    </strong>
+  </div>
+</div>
+    </div>
+  `;
+}
+
+function renderizarFiltroRelatorios(){
+
+    const area = document.getElementById("relatorio-filtro");
+
+    if(!area) return;
+
+    const periodos=[1,7,14,30,60,90];
+
+    area.innerHTML=`
+
+        <div class="relatorio-filtros">
+
+            ${periodos.map(dias=>`
+
+                <button
+                    class="btn-periodo-relatorio ${periodoRelatorio===dias?"ativo":""}"
+                    onclick="alterarPeriodoRelatorio(${dias})">
+
+                    ${dias===1?"Hoje":dias+" dias"}
+
+                </button>
+
+            `).join("")}
+
+        </div>
+
+    `;
+
+}
+
+function alterarPeriodoRelatorio(dias) {
+  periodoRelatorio = dias;
+
+  renderizarFiltroRelatorios();
+  renderizarIndicadoresRelatorios();
+  renderizarComparativoRelatorios();
+  renderizarOrigensRelatorios();
+  renderizarProdutosRelatorios();
+  renderizarHorariosRelatorios();
+  renderizarMapaCalorRelatorios();
+}
+
+function obterPedidosDoPeriodoRelatorio() {
+  const hoje = new Date();
+
+  const inicioHoje = new Date(
+    hoje.getFullYear(),
+    hoje.getMonth(),
+    hoje.getDate()
+  );
+
+  const inicioPeriodo = new Date(inicioHoje);
+
+  inicioPeriodo.setDate(
+    inicioHoje.getDate() - (periodoRelatorio - 1)
+  );
+
+  const fimPeriodo = new Date(inicioHoje);
+
+  fimPeriodo.setDate(fimPeriodo.getDate() + 1);
+
+  return (dadosPedidos || []).filter((pedido) => {
+    const dataPedido = obterDataPedidoAdmin(pedido);
+
+    if (!dataPedido) return false;
+
+    return (
+      dataPedido >= inicioPeriodo &&
+      dataPedido < fimPeriodo
+    );
+  });
+} 
+
+function obterPedidosPeriodoAnteriorRelatorio() {
+
+  const hoje = new Date();
+
+  const inicioHoje = new Date(
+    hoje.getFullYear(),
+    hoje.getMonth(),
+    hoje.getDate()
+  );
+
+  const inicioAtual = new Date(inicioHoje);
+
+  inicioAtual.setDate(
+    inicioHoje.getDate() - (periodoRelatorio - 1)
+  );
+
+  const fimAtual = new Date(inicioHoje);
+
+  fimAtual.setDate(fimAtual.getDate() + 1);
+
+  const fimAnterior = new Date(inicioAtual);
+
+  const inicioAnterior = new Date(inicioAtual);
+
+  inicioAnterior.setDate(
+    inicioAnterior.getDate() - periodoRelatorio
+  );
+
+  return (dadosPedidos || []).filter((pedido) => {
+
+    const dataPedido = obterDataPedidoAdmin(pedido);
+
+    if (!dataPedido) return false;
+
+    return (
+      dataPedido >= inicioAnterior &&
+      dataPedido < fimAnterior
+    );
+
+  });
+
+}
+
+function calcularResumoComparativoRelatorio(pedidos) {
+  const listaPedidos = Array.isArray(pedidos)
+    ? pedidos
+    : [];
+
+  const pedidosCancelados = listaPedidos.filter((pedido) => {
+    return pedidoCanceladoRelatorio(pedido);
+  });
+
+  const pedidosValidos = listaPedidos.filter((pedido) => {
+    return !pedidoCanceladoRelatorio(pedido);
+  });
+
+  const vendasProdutos = pedidosValidos.reduce(
+    (total, pedido) => {
+      return (
+        total +
+        converterValorRelatorio(pedido.Total)
+      );
+    },
+    0
+  );
+
+  const taxasEntrega = pedidosValidos.reduce(
+    (total, pedido) => {
+      return (
+        total +
+        obterTaxaEntregaRelatorio(pedido)
+      );
+    },
+    0
+  );
+
+  const descontos = pedidosValidos.reduce(
+    (total, pedido) => {
+      return (
+        total +
+        obterDescontoRelatorio(pedido)
+      );
+    },
+    0
+  );
+
+  const faturamentoTotal = Math.max(
+    0,
+    vendasProdutos +
+      taxasEntrega -
+      descontos
+  );
+
+  const quantidadePedidos = pedidosValidos.length;
+
+  const ticketMedio =
+    quantidadePedidos > 0
+      ? faturamentoTotal / quantidadePedidos
+      : 0;
+
+  return {
+    pedidos: quantidadePedidos,
+    faturamento: faturamentoTotal,
+    ticketMedio,
+    vendasProdutos,
+    taxasEntrega,
+    descontos,
+    cancelamentos: pedidosCancelados.length,
+  };
+}
+
+function calcularVariacaoComparativoRelatorio(
+  valorAtual,
+  valorAnterior
+) {
+  const atual = Number(valorAtual) || 0;
+  const anterior = Number(valorAnterior) || 0;
+
+  if (anterior === 0 && atual === 0) {
+    return {
+      tipo: "igual",
+      porcentagem: 0,
+      texto: "Sem alteração",
+      simbolo: "•",
+    };
+  }
+
+  if (anterior === 0 && atual > 0) {
+    return {
+      tipo: "novo",
+      porcentagem: null,
+      texto: "S/N",
+      simbolo: "▲",
+    };
+  }
+
+  const porcentagem =
+    ((atual - anterior) / Math.abs(anterior)) *
+    100;
+
+  if (Math.abs(porcentagem) < 0.01) {
+    return {
+      tipo: "igual",
+      porcentagem: 0,
+      texto: "Sem alteração",
+      simbolo: "•",
+    };
+  }
+
+  if (porcentagem > 0) {
+    return {
+      tipo: "aumento",
+      porcentagem,
+      texto: `+${formatarPorcentagemComparativoRelatorio(
+        porcentagem
+      )}`,
+      simbolo: "▲",
+    };
+  }
+
+  return {
+    tipo: "queda",
+    porcentagem,
+    texto: `-${formatarPorcentagemComparativoRelatorio(
+      Math.abs(porcentagem)
+    )}`,
+    simbolo: "▼",
+  };
+}
+
+function formatarPorcentagemComparativoRelatorio(
+  valor
+) {
+  return `${Number(valor || 0).toLocaleString(
+    "pt-BR",
+    {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    }
+  )}%`;
+}
+
+function obterDadosComparativoRelatorio() {
+  const pedidosAtuais =
+    obterPedidosDoPeriodoRelatorio();
+
+  const pedidosAnteriores =
+    obterPedidosPeriodoAnteriorRelatorio();
+
+  const atual =
+    calcularResumoComparativoRelatorio(
+      pedidosAtuais
+    );
+
+  const anterior =
+    calcularResumoComparativoRelatorio(
+      pedidosAnteriores
+    );
+
+  return {
+    atual,
+    anterior,
+
+    variacoes: {
+      pedidos:
+        calcularVariacaoComparativoRelatorio(
+          atual.pedidos,
+          anterior.pedidos
+        ),
+
+      faturamento:
+        calcularVariacaoComparativoRelatorio(
+          atual.faturamento,
+          anterior.faturamento
+        ),
+
+      ticketMedio:
+        calcularVariacaoComparativoRelatorio(
+          atual.ticketMedio,
+          anterior.ticketMedio
+        ),
+
+      vendasProdutos:
+        calcularVariacaoComparativoRelatorio(
+          atual.vendasProdutos,
+          anterior.vendasProdutos
+        ),
+
+      taxasEntrega:
+        calcularVariacaoComparativoRelatorio(
+          atual.taxasEntrega,
+          anterior.taxasEntrega
+        ),
+
+      descontos:
+        calcularVariacaoComparativoRelatorio(
+          atual.descontos,
+          anterior.descontos
+        ),
+
+      cancelamentos:
+        calcularVariacaoComparativoRelatorio(
+          atual.cancelamentos,
+          anterior.cancelamentos
+        ),
+    },
+  };
+}
+
+function formatarMoedaComparativoRelatorio(valor) {
+  return Number(valor || 0).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+}
+
+function formatarNumeroComparativoRelatorio(valor) {
+  return Number(valor || 0).toLocaleString("pt-BR");
+}
+
+function formatarValorComparativoRelatorio(chave, valor) {
+  const indicadoresMonetarios = [
+    "faturamento",
+    "ticketMedio",
+    "vendasProdutos",
+    "taxasEntrega",
+    "descontos"
+  ];
+
+  if (indicadoresMonetarios.includes(chave)) {
+    return formatarMoedaComparativoRelatorio(valor);
+  }
+
+  return formatarNumeroComparativoRelatorio(valor);
+}
+
+function renderizarComparativoRelatorios() {
+
+  const area = document.getElementById(
+    "relatorio-comparativo"
+  );
+
+  if (!area) return;
+
+  const dados = obterDadosComparativoRelatorio();
+
+  const indicadores = [
+  {
+    titulo: "Faturamento",
+    chave: "faturamento",
+    icone: "💰"
+  },
+  {
+    titulo: "Pedidos",
+    chave: "pedidos",
+    icone: "🛍️"
+  },
+  {
+    titulo: "Ticket médio",
+    chave: "ticketMedio",
+    icone: "🎯"
+  },
+  {
+    titulo: "Vendas de produtos",
+    chave: "vendasProdutos",
+    icone: "🥔"
+  },
+  {
+    titulo: "Taxas de entrega",
+    chave: "taxasEntrega",
+    icone: "🛵"
+  },
+  {
+    titulo: "Descontos",
+    chave: "descontos",
+    icone: "🏷️"
+  },
+  {
+    titulo: "Cancelamentos",
+    chave: "cancelamentos",
+    icone: "❌"
+  }
+];
+
+  area.innerHTML = `
+<div class="relatorio-secao">
+
+<div class="relatorio-comparativo-topo">
+
+<div>
+
+<h3>Comparação com período anterior</h3>
+
+<p>
+  ${periodoRelatorio === 1
+    ? "Hoje comparado com ontem"
+    : `Últimos ${periodoRelatorio} dias comparados aos ${periodoRelatorio} dias anteriores`
+  }
+</p>
+
+</div>
+
+<span>📈</span>
+
+</div>
+
+<div class="relatorio-comparativo-lista">
+
+${indicadores.map((indicador) => {
+  const chave = indicador.chave;
+
+  const variacao =
+    dados.variacoes[chave];
+
+  const valorAtual =
+    dados.atual[chave];
+
+  const valorAnterior =
+    dados.anterior[chave];
+
+  let classe = "igual";
+
+  if (chave === "cancelamentos") {
+    if (variacao.tipo === "queda") {
+      classe = "positivo";
+    } else if (
+      variacao.tipo === "aumento" ||
+      variacao.tipo === "novo"
+    ) {
+      classe = "negativo";
+    }
+  } else {
+    if (
+      variacao.tipo === "aumento" ||
+      variacao.tipo === "novo"
+    ) {
+      classe = "positivo";
+    } else if (variacao.tipo === "queda") {
+      classe = "negativo";
+    }
+  }
+
+  return `
+    <div class="comparativo-item">
+
+      <div class="comparativo-item-topo">
+
+        <div class="comparativo-esquerda">
+          <span>${indicador.icone}</span>
+
+          <strong>
+            ${indicador.titulo}
+          </strong>
+        </div>
+
+        <div class="comparativo-direita ${classe}">
+          <span>
+            ${variacao.simbolo}
+          </span>
+
+          <span>
+            ${variacao.texto}
+          </span>
+        </div>
+
+      </div>
+
+      <div class="comparativo-valores">
+
+        <div class="comparativo-valor atual">
+
+          <small>
+            Período atual
+          </small>
+
+          <strong>
+            ${formatarValorComparativoRelatorio(
+              chave,
+              valorAtual
+            )}
+          </strong>
+
+        </div>
+
+        <div class="comparativo-divisor">
+          →
+        </div>
+
+        <div class="comparativo-valor anterior">
+
+          <small>
+            Período anterior
+          </small>
+
+          <strong>
+            ${formatarValorComparativoRelatorio(
+              chave,
+              valorAnterior
+            )}
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+  `;
+}).join("")}
+
+</div>
+
+</div>
+
+`;
+
+}
+
+function obterTaxaEntregaRelatorio(pedido) {
+  const valor =
+    pedido?.TaxaEntrega ??
+    pedido?.ValorEntrega ??
+    pedido?.Frete ??
+    pedido?.Entrega ??
+    pedido?.TaxaDeEntrega ??
+    pedido?.["Taxa de Entrega"] ??
+    0;
+
+  return converterValorRelatorio(valor);
+}
+
+function obterDescontoRelatorio(pedido) {
+  return Math.max(
+    0,
+    converterValorRelatorio(pedido?.Desconto)
+  );
+}
+
+function pedidoEntregueRelatorio(pedido) {
+  const status = normalizarStatusRelatorio(
+    pedido?.Status
+  );
+
+  return (
+    status === "entregue" ||
+    status === "finalizado" ||
+    status === "concluido" ||
+    status === "concluído"
+  );
+}
+
+function renderizarIndicadoresRelatorios() {
+  const area = document.getElementById(
+    "relatorio-indicadores"
+  );
+
+  if (!area) return;
+
+  const pedidosPeriodo =
+    obterPedidosDoPeriodoRelatorio();
+
+  const pedidosCancelados = pedidosPeriodo.filter(
+    pedidoCanceladoRelatorio
+  );
+
+  const pedidosValidos = pedidosPeriodo.filter(
+    (pedido) => !pedidoCanceladoRelatorio(pedido)
+  );
+  
+  const pedidosEntregues = pedidosPeriodo.filter(
+    pedidoEntregueRelatorio
+  );
+
+  const quantidadePedidos = pedidosValidos.length;
+  const acessosPeriodo =
+  obterAcessosDoPeriodoRelatorio();
+
+const quantidadeVisitas =
+  acessosPeriodo.length;
+
+const taxaConversao =
+  calcularTaxaConversaoRelatorio(
+    quantidadePedidos,
+    quantidadeVisitas
+  );
+
+  const vendasProdutos = pedidosValidos.reduce(
+  (total, pedido) => {
+    return (
+      total +
+      converterValorRelatorio(pedido.Total)
+    );
+  },
+  0
+);
+
+const taxasEntrega = pedidosValidos.reduce(
+  (total, pedido) => {
+    return (
+      total +
+      obterTaxaEntregaRelatorio(pedido)
+    );
+  },
+  0
+);
+
+const descontos = pedidosValidos.reduce(
+  (total, pedido) => {
+    return (
+      total +
+      obterDescontoRelatorio(pedido)
+    );
+  },
+  0
+);
+
+const faturamentoTotal = Math.max(
+  0,
+  vendasProdutos + taxasEntrega - descontos
+);
+
+const ticketMedio =
+  quantidadePedidos > 0
+    ? faturamentoTotal / quantidadePedidos
+    : 0;
+
+  area.innerHTML = `
+    <div class="relatorio-titulo-periodo">
+      <h3>Indicadores do período</h3>
+
+      <span>
+        ${
+          periodoRelatorio === 1
+            ? "Hoje"
+            : `Últimos ${periodoRelatorio} dias`
+        }
+      </span>
+    </div>
+
+    <div class="relatorio-cards relatorio-cards-indicadores">
+
+      <div class="relatorio-card">
+        <span class="relatorio-card-icone">🛍️</span>
+
+        <div>
+          <h3>Pedidos</h3>
+          <strong>${quantidadePedidos}</strong>
+        </div>
+      </div>
+
+      <div class="relatorio-card">
+        <span class="relatorio-card-icone">🎟️</span>
+
+        <div>
+          <h3>Ticket médio</h3>
+          <strong>
+            ${formatarMoedaRelatorio(ticketMedio)}
+          </strong>
+        </div>
+      </div>
+
+      <div class="relatorio-card">
+        <span class="relatorio-card-icone">🍽️</span>
+
+        <div>
+          <h3>Vendas de produtos</h3>
+          <strong>
+            ${formatarMoedaRelatorio(vendasProdutos)}
+          </strong>
+        </div>
+      </div>
+
+      <div class="relatorio-card">
+        <span class="relatorio-card-icone">🛵</span>
+
+        <div>
+          <h3>Taxas de entrega</h3>
+          <strong>
+            ${formatarMoedaRelatorio(taxasEntrega)}
+          </strong>
+        </div>
+      </div>
+
+      <div class="relatorio-card">
+  <span class="relatorio-card-icone">🏷️</span>
+
+  <div>
+    <h3>Descontos</h3>
+    <strong>
+      ${formatarMoedaRelatorio(descontos)}
+    </strong>
+  </div>
+</div>
+
+      <div class="relatorio-card relatorio-card-total">
+        <span class="relatorio-card-icone">💰</span>
+
+        <div>
+          <h3>Faturamento total</h3>
+          <strong>
+            ${formatarMoedaRelatorio(faturamentoTotal)}
+          </strong>
+        </div>
+      </div>
+
+      <div class="relatorio-card">
+  <span class="relatorio-card-icone">👁️</span>
+
+  <div>
+    <h3>Visitas</h3>
+    <strong>
+      ${quantidadeVisitas}
+    </strong>
+  </div>
+</div>
+
+<div class="relatorio-card">
+  <span class="relatorio-card-icone">📈</span>
+
+  <div>
+    <h3>Taxa de conversão</h3>
+    <strong>
+      ${formatarPorcentagemRelatorio(
+        taxaConversao
+      )}
+    </strong>
+  </div>
+</div>
+
+      <div class="relatorio-card">
+        <span class="relatorio-card-icone">✅</span>
+
+        <div>
+          <h3>Entregues</h3>
+          <strong>${pedidosEntregues.length}</strong>
+        </div>
+      </div>
+
+      <div class="relatorio-card">
+        <span class="relatorio-card-icone">❌</span>
+
+        <div>
+          <h3>Cancelados</h3>
+          <strong>${pedidosCancelados.length}</strong>
+        </div>
+      </div>
+
+    </div>
+  `;
+}
+
+function escaparHtmlRelatorio(texto) {
+  return String(texto || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function extrairProdutosPedidoRelatorio(pedido) {
+  const textoItens = String(pedido?.Itens || "");
+
+  if (!textoItens.trim()) {
+    return [];
+  }
+
+  const produtos = [];
+
+  textoItens.split(/\r?\n/).forEach((linha) => {
+    const textoLinha = String(linha || "").trim();
+
+    if (!textoLinha) return;
+
+    const resultado = textoLinha.match(
+      /^(\d+)\s*x\s+(.+?)\s*-\s*R\$\s*([\d.,]+)\s*$/i
+    );
+
+    if (!resultado) return;
+
+    const quantidade = Number(resultado[1]) || 0;
+    const nome = String(resultado[2] || "").trim();
+    const faturamento = converterValorRelatorio(resultado[3]);
+
+    if (!nome || quantidade <= 0) return;
+
+    produtos.push({
+      nome,
+      quantidade,
+      faturamento,
+    });
+  });
+
+  return produtos;
+}
+
+function obterRankingProdutosRelatorio() {
+  const pedidosPeriodo = obterPedidosDoPeriodoRelatorio();
+
+  const pedidosValidos = pedidosPeriodo.filter((pedido) => {
+    return !pedidoCanceladoRelatorio(pedido);
+  });
+
+  const produtosAgrupados = new Map();
+
+  pedidosValidos.forEach((pedido) => {
+    const produtosPedido = extrairProdutosPedidoRelatorio(pedido);
+
+    produtosPedido.forEach((produto) => {
+      const chave = produto.nome
+        .trim()
+        .toLocaleLowerCase("pt-BR");
+
+      if (!produtosAgrupados.has(chave)) {
+        produtosAgrupados.set(chave, {
+          nome: produto.nome,
+          quantidade: 0,
+          faturamento: 0,
+        });
+      }
+
+      const produtoAgrupado = produtosAgrupados.get(chave);
+
+      produtoAgrupado.quantidade += produto.quantidade;
+      produtoAgrupado.faturamento += produto.faturamento;
+    });
+  });
+
+  return Array.from(produtosAgrupados.values()).sort((a, b) => {
+    if (b.quantidade !== a.quantidade) {
+      return b.quantidade - a.quantidade;
+    }
+
+    return b.faturamento - a.faturamento;
+  });
+}
+
+function obterMedalhaRankingProduto(posicao) {
+  if (posicao === 0) return "🥇";
+  if (posicao === 1) return "🥈";
+  if (posicao === 2) return "🥉";
+
+  return `${posicao + 1}º`;
+}
+
+function normalizarTextoAgrupamentoRelatorio(
+  valor,
+  valorPadrao
+) {
+  const texto = String(valor || "")
+    .trim()
+    .replace(/\s+/g, " ");
+
+  return texto || valorPadrao;
+}
+
+function criarChaveAgrupamentoRelatorio(valor) {
+  return String(valor || "")
+    .trim()
+    .replace(/\s+/g, " ")
+    .toLocaleLowerCase("pt-BR");
+}
+
+function formatarNomeOrigemRelatorio(origem) {
+  const texto = normalizarTextoAgrupamentoRelatorio(
+    origem,
+    "Direto"
+  );
+
+  const chave =
+    criarChaveAgrupamentoRelatorio(texto);
+
+  /*
+   * Padronizações das origens mais comuns.
+   */
+  const origensConhecidas = {
+    instagram: "Instagram",
+    whatsapp: "WhatsApp",
+    facebook: "Facebook",
+    google: "Google",
+    direto: "Direto",
+    qrcode: "QR Code",
+    "qr code": "QR Code",
+    "qr-code": "QR Code",
+    ifood: "iFood",
+    tiktok: "TikTok",
+    youtube: "YouTube"
+  };
+
+  if (origensConhecidas[chave]) {
+    return origensConhecidas[chave];
+  }
+
+  /*
+   * Para qualquer nova origem ainda não conhecida,
+   * mantém o texto da primeira ocorrência encontrada,
+   * apenas corrigindo a primeira letra.
+   */
+  return texto.charAt(0).toLocaleUpperCase("pt-BR") +
+    texto.slice(1);
+}
+
+function obterOrigemAcessoRelatorio(acesso) {
+  return (
+    acesso?.Origem ??
+    acesso?.origem ??
+    acesso?.UTMSource ??
+    acesso?.utmSource ??
+    "Direto"
+  );
+}
+
+function obterCampanhaAcessoRelatorio(acesso) {
+  return (
+    acesso?.UTMCampaign ??
+    acesso?.utmCampaign ??
+    acesso?.Campanha ??
+    acesso?.campanha ??
+    ""
+  );
+}
+
+function obterOrigensAcessosRelatorio() {
+  const acessosPeriodo =
+    obterAcessosDoPeriodoRelatorio();
+
+  const agrupamento = new Map();
+
+  acessosPeriodo.forEach((acesso) => {
+    const origemOriginal =
+      obterOrigemAcessoRelatorio(acesso);
+
+    const campanhaOriginal =
+      obterCampanhaAcessoRelatorio(acesso);
+
+    const origemExibicao =
+      formatarNomeOrigemRelatorio(
+        origemOriginal
+      );
+
+    const campanhaExibicao =
+      normalizarTextoAgrupamentoRelatorio(
+        campanhaOriginal,
+        "-"
+      );
+
+    /*
+     * A origem ignora maiúsculas e minúsculas.
+     *
+     * A campanha também é normalizada na chave para
+     * impedir que "Bio" e "BIO" apareçam separadas.
+     */
+    const chaveOrigem =
+      criarChaveAgrupamentoRelatorio(
+        origemExibicao
+      );
+
+    const chaveCampanha =
+      criarChaveAgrupamentoRelatorio(
+        campanhaExibicao
+      );
+
+    const chave =
+      `${chaveOrigem}|||${chaveCampanha}`;
+
+    if (!agrupamento.has(chave)) {
+      agrupamento.set(chave, {
+        origem: origemExibicao,
+        campanha: campanhaExibicao,
+        visitas: 0
+      });
+    }
+
+    agrupamento.get(chave).visitas += 1;
+  });
+
+  return Array.from(
+    agrupamento.values()
+  ).sort((a, b) => {
+    if (b.visitas !== a.visitas) {
+      return b.visitas - a.visitas;
+    }
+
+    return a.origem.localeCompare(
+      b.origem,
+      "pt-BR"
+    );
+  });
+}
+
+function obterIconeOrigemRelatorio(origem) {
+  const chave =
+    criarChaveAgrupamentoRelatorio(
+      origem
+    );
+
+  const icones = {
+    instagram: "📸",
+    whatsapp: "💬",
+    facebook: "📘",
+    google: "🔎",
+    direto: "🔗",
+    qrcode: "📱",
+    "qr code": "📱",
+    ifood: "🍔",
+    tiktok: "🎵",
+    youtube: "▶️"
+  };
+
+  return icones[chave] || "🌐";
+}
+
+function renderizarOrigensRelatorios() {
+  const area =
+    document.getElementById(
+      "relatorio-origens"
+    );
+
+  if (!area) return;
+
+  const origens =
+    obterOrigensAcessosRelatorio();
+
+  const totalVisitas = origens.reduce(
+    (total, item) => {
+      return total + item.visitas;
+    },
+    0
+  );
+
+  if (!origens.length) {
+    area.innerHTML = `
+      <div class="relatorio-secao">
+        <div class="relatorio-produtos-topo">
+          <div>
+            <h3>Origem dos acessos</h3>
+
+            <p>
+              0 visitas no período selecionado
+            </p>
+          </div>
+        </div>
+
+        <div class="relatorio-sem-dados">
+          Nenhum acesso registrado no período selecionado.
+        </div>
+      </div>
+    `;
+
+    return;
+  }
+
+  const htmlOrigens = origens
+    .map((item) => {
+      return `
+        <div class="relatorio-origem-item">
+          <div class="relatorio-origem-nome">
+            <span class="relatorio-origem-icone">
+              ${obterIconeOrigemRelatorio(
+                item.origem
+              )}
+            </span>
+
+            <strong>
+              ${escaparHtmlRelatorio(
+                item.origem
+              )}
+            </strong>
+          </div>
+
+          <div class="relatorio-origem-visitas">
+            <strong>${item.visitas}</strong>
+
+            <span>
+              ${
+                item.visitas === 1
+                  ? "visita"
+                  : "visitas"
+              }
+            </span>
+          </div>
+
+          <div class="relatorio-origem-campanha">
+            <span>Campanha</span>
+
+            <strong>
+              ${escaparHtmlRelatorio(
+                item.campanha
+              )}
+            </strong>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+
+  area.innerHTML = `
+    <div class="relatorio-secao">
+      <div class="relatorio-produtos-topo">
+        <div>
+          <h3>Origem dos acessos</h3>
+
+          <p>
+            ${totalVisitas}
+            ${
+              totalVisitas === 1
+                ? "visita"
+                : "visitas"
+            }
+            no período selecionado
+          </p>
+        </div>
+      </div>
+
+      <div class="relatorio-origens-cabecalho">
+        <span>Origem</span>
+        <span>Visitas</span>
+        <span>Campanha</span>
+      </div>
+
+      <div class="relatorio-origens-lista">
+        ${htmlOrigens}
+      </div>
+    </div>
+  `;
+}
+
+function renderizarProdutosRelatorios() {
+  const area = document.getElementById("relatorio-produtos");
+
+  if (!area) return;
+
+  const ranking = obterRankingProdutosRelatorio();
+
+  if (!ranking.length) {
+    area.innerHTML = `
+      <div class="relatorio-secao">
+        <div class="relatorio-produtos-topo">
+          <div>
+            <h3>Produtos vendidos</h3>
+            <p>0 produtos - 0 itens vendidos</p>
+          </div>
+        </div>
+
+        <div class="relatorio-sem-dados">
+          Nenhum produto vendido no período selecionado.
+        </div>
+      </div>
+    `;
+
+    return;
+  }
+
+  const quantidadeProdutos = ranking.length;
+
+  const totalItens = ranking.reduce((total, produto) => {
+    return total + produto.quantidade;
+  }, 0);
+
+  const faturamentoProdutos = ranking.reduce((total, produto) => {
+    return total + produto.faturamento;
+  }, 0);
+
+  const maiorQuantidade = Math.max(
+    ...ranking.map((produto) => produto.quantidade),
+    1
+  );
+
+  const htmlRanking = ranking
+    .map((produto, posicao) => {
+      const porcentagemFaturamento =
+        faturamentoProdutos > 0
+          ? (produto.faturamento / faturamentoProdutos) * 100
+          : 0;
+
+      const porcentagemBarra =
+        (produto.quantidade / maiorQuantidade) * 100;
+
+      return `
+        <div class="relatorio-produto-item">
+          <div class="relatorio-produto-posicao">
+            ${obterMedalhaRankingProduto(posicao)}
+          </div>
+
+          <div class="relatorio-produto-conteudo">
+            <div class="relatorio-produto-cabecalho">
+              <strong>
+                ${escaparHtmlRelatorio(produto.nome)}
+              </strong>
+
+              <span>
+                ${porcentagemFaturamento.toLocaleString("pt-BR", {
+                  minimumFractionDigits: 1,
+                  maximumFractionDigits: 1,
+                })}%
+              </span>
+            </div>
+
+            <div class="relatorio-produto-barra">
+              <div
+                class="relatorio-produto-barra-preenchimento"
+                style="width: ${porcentagemBarra}%"
+              ></div>
+            </div>
+
+            <div class="relatorio-produto-detalhes">
+              <span>
+                <strong>${produto.quantidade}</strong>
+                ${produto.quantidade === 1 ? "item vendido" : "itens vendidos"}
+              </span>
+
+              <strong>
+                ${formatarMoedaRelatorio(produto.faturamento)}
+              </strong>
+            </div>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+
+  area.innerHTML = `
+    <div class="relatorio-secao">
+      <div class="relatorio-produtos-topo">
+        <div>
+          <h3>Produtos vendidos</h3>
+
+          <p>
+            ${quantidadeProdutos}
+            ${quantidadeProdutos === 1 ? "produto" : "produtos"}
+            -
+            ${totalItens}
+            ${totalItens === 1 ? "item vendido" : "itens vendidos"}
+          </p>
+        </div>
+      </div>
+
+      <div class="relatorio-produtos-lista">
+        ${htmlRanking}
+      </div>
+    </div>
+  `;
+}
+
+function obterVendasPorHorarioRelatorio() {
+  const pedidosPeriodo = obterPedidosDoPeriodoRelatorio();
+
+  const pedidosValidos = pedidosPeriodo.filter((pedido) => {
+    return !pedidoCanceladoRelatorio(pedido);
+  });
+
+  const horarios = Array.from({ length: 24 }, (_, hora) => ({
+    hora,
+    quantidadePedidos: 0,
+    faturamento: 0,
+  }));
+
+  pedidosValidos.forEach((pedido) => {
+    const dataPedido = obterDataPedidoAdmin(pedido);
+
+    if (!dataPedido) return;
+
+    const hora = dataPedido.getHours();
+
+    horarios[hora].quantidadePedidos += 1;
+    horarios[hora].faturamento += converterValorRelatorio(
+      pedido.Total
+    );
+  });
+
+  return horarios;
+}
+
+function formatarFaixaHorarioRelatorio(hora) {
+  const horaInicial = String(hora).padStart(2, "0");
+  const horaFinal = String((hora + 1) % 24).padStart(2, "0");
+
+  return `${horaInicial}h às ${horaFinal}h`;
+}
+
+function renderizarHorariosRelatorios() {
+  const area = document.getElementById("relatorio-horarios");
+
+  if (!area) return;
+
+  const horarios = obterVendasPorHorarioRelatorio();
+
+  const horariosComPedidos = horarios.filter((item) => {
+    return item.quantidadePedidos > 0;
+  });
+
+  if (!horariosComPedidos.length) {
+    area.innerHTML = `
+      <div class="relatorio-secao relatorio-secao-horarios">
+        <div class="relatorio-horarios-titulo">
+          <div>
+            <h3>Horários de venda</h3>
+            <p>Distribuição dos pedidos por hora</p>
+          </div>
+
+          <span class="relatorio-horarios-icone">🕒</span>
+        </div>
+
+        <div class="relatorio-sem-dados">
+          Nenhuma venda encontrada no período selecionado.
+        </div>
+      </div>
+    `;
+
+    return;
+  }
+
+  const pico = horariosComPedidos.reduce((maior, item) => {
+    if (item.quantidadePedidos > maior.quantidadePedidos) {
+      return item;
+    }
+
+    if (
+      item.quantidadePedidos === maior.quantidadePedidos &&
+      item.faturamento > maior.faturamento
+    ) {
+      return item;
+    }
+
+    return maior;
+  }, horariosComPedidos[0]);
+
+  const maiorQuantidade = Math.max(
+    ...horariosComPedidos.map((item) => item.quantidadePedidos),
+    1
+  );
+
+  const totalPedidos = horariosComPedidos.reduce((total, item) => {
+    return total + item.quantidadePedidos;
+  }, 0);
+
+  const htmlHorarios = horariosComPedidos
+    .map((item) => {
+      const porcentagemBarra =
+        (item.quantidadePedidos / maiorQuantidade) * 100;
+
+      const participacao =
+        totalPedidos > 0
+          ? (item.quantidadePedidos / totalPedidos) * 100
+          : 0;
+
+      const horaPico = item.hora === pico.hora;
+
+      return `
+        <div class="relatorio-horario-item ${
+          horaPico ? "relatorio-horario-pico" : ""
+        }">
+          <div class="relatorio-horario-linha">
+            <strong class="relatorio-horario-faixa">
+              ${formatarFaixaHorarioRelatorio(item.hora)}
+            </strong>
+
+            <div class="relatorio-horario-valores">
+              <strong>
+                ${item.quantidadePedidos}
+                ${
+                  item.quantidadePedidos === 1
+                    ? "pedido"
+                    : "pedidos"
+                }
+              </strong>
+
+              <span>
+                ${participacao.toLocaleString("pt-BR", {
+                  minimumFractionDigits: 1,
+                  maximumFractionDigits: 1,
+                })}%
+              </span>
+            </div>
+          </div>
+
+          <div class="relatorio-horario-barra">
+            <div
+              class="relatorio-horario-barra-preenchimento"
+              style="width: ${porcentagemBarra}%"
+            ></div>
+          </div>
+
+          <div class="relatorio-horario-rodape">
+            <span>
+              ${formatarMoedaRelatorio(item.faturamento)}
+            </span>
+
+            ${
+              horaPico
+                ? `<strong>Maior movimento</strong>`
+                : ""
+            }
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+
+  area.innerHTML = `
+    <div class="relatorio-secao relatorio-secao-horarios">
+      <div class="relatorio-horarios-titulo">
+        <div>
+          <h3>Horários de venda</h3>
+          <p>Distribuição dos pedidos por hora</p>
+        </div>
+
+        <span class="relatorio-horarios-icone">🕒</span>
+      </div>
+
+      <div class="relatorio-horario-destaque">
+        <span class="relatorio-horario-destaque-icone">
+          📈
+        </span>
+
+        <div>
+          <small>Pico de vendas</small>
+
+          <strong>
+            ${formatarFaixaHorarioRelatorio(pico.hora)}
+          </strong>
+
+          <p>
+            ${pico.quantidadePedidos}
+            ${
+              pico.quantidadePedidos === 1
+                ? "pedido"
+                : "pedidos"
+            }
+            •
+            ${formatarMoedaRelatorio(pico.faturamento)}
+          </p>
+        </div>
+      </div>
+
+      <div class="relatorio-horarios-lista">
+        ${htmlHorarios}
+      </div>
+    </div>
+  `;
+}
+
+let dadosMapaCalorRelatorio = [];
+
+function obterPeriodoDiaRelatorio(hora) {
+  if (hora >= 5 && hora < 12) {
+    return "manha";
+  }
+
+  if (hora >= 12 && hora < 18) {
+    return "tarde";
+  }
+
+  return "noite";
+}
+
+function obterNomePeriodoDiaRelatorio(periodo) {
+  const nomes = {
+    manha: "Manhã",
+    tarde: "Tarde",
+    noite: "Noite",
+  };
+
+  return nomes[periodo] || periodo;
+}
+
+function obterIconePeriodoDiaRelatorio(periodo) {
+  const icones = {
+    manha: "🌅",
+    tarde: "🌞",
+    noite: "🌙",
+  };
+
+  return icones[periodo] || "🕒";
+}
+
+function obterDiasSemanaRelatorio() {
+  return [
+    {
+      indiceData: 1,
+      nome: "Segunda-feira",
+      nomeCurto: "Seg",
+    },
+    {
+      indiceData: 2,
+      nome: "Terça-feira",
+      nomeCurto: "Ter",
+    },
+    {
+      indiceData: 3,
+      nome: "Quarta-feira",
+      nomeCurto: "Qua",
+    },
+    {
+      indiceData: 4,
+      nome: "Quinta-feira",
+      nomeCurto: "Qui",
+    },
+    {
+      indiceData: 5,
+      nome: "Sexta-feira",
+      nomeCurto: "Sex",
+    },
+    {
+      indiceData: 6,
+      nome: "Sábado",
+      nomeCurto: "Sáb",
+    },
+    {
+      indiceData: 0,
+      nome: "Domingo",
+      nomeCurto: "Dom",
+    },
+  ];
+}
+
+function criarEstruturaMapaCalorRelatorio() {
+  const dias = obterDiasSemanaRelatorio();
+  const periodos = ["manha", "tarde", "noite"];
+
+  return periodos.flatMap((periodo) => {
+    return dias.map((dia, indiceVisual) => ({
+      periodo,
+      indiceVisualDia: indiceVisual,
+      indiceData: dia.indiceData,
+      diaNome: dia.nome,
+      diaNomeCurto: dia.nomeCurto,
+      quantidadePedidos: 0,
+      faturamento: 0,
+    }));
+  });
+}
+
+function obterDadosMapaCalorRelatorio() {
+  const pedidosPeriodo = obterPedidosDoPeriodoRelatorio();
+
+  const pedidosValidos = pedidosPeriodo.filter((pedido) => {
+    return !pedidoCanceladoRelatorio(pedido);
+  });
+
+  const mapa = criarEstruturaMapaCalorRelatorio();
+
+  pedidosValidos.forEach((pedido) => {
+    const dataPedido = obterDataPedidoAdmin(pedido);
+
+    if (!dataPedido) return;
+
+    const indiceDia = dataPedido.getDay();
+    const periodo = obterPeriodoDiaRelatorio(
+      dataPedido.getHours()
+    );
+
+    const celula = mapa.find((item) => {
+      return (
+        item.indiceData === indiceDia &&
+        item.periodo === periodo
+      );
+    });
+
+    if (!celula) return;
+
+    const taxaEntrega = obterTaxaEntregaRelatorio(pedido);
+    const desconto = obterDescontoRelatorio(pedido);
+
+    const valorPedido =
+      converterValorRelatorio(pedido.Total) +
+      taxaEntrega -
+      desconto;
+
+    celula.quantidadePedidos += 1;
+    celula.faturamento += Math.max(0, valorPedido);
+  });
+
+  return mapa;
+}
+
+function obterIntensidadeMapaCalorRelatorio(
+  quantidade,
+  maiorQuantidade
+) {
+  if (!quantidade || !maiorQuantidade) {
+    return 0;
+  }
+
+  const proporcao = quantidade / maiorQuantidade;
+
+  if (proporcao <= 0.2) return 1;
+  if (proporcao <= 0.4) return 2;
+  if (proporcao <= 0.6) return 3;
+  if (proporcao <= 0.8) return 4;
+
+  return 5;
+}
+
+function abrirDetalheMapaCalorRelatorio(indiceCelula) {
+  const celula = dadosMapaCalorRelatorio[indiceCelula];
+  const detalhe = document.getElementById(
+    "relatorio-mapa-detalhe"
+  );
+
+  if (!celula || !detalhe) return;
+
+  const ticketMedio =
+    celula.quantidadePedidos > 0
+      ? celula.faturamento / celula.quantidadePedidos
+      : 0;
+
+  detalhe.innerHTML = `
+    <div class="relatorio-mapa-detalhe-conteudo">
+      <div class="relatorio-mapa-detalhe-topo">
+        <div>
+          <small>Detalhes do período</small>
+
+          <strong>
+            ${celula.diaNome} •
+            ${obterNomePeriodoDiaRelatorio(celula.periodo)}
+          </strong>
+        </div>
+
+        <button
+          type="button"
+          class="relatorio-mapa-detalhe-fechar"
+          onclick="fecharDetalheMapaCalorRelatorio()"
+          aria-label="Fechar detalhes"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="relatorio-mapa-detalhe-indicadores">
+        <div>
+          <span>Pedidos</span>
+          <strong>${celula.quantidadePedidos}</strong>
+        </div>
+
+        <div>
+          <span>Faturamento</span>
+          <strong>
+            ${formatarMoedaRelatorio(celula.faturamento)}
+          </strong>
+        </div>
+
+        <div>
+          <span>Ticket médio</span>
+          <strong>
+            ${formatarMoedaRelatorio(ticketMedio)}
+          </strong>
+        </div>
+      </div>
+    </div>
+  `;
+
+  detalhe.classList.add("ativo");
+}
+
+function fecharDetalheMapaCalorRelatorio() {
+  const detalhe = document.getElementById(
+    "relatorio-mapa-detalhe"
+  );
+
+  if (!detalhe) return;
+
+  detalhe.classList.remove("ativo");
+}
+
+function renderizarMapaCalorRelatorios() {
+  const area = document.getElementById("relatorio-semana");
+
+  if (!area) return;
+
+  dadosMapaCalorRelatorio =
+    obterDadosMapaCalorRelatorio();
+
+  const totalPedidos = dadosMapaCalorRelatorio.reduce(
+    (total, item) => {
+      return total + item.quantidadePedidos;
+    },
+    0
+  );
+
+  const maiorQuantidade = Math.max(
+    ...dadosMapaCalorRelatorio.map((item) => {
+      return item.quantidadePedidos;
+    }),
+    0
+  );
+
+  if (!totalPedidos) {
+    area.innerHTML = `
+      <div class="relatorio-secao relatorio-mapa-secao">
+        <div class="relatorio-mapa-titulo">
+          <div>
+            <h3>Mapa de calor das vendas</h3>
+            <p>
+              Pedidos por dia da semana e período do dia
+            </p>
+          </div>
+
+          <span>🔥</span>
+        </div>
+
+        <div class="relatorio-sem-dados">
+          Nenhuma venda encontrada no período selecionado.
+        </div>
+      </div>
+    `;
+
+    return;
+  }
+
+  const dias = obterDiasSemanaRelatorio();
+  const periodos = ["manha", "tarde", "noite"];
+
+  const htmlCabecalho = dias
+    .map((dia) => {
+      return `
+        <div class="relatorio-mapa-dia-cabecalho">
+          ${dia.nomeCurto}
+        </div>
+      `;
+    })
+    .join("");
+
+  const htmlLinhas = periodos
+    .map((periodo) => {
+      const celulasPeriodo = dadosMapaCalorRelatorio.filter(
+        (item) => item.periodo === periodo
+      );
+
+      const htmlCelulas = celulasPeriodo
+        .map((celula) => {
+          const indiceCelula =
+            dadosMapaCalorRelatorio.indexOf(celula);
+
+          const intensidade =
+            obterIntensidadeMapaCalorRelatorio(
+              celula.quantidadePedidos,
+              maiorQuantidade
+            );
+
+          const descricao = `
+            ${celula.diaNome},
+            ${obterNomePeriodoDiaRelatorio(periodo)}:
+            ${celula.quantidadePedidos}
+            ${
+              celula.quantidadePedidos === 1
+                ? "pedido"
+                : "pedidos"
+            }
+          `
+            .replace(/\s+/g, " ")
+            .trim();
+
+          return `
+            <button
+              type="button"
+              class="
+                relatorio-mapa-celula
+                relatorio-mapa-intensidade-${intensidade}
+              "
+              onclick="abrirDetalheMapaCalorRelatorio(${indiceCelula})"
+              title="${descricao}"
+              aria-label="${descricao}"
+            >
+              <strong>
+                ${celula.quantidadePedidos}
+              </strong>
+
+              <small>
+                ${
+                  celula.quantidadePedidos === 1
+                    ? "pedido"
+                    : "pedidos"
+                }
+              </small>
+            </button>
+          `;
+        })
+        .join("");
+
+      return `
+        <div class="relatorio-mapa-linha">
+          <div class="relatorio-mapa-periodo">
+            <span>
+              ${obterIconePeriodoDiaRelatorio(periodo)}
+            </span>
+
+            <strong>
+              ${obterNomePeriodoDiaRelatorio(periodo)}
+            </strong>
+          </div>
+
+          ${htmlCelulas}
+        </div>
+      `;
+    })
+    .join("");
+
+  const celulaPico = dadosMapaCalorRelatorio.reduce(
+    (maior, item) => {
+      if (
+        item.quantidadePedidos >
+        maior.quantidadePedidos
+      ) {
+        return item;
+      }
+
+      if (
+        item.quantidadePedidos ===
+          maior.quantidadePedidos &&
+        item.faturamento > maior.faturamento
+      ) {
+        return item;
+      }
+
+      return maior;
+    },
+    dadosMapaCalorRelatorio[0]
+  );
+
+  area.innerHTML = `
+    <div class="relatorio-secao relatorio-mapa-secao">
+      <div class="relatorio-mapa-titulo">
+        <div>
+          <h3>Mapa de calor das vendas</h3>
+          <p>
+            Pedidos por dia da semana e período do dia
+          </p>
+        </div>
+
+        <span>🔥</span>
+      </div>
+
+      <div class="relatorio-mapa-pico">
+        <span>🏆</span>
+
+        <div>
+          <small>Maior movimento</small>
+
+          <strong>
+            ${celulaPico.diaNome} •
+            ${obterNomePeriodoDiaRelatorio(
+              celulaPico.periodo
+            )}
+          </strong>
+
+          <p>
+            ${celulaPico.quantidadePedidos}
+            ${
+              celulaPico.quantidadePedidos === 1
+                ? "pedido"
+                : "pedidos"
+            }
+            •
+            ${formatarMoedaRelatorio(
+              celulaPico.faturamento
+            )}
+          </p>
+        </div>
+      </div>
+
+      <div class="relatorio-mapa-scroll">
+        <div class="relatorio-mapa-grade">
+          <div class="relatorio-mapa-canto">
+            Período
+          </div>
+
+          ${htmlCabecalho}
+
+          ${htmlLinhas}
+        </div>
+      </div>
+
+      <div class="relatorio-mapa-legenda">
+        <span>Menor movimento</span>
+
+        <div class="relatorio-mapa-legenda-cores">
+          <i class="relatorio-mapa-intensidade-1"></i>
+          <i class="relatorio-mapa-intensidade-2"></i>
+          <i class="relatorio-mapa-intensidade-3"></i>
+          <i class="relatorio-mapa-intensidade-4"></i>
+          <i class="relatorio-mapa-intensidade-5"></i>
+        </div>
+
+        <span>Maior movimento</span>
+      </div>
+
+      <p class="relatorio-mapa-instrucao">
+        Toque em uma célula para visualizar os detalhes.
+      </p>
+
+      <div id="relatorio-mapa-detalhe"></div>
+    </div>
+  `;
+}
+
+function formatarDataResumoRelatorio() {
+  return new Date().toLocaleDateString("pt-BR", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+  });
+}
+
       function mostrarConteudoAdmin() {
   const login = document.getElementById("login-admin");
 
@@ -4032,8 +7989,14 @@
       }
       let senhaPainelSessao = "";
       let dadosPedidos = [];
+      let pedidoSelecionadoCancelamento = null;
+      let drawerPedidoCancelamento = null;
+      let botaoPedidoCancelamento = null;
+      let cancelamentoPedidoEmAndamento = false;
+      let dadosAcessos = [];
       let perfilLojaAdmin = {};
       let filtroPedidosAdmin = "ativos";
+      let periodoRelatorio = 7;
       let pedidosJaConhecidos =
         JSON.parse(localStorage.getItem("pedidosJaConhecidos")) || [];
 
@@ -4264,6 +8227,10 @@
 
         if (nomeAba === "notificacoes") {
           carregarUsuariosPushAtivos();
+        }
+
+        if (nomeAba === "relatorios") {
+          montarTelaRelatorios();
         }
 
         limparCamposTemporariosAoTrocarAba(nomeAba);
@@ -9508,6 +13475,536 @@ document
         });
       }
 
+      function numeroMoedaAdmin(valor) {
+  if (
+    valor === null ||
+    valor === undefined ||
+    valor === ""
+  ) {
+    return 0;
+  }
+
+  let texto = String(valor)
+    .replace("R$", "")
+    .trim();
+
+  if (
+    texto.includes(",") &&
+    texto.includes(".")
+  ) {
+    texto = texto
+      .replace(/\./g, "")
+      .replace(",", ".");
+  } else if (texto.includes(",")) {
+    texto = texto.replace(",", ".");
+  }
+
+  const numero = Number(texto);
+
+  if (!Number.isFinite(numero)) {
+    return 0;
+  }
+
+  return Math.round(
+    (numero + Number.EPSILON) * 100
+  ) / 100;
+}
+
+function formatarMoedaCancelamento(valor) {
+  return Number(valor || 0).toLocaleString(
+    "pt-BR",
+    {
+      style: "currency",
+      currency: "BRL",
+    },
+  );
+}
+
+function mostrarAvisoCancelamento(mensagem) {
+  const aviso = document.getElementById(
+    "aviso-cancelamento-pedido",
+  );
+
+  if (!aviso) return;
+
+  aviso.textContent = mensagem || "";
+
+  aviso.classList.toggle(
+    "visivel",
+    Boolean(mensagem),
+  );
+}
+
+function obterTipoCancelamentoSelecionado() {
+  const selecionado = document.querySelector(
+    'input[name="tipo-cancelamento-pedido"]:checked',
+  );
+
+  return selecionado
+    ? String(selecionado.value || "")
+    : "";
+}
+
+function atualizarCampoEstornoParcial() {
+  const tipo =
+    obterTipoCancelamentoSelecionado();
+
+  const campo = document.getElementById(
+    "campo-estorno-parcial",
+  );
+
+  if (!campo) return;
+
+  campo.classList.toggle(
+    "visivel",
+    tipo === "parcial",
+  );
+}
+
+function fecharModalCancelamentoPedido() {
+  if (cancelamentoPedidoEmAndamento) {
+    return;
+  }
+
+  const modal = document.getElementById(
+    "modal-cancelamento-pedido",
+  );
+
+  if (modal) {
+    modal.classList.remove("aberto");
+    modal.setAttribute("aria-hidden", "true");
+  }
+
+  pedidoSelecionadoCancelamento = null;
+  drawerPedidoCancelamento = null;
+  botaoPedidoCancelamento = null;
+
+  document
+    .querySelectorAll(
+      'input[name="tipo-cancelamento-pedido"]',
+    )
+    .forEach((radio) => {
+      radio.checked = false;
+    });
+
+  const valorParcial = document.getElementById(
+    "valor-estorno-parcial",
+  );
+
+  const motivo = document.getElementById(
+    "motivo-cancelamento-pedido",
+  );
+
+  if (valorParcial) {
+    valorParcial.value = "";
+  }
+
+  if (motivo) {
+    motivo.value = "";
+  }
+
+  atualizarCampoEstornoParcial();
+  mostrarAvisoCancelamento("");
+}
+
+function abrirModalCancelamentoPedido(
+  pedido,
+  drawer = null,
+  botao = null,
+) {
+  const modal = document.getElementById(
+    "modal-cancelamento-pedido",
+  );
+
+  if (!modal || !pedido) {
+    return;
+  }
+
+  pedidoSelecionadoCancelamento = pedido;
+  drawerPedidoCancelamento = drawer;
+  botaoPedidoCancelamento = botao;
+
+  const total =
+    numeroMoedaAdmin(pedido.Total);
+
+  const jaEstornado =
+    numeroMoedaAdmin(
+      pedido.ValorEstornado,
+    );
+
+  const saldoDisponivel =
+    Math.max(
+      0,
+      Math.round(
+        (
+          total -
+          jaEstornado +
+          Number.EPSILON
+        ) * 100,
+      ) / 100,
+    );
+
+  document.getElementById(
+    "cancelamento-numero-pedido",
+  ).textContent =
+    `#${pedido.NumeroPedido || pedido.PedidoId || "-"}`;
+
+  document.getElementById(
+    "cancelamento-forma-pagamento",
+  ).textContent =
+    pedido.Pagamento ||
+    "Não informado";
+
+  document.getElementById(
+    "cancelamento-total-pedido",
+  ).textContent =
+    formatarMoedaCancelamento(total);
+
+  document.getElementById(
+    "cancelamento-valor-estornado",
+  ).textContent =
+    formatarMoedaCancelamento(
+      jaEstornado,
+    );
+
+  document.getElementById(
+    "cancelamento-saldo-disponivel",
+  ).textContent =
+    formatarMoedaCancelamento(
+      saldoDisponivel,
+    );
+
+  document
+    .querySelectorAll(
+      'input[name="tipo-cancelamento-pedido"]',
+    )
+    .forEach((radio) => {
+      radio.checked = false;
+    });
+
+  /*
+   * Quando não existe PaymentId, desabilitamos
+   * as opções financeiras, mas ainda permitimos
+   * cancelar sem estorno.
+   */
+  const radioTotal = document.querySelector(
+    'input[name="tipo-cancelamento-pedido"][value="total"]',
+  );
+
+  const radioParcial = document.querySelector(
+    'input[name="tipo-cancelamento-pedido"][value="parcial"]',
+  );
+
+  if (radioTotal) {
+  radioTotal.disabled =
+    saldoDisponivel <= 0;
+}
+
+if (radioParcial) {
+  radioParcial.disabled =
+    saldoDisponivel <= 0;
+}
+
+  const radioSemEstorno =
+    document.querySelector(
+      'input[name="tipo-cancelamento-pedido"][value="sem_estorno"]',
+    );
+
+  if (radioSemEstorno) {
+    radioSemEstorno.checked = true;
+  }
+
+  const valorParcial = document.getElementById(
+    "valor-estorno-parcial",
+  );
+
+  const motivo = document.getElementById(
+    "motivo-cancelamento-pedido",
+  );
+
+  if (valorParcial) {
+    valorParcial.value = "";
+  }
+
+  if (motivo) {
+    motivo.value = "";
+  }
+
+  atualizarCampoEstornoParcial();
+  mostrarAvisoCancelamento("");
+
+  modal.classList.add("aberto");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+async function confirmarCancelamentoPedidoAdmin() {
+  if (
+    cancelamentoPedidoEmAndamento ||
+    !pedidoSelecionadoCancelamento
+  ) {
+    return;
+  }
+
+  const pedido =
+    pedidoSelecionadoCancelamento;
+
+  const tipo =
+    obterTipoCancelamentoSelecionado();
+
+  const motivo =
+    String(
+      document.getElementById(
+        "motivo-cancelamento-pedido",
+      )?.value || "",
+    ).trim();
+
+  const campoValor =
+    document.getElementById(
+      "valor-estorno-parcial",
+    );
+
+  const valorParcial =
+    numeroMoedaAdmin(
+      campoValor?.value || "",
+    );
+
+  mostrarAvisoCancelamento("");
+
+  if (!tipo) {
+    mostrarAvisoCancelamento(
+      "Selecione uma opção de cancelamento.",
+    );
+
+    return;
+  }
+
+  if (!motivo || motivo.length < 3) {
+    mostrarAvisoCancelamento(
+      "Informe o motivo do cancelamento.",
+    );
+
+    return;
+  }
+
+  const total =
+    numeroMoedaAdmin(pedido.Total);
+
+  const jaEstornado =
+    numeroMoedaAdmin(
+      pedido.ValorEstornado,
+    );
+
+  const saldoDisponivel =
+    Math.max(
+      0,
+      Math.round(
+        (
+          total -
+          jaEstornado +
+          Number.EPSILON
+        ) * 100,
+      ) / 100,
+    );
+
+  if (tipo === "parcial") {
+    if (
+      !Number.isFinite(valorParcial) ||
+      valorParcial <= 0
+    ) {
+      mostrarAvisoCancelamento(
+        "Informe um valor válido para o estorno parcial.",
+      );
+
+      return;
+    }
+
+    if (valorParcial > saldoDisponivel) {
+      mostrarAvisoCancelamento(
+        "O valor informado ultrapassa o saldo disponível.",
+      );
+
+      return;
+    }
+  }
+
+  if (
+    tipo !== "sem_estorno" &&
+    !/^[0-9]+$/.test(
+      String(
+        pedido.PaymentId || "",
+      ).trim(),
+    )
+  ) {
+    mostrarAvisoCancelamento(
+      "Este pedido não possui PaymentId válido para realizar o estorno.",
+    );
+
+    return;
+  }
+
+  if (!senhaPainelSessao) {
+    const senhaConfirmacao = prompt(
+      "Confirme a senha do painel para cancelar o pedido:",
+    );
+
+    if (!senhaConfirmacao) {
+      return;
+    }
+
+    senhaPainelSessao =
+      String(senhaConfirmacao);
+  }
+
+  const botaoConfirmar =
+    document.getElementById(
+      "confirmar-cancelamento-pedido",
+    );
+
+  const textoOriginal =
+    botaoConfirmar.textContent;
+
+  const confirmacaoFinal =
+    confirm(
+      tipo === "sem_estorno"
+        ? "Confirma o cancelamento deste pedido sem estorno?"
+        : tipo === "total"
+          ? `Confirma o cancelamento e o estorno de ${formatarMoedaCancelamento(saldoDisponivel)}?`
+          : `Confirma o cancelamento e o estorno parcial de ${formatarMoedaCancelamento(valorParcial)}?`,
+    );
+
+  if (!confirmacaoFinal) {
+    return;
+  }
+
+  cancelamentoPedidoEmAndamento = true;
+
+  botaoConfirmar.disabled = true;
+  botaoConfirmar.classList.add(
+    "loading-status",
+  );
+  botaoConfirmar.textContent =
+    tipo === "sem_estorno"
+      ? "Cancelando..."
+      : "Processando estorno...";
+
+  try {
+    const payload = {
+      acao:
+        "cancelarPedidoSeguro",
+
+      senhaPainel:
+        senhaPainelSessao,
+
+      pedidoId:
+        String(
+          pedido.PedidoId || "",
+        ).trim(),
+
+      tipo,
+      motivo,
+    };
+
+    if (tipo === "parcial") {
+      payload.valor =
+        valorParcial;
+    }
+
+    const resposta = await fetch(
+      URL_CONTROLE,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "text/plain;charset=utf-8",
+        },
+
+        body:
+          JSON.stringify(payload),
+      },
+    );
+
+    const textoResposta =
+      await resposta.text();
+
+    let retorno;
+
+    try {
+      retorno =
+        JSON.parse(textoResposta);
+    } catch (erroJson) {
+      throw new Error(
+        "O Apps Script retornou uma resposta inválida: " +
+        textoResposta.slice(0, 300),
+      );
+    }
+
+    console.log(
+      "Retorno do cancelamento:",
+      retorno,
+    );
+
+    if (
+      !retorno ||
+      retorno.sucesso !== true
+    ) {
+      const mensagemErro =
+        retorno?.erro ||
+        "Não foi possível cancelar o pedido.";
+
+      if (
+        mensagemErro
+          .toLowerCase()
+          .includes("senha")
+      ) {
+        senhaPainelSessao = "";
+      }
+
+      mostrarAvisoCancelamento(
+        mensagemErro,
+      );
+
+      return;
+    }
+
+    alert(
+      retorno.mensagem ||
+      "Pedido cancelado com sucesso.",
+    );
+
+    const drawerParaFechar =
+  drawerPedidoCancelamento;
+
+fecharModalCancelamentoPedido();
+
+if (drawerParaFechar) {
+  drawerParaFechar.remove();
+}
+
+    await carregarPedidosAdmin();
+    
+  } catch (erro) {
+    console.error(
+      "Erro ao cancelar pedido:",
+      erro,
+    );
+
+    mostrarAvisoCancelamento(
+      erro?.message ||
+      "Erro ao processar o cancelamento.",
+    );
+  } finally {
+    cancelamentoPedidoEmAndamento = false;
+
+    botaoConfirmar.disabled = false;
+    botaoConfirmar.classList.remove(
+      "loading-status",
+    );
+    botaoConfirmar.textContent =
+      textoOriginal;
+  }
+}
+
       function abrirPedidoLateral(pedido) {
         const area = document.getElementById("areaPedidosLaterais");
         if (!area) return;
@@ -9618,7 +14115,7 @@ document
         drawer.innerHTML = `
     <div class="pedido-lateral-topo">
       <button type="button" class="btn-voltar-status" title="Voltar para Em produção">
-        ?
+        ↩️
       </button>
 
       <button type="button" class="fechar-pedido-lateral">✕</button>
@@ -9766,20 +14263,22 @@ ${
             const novoStatus = botao.dataset.status;
 
             if (novoStatus === "Cancelado") {
-              const confirmarCancelamento = confirm(
-                "Tem certeza que deseja cancelar este pedido? Essa ação deve ser usada somente quando o pedido realmente não será preparado.",
-              );
+  abrirModalCancelamentoPedido(
+    pedido,
+    drawer,
+    botao,
+  );
 
-              if (!confirmarCancelamento) return;
-            }
+  return;
+}
 
-            alterarStatusPedidoAdmin(
-              pedido.PedidoId,
-              novoStatus,
-              drawer,
-              botao,
-              pedido,
-            );
+alterarStatusPedidoAdmin(
+  pedido.PedidoId,
+  novoStatus,
+  drawer,
+  botao,
+  pedido,
+);
           });
         });
         const botaoSalvarRastreio = drawer.querySelector(
@@ -12245,6 +16744,270 @@ window.addEventListener("pageshow", () => {
       iniciarAutenticacaoAdmin();
     </script>
     <div id="areaPedidosLaterais" class="area-pedidos-laterais"></div>
+    <div
+  id="modal-cancelamento-pedido"
+  class="modal-cancelamento-pedido"
+  aria-hidden="true"
+>
+  <div class="modal-cancelamento-card">
+    <div class="modal-cancelamento-topo">
+      <h2 id="titulo-modal-cancelamento">
+        Cancelar pedido
+      </h2>
+
+      <button
+        type="button"
+        id="fechar-modal-cancelamento"
+        class="fechar-modal-cancelamento"
+        aria-label="Fechar"
+      >
+        ✕
+      </button>
+    </div>
+
+    <div class="resumo-cancelamento-pedido">
+      <p>
+        <strong>Pedido:</strong>
+        <span id="cancelamento-numero-pedido">-</span>
+      </p>
+
+      <p>
+        <strong>Pagamento:</strong>
+        <span id="cancelamento-forma-pagamento">-</span>
+      </p>
+
+      <p>
+        <strong>Valor total:</strong>
+        <span id="cancelamento-total-pedido">R$ 0,00</span>
+      </p>
+
+      <p>
+        <strong>Já estornado:</strong>
+        <span id="cancelamento-valor-estornado">R$ 0,00</span>
+      </p>
+
+      <p>
+        <strong>Saldo disponível:</strong>
+        <span id="cancelamento-saldo-disponivel">R$ 0,00</span>
+      </p>
+    </div>
+
+    <div class="opcoes-cancelamento">
+      <label class="opcao-cancelamento">
+        <input
+          type="radio"
+          name="tipo-cancelamento-pedido"
+          value="total"
+        />
+
+        <span class="opcao-cancelamento-conteudo">
+          <strong>Estorno total</strong>
+          <small>
+            Cancela o pedido e devolve todo o saldo disponível.
+          </small>
+        </span>
+      </label>
+
+      <label class="opcao-cancelamento">
+        <input
+          type="radio"
+          name="tipo-cancelamento-pedido"
+          value="parcial"
+        />
+
+        <span class="opcao-cancelamento-conteudo">
+          <strong>Estorno parcial</strong>
+          <small>
+            Cancela o pedido e devolve apenas o valor informado.
+          </small>
+        </span>
+      </label>
+
+      <label class="opcao-cancelamento">
+        <input
+          type="radio"
+          name="tipo-cancelamento-pedido"
+          value="sem_estorno"
+        />
+
+        <span class="opcao-cancelamento-conteudo">
+          <strong>Cancelar sem estorno</strong>
+          <small>
+            Apenas cancela o pedido, sem devolver valores.
+          </small>
+        </span>
+      </label>
+    </div>
+
+    <div
+      id="campo-estorno-parcial"
+      class="campo-estorno-parcial"
+    >
+      <label for="valor-estorno-parcial">
+        Valor do estorno parcial
+      </label>
+
+      <div class="campo-moeda">
+        <span>R$</span>
+
+        <input
+          type="text"
+          id="valor-estorno-parcial"
+          inputmode="decimal"
+          placeholder="0,00"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <label for="motivo-cancelamento-pedido">
+      Motivo do cancelamento
+    </label>
+
+    <textarea
+      id="motivo-cancelamento-pedido"
+      maxlength="500"
+      placeholder="Informe por que o pedido está sendo cancelado"
+    ></textarea>
+
+    <div
+      id="aviso-cancelamento-pedido"
+      class="aviso-cancelamento-pedido"
+    ></div>
+
+    <div class="acoes-modal-cancelamento">
+      <button
+        type="button"
+        id="voltar-modal-cancelamento"
+        class="btn-voltar-cancelamento"
+      >
+        Voltar
+      </button>
+
+      <button
+        type="button"
+        id="confirmar-cancelamento-pedido"
+        class="btn-confirmar-cancelamento"
+      >
+        Confirmar cancelamento
+      </button>
+    </div>
+  </div>
+</div>
+<script>
+  function configurarEventosModalCancelamento() {
+    document
+      .querySelectorAll(
+        'input[name="tipo-cancelamento-pedido"]',
+      )
+      .forEach((radio) => {
+        radio.addEventListener(
+          "change",
+          atualizarCampoEstornoParcial,
+        );
+      });
+
+    const botaoFechar =
+      document.getElementById(
+        "fechar-modal-cancelamento",
+      );
+
+    const botaoVoltar =
+      document.getElementById(
+        "voltar-modal-cancelamento",
+      );
+
+    const botaoConfirmar =
+      document.getElementById(
+        "confirmar-cancelamento-pedido",
+      );
+
+    const modal =
+      document.getElementById(
+        "modal-cancelamento-pedido",
+      );
+
+    const valorParcial =
+      document.getElementById(
+        "valor-estorno-parcial",
+      );
+
+    if (botaoFechar) {
+      botaoFechar.addEventListener(
+        "click",
+        fecharModalCancelamentoPedido,
+      );
+    }
+
+    if (botaoVoltar) {
+      botaoVoltar.addEventListener(
+        "click",
+        fecharModalCancelamentoPedido,
+      );
+    }
+
+    if (botaoConfirmar) {
+      botaoConfirmar.addEventListener(
+        "click",
+        confirmarCancelamentoPedidoAdmin,
+      );
+    }
+
+    if (modal) {
+      modal.addEventListener(
+        "click",
+        (evento) => {
+          if (evento.target === modal) {
+            fecharModalCancelamentoPedido();
+          }
+        },
+      );
+    }
+
+    if (valorParcial) {
+      valorParcial.addEventListener(
+        "input",
+        (evento) => {
+          let valor = String(
+            evento.target.value || "",
+          );
+
+          valor = valor
+            .replace(/[^\d,]/g, "")
+            .replace(
+              /(,.*),/g,
+              "$1",
+            );
+
+          evento.target.value = valor;
+        },
+      );
+    }
+  }
+
+  configurarEventosModalCancelamento();
+
+  document.addEventListener(
+    "keydown",
+    (evento) => {
+      if (evento.key !== "Escape") {
+        return;
+      }
+
+      const modal =
+        document.getElementById(
+          "modal-cancelamento-pedido",
+        );
+
+      if (
+        modal &&
+        modal.classList.contains("aberto")
+      ) {
+        fecharModalCancelamentoPedido();
+      }
+    },
+  );
+</script>
     <div id="modalExcluirFrete" class="modal-frete" style="display: none">
       <div class="modal-frete-card">
         <h2>Excluir frete</h2>
