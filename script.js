@@ -1,4 +1,4 @@
- let pedidoAcompanhamentoAberto = null;
+let pedidoAcompanhamentoAberto = null;
 let timeoutStatusCliente = null;
 const URL_CONTROLE =
   'https://script.google.com/macros/s/AKfycbxtEiOTWzHDTC2CO3XKG5rb-KEE2lPr6tz6RBHojLpUfQZHwoi5CS_Y0NOaQDFP71uTVA/exec';
