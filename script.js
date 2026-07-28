@@ -1,4 +1,4 @@
-let pedidoAcompanhamentoAberto = null;
+ let pedidoAcompanhamentoAberto = null;
 let timeoutStatusCliente = null;
 const URL_CONTROLE =
   'https://script.google.com/macros/s/AKfycbxtEiOTWzHDTC2CO3XKG5rb-KEE2lPr6tz6RBHojLpUfQZHwoi5CS_Y0NOaQDFP71uTVA/exec';
@@ -7,6 +7,360 @@ const URL_LICENCIAMENTO =
   "https://script.google.com/macros/s/AKfycbwwm9HvLqcAuaw09ssIqZtvNastFXPdAHtPUBjtFZiME8bScF53TiAef6pqFxEENYHT/exec";
 
 const CARDAPIO_ID = "card_54834e968305";
+
+const CHAVE_SESSAO_VISITANTE =
+  `sessaoVisitante_${CARDAPIO_ID}`;
+
+const CHAVE_ULTIMO_ACESSO_VISITANTE =
+  `ultimoAcessoVisitante_${CARDAPIO_ID}`;
+
+let registroAcessoEmAndamento = false;
+
+function gerarIdSessaoVisitante() {
+  if (
+    window.crypto &&
+    typeof window.crypto.randomUUID === "function"
+  ) {
+    return window.crypto.randomUUID();
+  }
+
+  return (
+    "sessao_" +
+    Date.now().toString(36) +
+    "_" +
+    Math.random().toString(36).slice(2, 12)
+  );
+}
+
+function obterOuCriarSessaoVisitante() {
+  try {
+    let sessao =
+      localStorage.getItem(
+        CHAVE_SESSAO_VISITANTE,
+      );
+
+    if (!sessao) {
+      sessao = gerarIdSessaoVisitante();
+
+      localStorage.setItem(
+        CHAVE_SESSAO_VISITANTE,
+        sessao,
+      );
+    }
+
+    return sessao;
+  } catch (erro) {
+    console.warn(
+      "Não foi possível acessar a sessão do visitante:",
+      erro,
+    );
+
+    /*
+     * Caso o navegador bloqueie o localStorage,
+     * ainda geramos uma sessão temporária.
+     */
+    return gerarIdSessaoVisitante();
+  }
+}
+
+function identificarOrigemPorReferencia(referencia) {
+  const texto = String(referencia || "")
+    .trim()
+    .toLowerCase();
+
+  if (!texto) {
+    return "Direto";
+  }
+
+  if (
+    texto.includes("instagram.com") ||
+    texto.includes("l.instagram.com")
+  ) {
+    return "Instagram";
+  }
+
+  if (
+    texto.includes("facebook.com") ||
+    texto.includes("fb.com") ||
+    texto.includes("m.facebook.com") ||
+    texto.includes("lm.facebook.com")
+  ) {
+    return "Facebook";
+  }
+
+  if (
+    texto.includes("google.com") ||
+    texto.includes("google.com.br")
+  ) {
+    return "Google";
+  }
+
+  if (
+    texto.includes("whatsapp.com") ||
+    texto.includes("wa.me")
+  ) {
+    return "WhatsApp";
+  }
+
+  if (texto.includes("ifood.com.br")) {
+    return "iFood";
+  }
+
+  if (texto.includes("tiktok.com")) {
+    return "TikTok";
+  }
+
+  try {
+    return new URL(referencia).hostname
+      .replace(/^www\./, "");
+  } catch (erro) {
+    return "Outro";
+  }
+}
+
+function obterDadosOrigemVisitante() {
+  const parametros =
+    new URLSearchParams(window.location.search);
+
+  const utmSource =
+    String(parametros.get("utm_source") || "")
+      .trim();
+
+  const utmMedium =
+    String(parametros.get("utm_medium") || "")
+      .trim();
+
+  const utmCampaign =
+    String(parametros.get("utm_campaign") || "")
+      .trim();
+
+  const utmContent =
+    String(parametros.get("utm_content") || "")
+      .trim();
+
+  const utmTerm =
+    String(parametros.get("utm_term") || "")
+      .trim();
+
+  const referencia =
+    String(document.referrer || "").trim();
+
+  /*
+   * UTM tem prioridade.
+   * Caso não exista, tentamos identificar
+   * pelo site que encaminhou o visitante.
+   */
+  const origem =
+    utmSource ||
+    identificarOrigemPorReferencia(referencia);
+
+  return {
+    origem,
+    referencia,
+    utmSource,
+    utmMedium,
+    utmCampaign,
+    utmContent,
+    utmTerm,
+  };
+}
+
+function obterDataLocalAtual() {
+  const agora = new Date();
+
+  const ano = agora.getFullYear();
+
+  const mes = String(
+    agora.getMonth() + 1,
+  ).padStart(2, "0");
+
+  const dia = String(
+    agora.getDate(),
+  ).padStart(2, "0");
+
+  return `${ano}-${mes}-${dia}`;
+}
+
+function ultimoAcessoFoiRegistradoHoje() {
+  try {
+    const ultimaData =
+      localStorage.getItem(
+        CHAVE_ULTIMO_ACESSO_VISITANTE,
+      );
+
+    return ultimaData === obterDataLocalAtual();
+  } catch (erro) {
+    console.warn(
+      "Não foi possível consultar o último acesso:",
+      erro,
+    );
+
+    return false;
+  }
+}
+
+function salvarDataUltimoAcesso() {
+  try {
+    localStorage.setItem(
+      CHAVE_ULTIMO_ACESSO_VISITANTE,
+      obterDataLocalAtual(),
+    );
+  } catch (erro) {
+    console.warn(
+      "Não foi possível salvar a data do acesso:",
+      erro,
+    );
+  }
+}
+
+function enviarRegistroAcesso(sessao) {
+  return new Promise((resolve, reject) => {
+    const callbackName =
+      `receberRegistroAcesso_${Date.now()}_${Math.random()
+        .toString(36)
+        .slice(2, 8)}`;
+
+    const script =
+      document.createElement("script");
+
+    let finalizado = false;
+
+    const timeout = setTimeout(() => {
+      finalizarRegistroAcesso();
+
+      reject(
+        new Error(
+          "Tempo limite ao registrar acesso.",
+        ),
+      );
+    }, 10000);
+
+    function finalizarRegistroAcesso() {
+      if (finalizado) return;
+
+      finalizado = true;
+
+      clearTimeout(timeout);
+
+      delete window[callbackName];
+
+      if (script.parentNode) {
+        script.remove();
+      }
+    }
+
+    window[callbackName] = function (resultado) {
+      finalizarRegistroAcesso();
+
+      if (
+        resultado &&
+        resultado.sucesso === true
+      ) {
+        resolve(resultado);
+        return;
+      }
+
+      reject(
+        new Error(
+          resultado?.erro ||
+          resultado?.mensagem ||
+          "Não foi possível registrar o acesso.",
+        ),
+      );
+    };
+
+    const dadosOrigem =
+      obterDadosOrigemVisitante();
+
+    const parametros =
+      new URLSearchParams({
+        acao: "registrarAcesso",
+        cardapioId: CARDAPIO_ID,
+        sessao,
+
+        origem:
+          dadosOrigem.origem,
+
+        referencia:
+          dadosOrigem.referencia,
+
+        utmSource:
+          dadosOrigem.utmSource,
+
+        utmMedium:
+          dadosOrigem.utmMedium,
+
+        utmCampaign:
+          dadosOrigem.utmCampaign,
+
+        utmContent:
+          dadosOrigem.utmContent,
+
+        utmTerm:
+          dadosOrigem.utmTerm,
+
+        callback: callbackName,
+        t: String(Date.now()),
+      });
+
+    script.id = callbackName;
+
+    script.src =
+      `${URL_CONTROLE}?${parametros.toString()}`;
+
+    script.onerror = () => {
+      finalizarRegistroAcesso();
+
+      reject(
+        new Error(
+          "Erro de conexão ao registrar acesso.",
+        ),
+      );
+    };
+
+    document.body.appendChild(script);
+  });
+}
+
+async function registrarAcessoSeNecessario() {
+  if (registroAcessoEmAndamento) {
+    return;
+  }
+
+  if (ultimoAcessoFoiRegistradoHoje()) {
+    return;
+  }
+
+  registroAcessoEmAndamento = true;
+
+  try {
+    const sessao =
+      obterOuCriarSessaoVisitante();
+
+    await enviarRegistroAcesso(sessao);
+
+    /*
+     * A data só é salva depois que o Apps Script
+     * confirma que recebeu o registro.
+     */
+    salvarDataUltimoAcesso();
+
+    console.log(
+      "Acesso do visitante registrado.",
+    );
+  } catch (erro) {
+    /*
+     * Uma falha nas métricas nunca deve impedir
+     * o funcionamento do cardápio.
+     */
+    console.warn(
+      "Não foi possível registrar o acesso:",
+      erro,
+    );
+  } finally {
+    registroAcessoEmAndamento = false;
+  }
+}
 
 async function verificarLicencaPublica() {
   const parametros = new URLSearchParams({
@@ -2066,31 +2420,253 @@ function carregarControleProdutos() {
 
 function carregarComplementosCardapio() {
   return new Promise((resolve, reject) => {
+    const callbackName =
+      `receberComplementosCardapio_${Date.now()}_${Math.random()
+        .toString(36)
+        .slice(2, 8)}`;
 
-    const callbackName = `receberComplementosCardapio_${Date.now()}`;
+    const script = document.createElement("script");
+
+    let finalizado = false;
+
+    const timeout = setTimeout(() => {
+      finalizar();
+
+      reject(
+        new Error(
+          "Tempo limite ao carregar os complementos.",
+        ),
+      );
+    }, 12000);
+
+    function finalizar() {
+      if (finalizado) return;
+
+      finalizado = true;
+
+      clearTimeout(timeout);
+
+      delete window[callbackName];
+
+      if (script.parentNode) {
+        script.remove();
+      }
+    }
 
     window[callbackName] = function (resultado) {
       try {
-        if (!resultado || !resultado.sucesso) return;
+        if (
+          !resultado ||
+          resultado.sucesso !== true
+        ) {
+          throw new Error(
+            resultado?.erro ||
+            "Não foi possível carregar os complementos.",
+          );
+        }
 
-        gruposComplementos = resultado.grupos || [];
-        produtosComplementos = resultado.produtosComplementos || [];
+        const gruposRecebidos =
+          Array.isArray(resultado.grupos)
+            ? resultado.grupos
+            : [];
+
+        const vinculosRecebidos =
+          Array.isArray(
+            resultado.produtosComplementos,
+          )
+            ? resultado.produtosComplementos
+            : [];
+
+        /*
+         * Remove grupos inválidos e duplicados.
+         */
+        const gruposUnicos = new Map();
+
+        gruposRecebidos.forEach((grupo) => {
+          const nomeGrupo =
+            String(grupo?.grupo || "").trim();
+
+          if (!nomeGrupo) {
+            return;
+          }
+
+          const chaveGrupo =
+            normalizarTexto(nomeGrupo);
+
+          if (!chaveGrupo) {
+            return;
+          }
+
+          const itensRecebidos =
+            Array.isArray(grupo.itens)
+              ? grupo.itens
+              : [];
+
+          const itensUnicos = new Map();
+
+          itensRecebidos.forEach((item) => {
+            const nomeItem =
+              String(item?.item || "").trim();
+
+            if (!nomeItem) {
+              return;
+            }
+
+            const chaveItem =
+              normalizarTexto(nomeItem);
+
+            if (!chaveItem) {
+              return;
+            }
+
+            /*
+             * Em caso de duplicidade, mantém
+             * somente uma ocorrência do item.
+             */
+            if (!itensUnicos.has(chaveItem)) {
+              itensUnicos.set(chaveItem, {
+                ...item,
+
+                item: nomeItem,
+
+                statusItem:
+                  String(
+                    item.statusItem ||
+                    "ATIVO",
+                  ).trim(),
+
+                valor:
+                  converterValorCardapio(
+                    item.valor || 0,
+                  ),
+
+                ordem:
+                  Number(item.ordem || 9999),
+              });
+            }
+          });
+
+          if (!gruposUnicos.has(chaveGrupo)) {
+            gruposUnicos.set(chaveGrupo, {
+              ...grupo,
+
+              grupo: nomeGrupo,
+
+              minimo:
+                Math.max(
+                  0,
+                  Number(grupo.minimo || 0),
+                ),
+
+              maximo:
+                Math.max(
+                  0,
+                  Number(grupo.maximo || 0),
+                ),
+
+              statusGrupo:
+                String(
+                  grupo.statusGrupo ||
+                  "ATIVO",
+                ).trim(),
+
+              itens:
+                Array.from(
+                  itensUnicos.values(),
+                ).sort((a, b) => {
+                  return (
+                    Number(a.ordem || 9999) -
+                    Number(b.ordem || 9999)
+                  );
+                }),
+            });
+          }
+        });
+
+        /*
+         * Remove vínculos inválidos e duplicados.
+         *
+         * A chave é produto + grupo.
+         */
+        const vinculosUnicos = new Map();
+
+        vinculosRecebidos.forEach((vinculo) => {
+          const produto =
+            String(
+              vinculo?.produto || "",
+            ).trim();
+
+          const grupo =
+            String(
+              vinculo?.grupo || "",
+            ).trim();
+
+          if (!produto || !grupo) {
+            return;
+          }
+
+          const chave =
+            `${normalizarTexto(produto)}|||${normalizarTexto(grupo)}`;
+
+          if (!vinculosUnicos.has(chave)) {
+            vinculosUnicos.set(chave, {
+              ...vinculo,
+
+              produto,
+              grupo,
+
+              ordem:
+                Number(
+                  vinculo.ordem || 9999,
+                ),
+
+              status:
+                String(
+                  vinculo.status ||
+                  "ATIVO",
+                ).trim(),
+            });
+          }
+        });
+
+        /*
+         * Somente substituímos os dados globais
+         * depois de validar toda a resposta.
+         */
+        gruposComplementos =
+          Array.from(
+            gruposUnicos.values(),
+          );
+
+        produtosComplementos =
+          Array.from(
+            vinculosUnicos.values(),
+          );
+
+        finalizar();
         resolve();
-      } finally {
-        delete window[callbackName];
-
-        const script = document.getElementById(callbackName);
-        if (script) script.remove();
+      } catch (erro) {
+        finalizar();
+        reject(erro);
       }
     };
 
-    const script = document.createElement("script");
     script.id = callbackName;
+
     script.src =
       `${URL_CONTROLE}?acao=obterComplementosCardapio` +
       `&callback=${callbackName}` +
       `&t=${Date.now()}`;
-    script.onerror = reject;
+
+    script.onerror = () => {
+      finalizar();
+
+      reject(
+        new Error(
+          "Erro de conexão ao carregar complementos.",
+        ),
+      );
+    };
 
     document.body.appendChild(script);
   });
@@ -2891,416 +3467,441 @@ function prepararPopupInstalacaoIOS() {
   }, ATRASO_POPUP_INSTALACAO_IOS);
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const licenca = await verificarLicencaPublica();
+document.addEventListener(
+  "DOMContentLoaded",
+  async () => {
+    try {
+      const licenca =
+        await verificarLicencaPublica();
 
-    console.log("Resultado da licença:", licenca);
+      console.log(
+        "Resultado da licença:",
+        licenca,
+      );
 
-    if (licenca.permitido !== true) {
+      if (licenca.permitido !== true) {
+        mostrarTelaManutencao();
+        return;
+      }
+    } catch (erro) {
+      console.error(
+        "Erro ao verificar licença:",
+        erro,
+      );
+
       mostrarTelaManutencao();
       return;
     }
-  } catch (erro) {
-    console.error("Erro ao verificar licença:", erro);
 
-    mostrarTelaManutencao();
-    return;
-  }
-  prepararPopupInstalacaoIOS();
-  carregarPerfilLojaCardapio();
+    /*
+     * Só registra a visita quando a licença
+     * estiver válida e o cardápio for liberado.
+     *
+     * Não usamos await para não atrasar
+     * o carregamento dos produtos.
+     */
+    prepararPopupInstalacaoIOS();
+    carregarPerfilLojaCardapio();
 
-  Promise.all([
-    carregarEstoqueCardapio(),
-    carregarControleProdutos(),
-    carregarComplementosCardapio(),
-    carregarCategoriasCardapio()
-  ])
-    .then(() => {
-      renderizarProdutos();
-      document.body.classList.remove("carregando-cardapio");
-    })
-    .catch((erro) => {
-      console.error("Erro ao carregar o cardápio:", erro);
-      document.body.classList.remove("carregando-cardapio");
-    });
-
-  setInterval(() => {
     Promise.all([
-      carregarEstoqueCardapio(),
-      carregarControleProdutos(),
-      carregarComplementosCardapio(),
-      carregarCategoriasCardapio()
-    ])
+  carregarEstoqueCardapio(),
+  carregarControleProdutos(),
+  carregarComplementosCardapio(),
+  carregarCategoriasCardapio()
+])
+  .then(() => {
+    renderizarProdutos();
+    document.body.classList.remove("carregando-cardapio");
+
+    setTimeout(() => {
+      registrarAcessoSeNecessario();
+    }, 2000);
+  })
+  .catch((erro) => {
+    console.error("Erro ao carregar o cardápio:", erro);
+    document.body.classList.remove("carregando-cardapio");
+
+    setTimeout(() => {
+      registrarAcessoSeNecessario();
+    }, 2000);
+  });
+
+    setInterval(() => {
+      Promise.all([
+        carregarEstoqueCardapio(),
+        carregarControleProdutos(),
+        carregarComplementosCardapio(),
+        carregarCategoriasCardapio()
+      ])
+        .then(() => {
+          renderizarProdutos();
+          atualizarComplementosModalAberto();
+          atualizarPrecosCarrinho();
+          atualizarResumoPedido();
+        })
+        .catch((erro) => {
+          console.warn("Erro ao atualizar o cardápio:", erro);
+        });
+    }, TEMPO_ATUALIZACAO_PRODUTOS);
+
+    carregarCuponsCardapio()
       .then(() => {
-        renderizarProdutos();
-        atualizarComplementosModalAberto();
-        atualizarPrecosCarrinho();
         atualizarResumoPedido();
       })
       .catch((erro) => {
-        console.warn("Erro ao atualizar o cardápio:", erro);
+        console.warn("Erro ao carregar cupons:", erro);
       });
-  }, TEMPO_ATUALIZACAO_PRODUTOS);
 
-  carregarCuponsCardapio()
-    .then(() => {
-      atualizarResumoPedido();
-    })
-    .catch((erro) => {
-      console.warn("Erro ao carregar cupons:", erro);
-    });
-
-  carregarTabelaFrete()
-    .then(() => {
-      atualizarFreteEnderecoSalvo();
-      atualizarResumoPedido();
-    })
-    .catch((erro) => {
-      console.warn("Erro ao carregar fretes:", erro);
-    });
-
-  carregarHorariosLoja()
-    .catch((erro) => {
-      console.warn("Erro ao carregar horários:", erro);
-    });
-
-  setInterval(() => {
-    carregarHorariosLoja()
-      .catch((erro) => {
-        console.warn("Erro ao atualizar horários:", erro);
-      });
-  }, TEMPO_ATUALIZACAO_HORARIO);
-
-  document.getElementById("aplicar-cupom").addEventListener("click", aplicarCupom);
-
-  setInterval(() => {
     carregarTabelaFrete()
       .then(() => {
         atualizarFreteEnderecoSalvo();
+        atualizarResumoPedido();
       })
       .catch((erro) => {
-        console.warn(
-          "Erro ao atualizar fretes:",
-          erro
-        );
-      });
-  }, TEMPO_ATUALIZACAO_FRETE);
-
-  const cepCarrinho =
-    document.getElementById("cep-carrinho");
-
-  const cepCliente =
-    document.getElementById("cep-cliente");
-
-  const nomeCliente =
-    document.getElementById("nome-cliente");
-
-  const whatsappCliente =
-    document.getElementById("whatsapp-cliente");
-
-  const ruaCliente =
-    document.getElementById("rua-cliente");
-
-  const numeroCliente =
-    document.getElementById("numero-cliente");
-
-  const complementoCliente =
-    document.getElementById("complemento-cliente");
-
-  const bairroCliente =
-    document.getElementById("bairro-cliente");
-
-  const cidadeCliente =
-    document.getElementById("cidade-cliente");
-
-  const btnTipoEntrega =
-    document.getElementById("btn-tipo-entrega");
-
-  const btnTipoRetirada =
-    document.getElementById("btn-tipo-retirada");
-
-  const botaoContinuar =
-    document.getElementById("continuar-pedido");
-
-  const botaoVoltar =
-    document.getElementById("voltar-etapa-carrinho");
-
-  if (btnTipoEntrega) {
-    btnTipoEntrega.addEventListener("click", () => {
-      atualizarTipoEntregaCardapio("entrega");
-    });
-  }
-
-  if (btnTipoRetirada) {
-    btnTipoRetirada.addEventListener("click", () => {
-      atualizarTipoEntregaCardapio("retirada");
-    });
-  }
-
-  if (botaoContinuar) {
-    botaoContinuar.addEventListener(
-      "click",
-      irParaEtapaDados,
-    );
-  }
-
-  if (botaoVoltar) {
-    botaoVoltar.addEventListener(
-      "click",
-      voltarParaEtapaCarrinho,
-    );
-  }
-
-  bloquearCamposRetornadosPeloCep();
-
-  function prepararConsultaCep(campo, origem) {
-    if (!campo) return;
-
-    campo.addEventListener("input", () => {
-      limparErroCampoCheckout(campo);
-      const valorAnterior =
-        String(campo.dataset.cepAnterior || "")
-          .replace(/\D/g, "");
-
-      const cepFormatado =
-        sincronizarCamposCep(campo.value);
-
-      const cepNumeros =
-        cepFormatado.replace(/\D/g, "");
-
-      campo.dataset.cepAnterior = cepNumeros;
-
-      clearTimeout(timeoutConsultaCepCarrinho);
-      atualizarEstadoBotoesCheckout();
-
-      if (
-        valorAnterior &&
-        valorAnterior !== cepNumeros
-      ) {
-        ultimoCepConsultado = "";
-        limparEnderecoAoAlterarCep();
-      }
-
-      atualizarEnderecoTemporario({
-        cep: cepFormatado,
+        console.warn("Erro ao carregar fretes:", erro);
       });
 
-      if (cepNumeros.length !== 8) {
-        enderecoAtendido = false;
-        ultimoCepConsultado = "";
+    carregarHorariosLoja()
+      .catch((erro) => {
+        console.warn("Erro ao carregar horários:", erro);
+      });
 
-        limparStatusConsultaCep();
-        atualizarResumoPedido();
+    setInterval(() => {
+      carregarHorariosLoja()
+        .catch((erro) => {
+          console.warn("Erro ao atualizar horários:", erro);
+        });
+    }, TEMPO_ATUALIZACAO_HORARIO);
+
+    document.getElementById("aplicar-cupom").addEventListener("click", aplicarCupom);
+
+    setInterval(() => {
+      carregarTabelaFrete()
+        .then(() => {
+          atualizarFreteEnderecoSalvo();
+        })
+        .catch((erro) => {
+          console.warn(
+            "Erro ao atualizar fretes:",
+            erro
+          );
+        });
+    }, TEMPO_ATUALIZACAO_FRETE);
+
+    const cepCarrinho =
+      document.getElementById("cep-carrinho");
+
+    const cepCliente =
+      document.getElementById("cep-cliente");
+
+    const nomeCliente =
+      document.getElementById("nome-cliente");
+
+    const whatsappCliente =
+      document.getElementById("whatsapp-cliente");
+
+    const ruaCliente =
+      document.getElementById("rua-cliente");
+
+    const numeroCliente =
+      document.getElementById("numero-cliente");
+
+    const complementoCliente =
+      document.getElementById("complemento-cliente");
+
+    const bairroCliente =
+      document.getElementById("bairro-cliente");
+
+    const cidadeCliente =
+      document.getElementById("cidade-cliente");
+
+    const btnTipoEntrega =
+      document.getElementById("btn-tipo-entrega");
+
+    const btnTipoRetirada =
+      document.getElementById("btn-tipo-retirada");
+
+    const botaoContinuar =
+      document.getElementById("continuar-pedido");
+
+    const botaoVoltar =
+      document.getElementById("voltar-etapa-carrinho");
+
+    if (btnTipoEntrega) {
+      btnTipoEntrega.addEventListener("click", () => {
+        atualizarTipoEntregaCardapio("entrega");
+      });
+    }
+
+    if (btnTipoRetirada) {
+      btnTipoRetirada.addEventListener("click", () => {
+        atualizarTipoEntregaCardapio("retirada");
+      });
+    }
+
+    if (botaoContinuar) {
+      botaoContinuar.addEventListener(
+        "click",
+        irParaEtapaDados,
+      );
+    }
+
+    if (botaoVoltar) {
+      botaoVoltar.addEventListener(
+        "click",
+        voltarParaEtapaCarrinho,
+      );
+    }
+
+    bloquearCamposRetornadosPeloCep();
+
+    function prepararConsultaCep(campo, origem) {
+      if (!campo) return;
+
+      campo.addEventListener("input", () => {
+        limparErroCampoCheckout(campo);
+        const valorAnterior =
+          String(campo.dataset.cepAnterior || "")
+            .replace(/\D/g, "");
+
+        const cepFormatado =
+          sincronizarCamposCep(campo.value);
+
+        const cepNumeros =
+          cepFormatado.replace(/\D/g, "");
+
+        campo.dataset.cepAnterior = cepNumeros;
+
+        clearTimeout(timeoutConsultaCepCarrinho);
         atualizarEstadoBotoesCheckout();
 
-        return;
-      }
+        if (
+          valorAnterior &&
+          valorAnterior !== cepNumeros
+        ) {
+          ultimoCepConsultado = "";
+          limparEnderecoAoAlterarCep();
+        }
 
-      timeoutConsultaCepCarrinho = setTimeout(() => {
-        if (cepNumeros === ultimoCepConsultado) {
+        atualizarEnderecoTemporario({
+          cep: cepFormatado,
+        });
+
+        if (cepNumeros.length !== 8) {
+          enderecoAtendido = false;
+          ultimoCepConsultado = "";
+
+          limparStatusConsultaCep();
+          atualizarResumoPedido();
+          atualizarEstadoBotoesCheckout();
+
           return;
         }
 
-        preencherEndereco(cepNumeros, origem);
-      }, 450);
-    });
-  }
+        timeoutConsultaCepCarrinho = setTimeout(() => {
+          if (cepNumeros === ultimoCepConsultado) {
+            return;
+          }
 
-  prepararConsultaCep(
-    cepCarrinho,
-    "etapa1",
-  );
-
-  prepararConsultaCep(
-    cepCliente,
-    "etapa2",
-  );
-
-  const enderecoSalvo =
-    JSON.parse(localStorage.getItem("endereco"));
-
-  if (enderecoSalvo) {
-    if (nomeCliente) {
-      nomeCliente.value =
-        enderecoSalvo.nome || "";
+          preencherEndereco(cepNumeros, origem);
+        }, 450);
+      });
     }
 
-    if (whatsappCliente) {
-      whatsappCliente.value =
-        enderecoSalvo.whatsapp || "";
-    }
+    prepararConsultaCep(
+      cepCarrinho,
+      "etapa1",
+    );
 
-    const cepSalvoFormatado =
-      sincronizarCamposCep(enderecoSalvo.cep || "");
+    prepararConsultaCep(
+      cepCliente,
+      "etapa2",
+    );
 
-    ultimoCepConsultado =
-      cepSalvoFormatado.replace(/\D/g, "");
+    const enderecoSalvo =
+      JSON.parse(localStorage.getItem("endereco"));
 
-    if (cepCarrinho) {
-      cepCarrinho.dataset.cepAnterior =
-        ultimoCepConsultado;
-    }
-
-    if (cepCliente) {
-      cepCliente.dataset.cepAnterior =
-        ultimoCepConsultado;
-    }
-
-    if (ruaCliente) {
-      ruaCliente.value =
-        enderecoSalvo.rua || "";
-    }
-
-    if (numeroCliente) {
-      numeroCliente.value =
-        enderecoSalvo.numero || "";
-    }
-
-    if (complementoCliente) {
-      complementoCliente.value =
-        enderecoSalvo.complemento || "";
-    }
-
-    if (bairroCliente) {
-      bairroCliente.value =
-        enderecoSalvo.bairro || "";
-    }
-
-    if (cidadeCliente) {
-      cidadeCliente.value =
-        enderecoSalvo.cidade || "";
-    }
-
-    const freteAtual =
-      calcularFretePorBairro(
-        enderecoSalvo.bairro || "",
-      );
-
-    enderecoAtendido =
-      freteAtual !== null &&
-      Number(freteAtual) > 0;
-
-    if (enderecoAtendido) {
-      enderecoSalvo.frete = freteAtual;
-
-      localStorage.setItem(
-        "endereco",
-        JSON.stringify(enderecoSalvo),
-      );
-
-      mostrarFreteEndereco(freteAtual);
-      salvarDadosEtapaFinal();
-    }
-  }
-  [
-    nomeCliente,
-    whatsappCliente,
-    numeroCliente,
-    complementoCliente,
-  ].forEach((campo) => {
-    if (!campo) return;
-
-    campo.addEventListener("input", () => {
-      limparErroCampoCheckout(campo);
-      salvarDadosEtapaFinal();
-      atualizarEstadoBotoesCheckout();
-    });
-
-    campo.addEventListener("change", () => {
-      limparErroCampoCheckout(campo);
-      salvarDadosEtapaFinal();
-      atualizarEstadoBotoesCheckout();
-    });
-  });
-
-  exibirEtapaCarrinho(1);
-  atualizarExibicaoTipoEntregaEtapa2();
-
-  document
-    .getElementById('confirmar-pedido')
-    .addEventListener('click', confirmarPedido);
-
-  document
-    .getElementById("limpar-pedido")
-    .addEventListener("click", () => {
-      const pedidos =
-        JSON.parse(
-          localStorage.getItem("pedidos"),
-        ) || [];
-
-      if (pedidos.length === 0) {
-        mostrarAlerta(
-          "Seu carrinho já está vazio.",
-          "aviso",
-        );
-
-        return;
+    if (enderecoSalvo) {
+      if (nomeCliente) {
+        nomeCliente.value =
+          enderecoSalvo.nome || "";
       }
 
-      mostrarConfirmacao({
-        titulo: "Limpar carrinho?",
-        mensagem:
-          "Todos os produtos adicionados serão removidos do pedido.",
-        textoConfirmar: "Sim, limpar",
-        textoCancelar: "Cancelar",
-        tipo: "aviso",
+      if (whatsappCliente) {
+        whatsappCliente.value =
+          enderecoSalvo.whatsapp || "";
+      }
 
-        aoConfirmar: () => {
-          localStorage.removeItem("pedidos");
+      const cepSalvoFormatado =
+        sincronizarCamposCep(enderecoSalvo.cep || "");
 
-          cupomAplicado = null;
+      ultimoCepConsultado =
+        cepSalvoFormatado.replace(/\D/g, "");
 
-          localStorage.removeItem(
-            "cupomAplicado",
-          );
+      if (cepCarrinho) {
+        cepCarrinho.dataset.cepAnterior =
+          ultimoCepConsultado;
+      }
 
-          atualizarResumoPedido();
-          atualizarEstadoBotoesCheckout();
-          fecharCarrinhoDrawer();
+      if (cepCliente) {
+        cepCliente.dataset.cepAnterior =
+          ultimoCepConsultado;
+      }
 
-          mostrarAlerta(
-            "Carrinho limpo com sucesso.",
-            "sucesso",
-          );
-        },
+      if (ruaCliente) {
+        ruaCliente.value =
+          enderecoSalvo.rua || "";
+      }
+
+      if (numeroCliente) {
+        numeroCliente.value =
+          enderecoSalvo.numero || "";
+      }
+
+      if (complementoCliente) {
+        complementoCliente.value =
+          enderecoSalvo.complemento || "";
+      }
+
+      if (bairroCliente) {
+        bairroCliente.value =
+          enderecoSalvo.bairro || "";
+      }
+
+      if (cidadeCliente) {
+        cidadeCliente.value =
+          enderecoSalvo.cidade || "";
+      }
+
+      const freteAtual =
+        calcularFretePorBairro(
+          enderecoSalvo.bairro || "",
+        );
+
+      enderecoAtendido =
+        freteAtual !== null &&
+        Number(freteAtual) > 0;
+
+      if (enderecoAtendido) {
+        enderecoSalvo.frete = freteAtual;
+
+        localStorage.setItem(
+          "endereco",
+          JSON.stringify(enderecoSalvo),
+        );
+
+        mostrarFreteEndereco(freteAtual);
+        salvarDadosEtapaFinal();
+      }
+    }
+    [
+      nomeCliente,
+      whatsappCliente,
+      numeroCliente,
+      complementoCliente,
+    ].forEach((campo) => {
+      if (!campo) return;
+
+      campo.addEventListener("input", () => {
+        limparErroCampoCheckout(campo);
+        salvarDadosEtapaFinal();
+        atualizarEstadoBotoesCheckout();
+      });
+
+      campo.addEventListener("change", () => {
+        limparErroCampoCheckout(campo);
+        salvarDadosEtapaFinal();
+        atualizarEstadoBotoesCheckout();
       });
     });
 
-  document.getElementById('carrinho-flutuante').addEventListener('click', () => {
-    abrirCarrinhoDrawer();
+    exibirEtapaCarrinho(1);
+    atualizarExibicaoTipoEntregaEtapa2();
+
+    document
+      .getElementById('confirmar-pedido')
+      .addEventListener('click', confirmarPedido);
+
+    document
+      .getElementById("limpar-pedido")
+      .addEventListener("click", () => {
+        const pedidos =
+          JSON.parse(
+            localStorage.getItem("pedidos"),
+          ) || [];
+
+        if (pedidos.length === 0) {
+          mostrarAlerta(
+            "Seu carrinho já está vazio.",
+            "aviso",
+          );
+
+          return;
+        }
+
+        mostrarConfirmacao({
+          titulo: "Limpar carrinho?",
+          mensagem:
+            "Todos os produtos adicionados serão removidos do pedido.",
+          textoConfirmar: "Sim, limpar",
+          textoCancelar: "Cancelar",
+          tipo: "aviso",
+
+          aoConfirmar: () => {
+            localStorage.removeItem("pedidos");
+
+            cupomAplicado = null;
+
+            localStorage.removeItem(
+              "cupomAplicado",
+            );
+
+            atualizarResumoPedido();
+            atualizarEstadoBotoesCheckout();
+            fecharCarrinhoDrawer();
+
+            mostrarAlerta(
+              "Carrinho limpo com sucesso.",
+              "sucesso",
+            );
+          },
+        });
+      });
+
+    document.getElementById('carrinho-flutuante').addEventListener('click', () => {
+      abrirCarrinhoDrawer();
+    });
+
+    document.getElementById('overlay-carrinho').addEventListener('click', () => {
+      fecharCarrinhoDrawer();
+    });
+
+    document
+      .getElementById('fechar-carrinho')
+      .addEventListener('click', fecharCarrinhoDrawer);
+
+    document
+      .getElementById("pedido-andamento-btn")
+      .addEventListener("click", abrirListaPedidosAndamento);
+
+    document
+      .getElementById("fechar-acompanhamento")
+      .addEventListener("click", fecharAcompanhamentoPedido);
+
+    document
+      .getElementById("overlay-acompanhamento")
+      .addEventListener("click", fecharAcompanhamentoPedido);
+
+    limparPedidosAndamentoExpirados();
+    renderizarBotaoPedidosAndamento();
+
+    obterPedidosEmAndamento().forEach((pedido) => {
+      iniciarAtualizacaoStatusCliente(pedido.pedidoId);
+    });
+
+    atualizarResumoPedido();
+    atualizarEstadoBotoesCheckout();
   });
-
-  document.getElementById('overlay-carrinho').addEventListener('click', () => {
-    fecharCarrinhoDrawer();
-  });
-
-  document
-    .getElementById('fechar-carrinho')
-    .addEventListener('click', fecharCarrinhoDrawer);
-
-  document
-    .getElementById("pedido-andamento-btn")
-    .addEventListener("click", abrirListaPedidosAndamento);
-
-  document
-    .getElementById("fechar-acompanhamento")
-    .addEventListener("click", fecharAcompanhamentoPedido);
-
-  document
-    .getElementById("overlay-acompanhamento")
-    .addEventListener("click", fecharAcompanhamentoPedido);
-
-  limparPedidosAndamentoExpirados();
-  renderizarBotaoPedidosAndamento();
-
-  obterPedidosEmAndamento().forEach((pedido) => {
-    iniciarAtualizacaoStatusCliente(pedido.pedidoId);
-  });
-
-  atualizarResumoPedido();
-  atualizarEstadoBotoesCheckout();
-});
 
 
 function abrirCarrinhoDrawer() {
@@ -3390,14 +3991,83 @@ function ativarSeletorQuantidade(container) {
 }
 
 function obterGruposDoProduto(nomeProduto) {
+  const produtoNormalizado =
+    normalizarTexto(
+      String(nomeProduto || ""),
+    );
+
+  if (!produtoNormalizado) {
+    return [];
+  }
+
+  const gruposJaIncluidos =
+    new Set();
+
   return produtosComplementos
-    .filter((item) => {
-      return (
-        String(item.produto || "").trim() === String(nomeProduto).trim() &&
-        String(item.status || "ATIVO").trim() === "ATIVO"
+    .filter((vinculo) => {
+      const produtoVinculo =
+        normalizarTexto(
+          String(
+            vinculo?.produto || "",
+          ),
+        );
+
+      const grupoVinculo =
+        normalizarTexto(
+          String(
+            vinculo?.grupo || "",
+          ),
+        );
+
+      const statusVinculo =
+        String(
+          vinculo?.status ||
+          "ATIVO",
+        )
+          .trim()
+          .toUpperCase();
+
+      if (
+        produtoVinculo !==
+        produtoNormalizado
+      ) {
+        return false;
+      }
+
+      if (
+        statusVinculo !== "ATIVO"
+      ) {
+        return false;
+      }
+
+      if (!grupoVinculo) {
+        return false;
+      }
+
+      /*
+       * Impede o mesmo grupo de aparecer
+       * mais de uma vez no produto.
+       */
+      if (
+        gruposJaIncluidos.has(
+          grupoVinculo,
+        )
+      ) {
+        return false;
+      }
+
+      gruposJaIncluidos.add(
+        grupoVinculo,
       );
+
+      return true;
     })
-    .sort((a, b) => Number(a.ordem || 9999) - Number(b.ordem || 9999));
+    .sort((a, b) => {
+      return (
+        Number(a.ordem || 9999) -
+        Number(b.ordem || 9999)
+      );
+    });
 }
 
 function obterGrupoComplemento(nomeGrupo) {
@@ -3414,119 +4084,249 @@ function produtoTemComplementosAtivos(nomeProduto) {
   );
 }
 
-function montarHtmlComplementosProduto(nomeProduto) {
-  const gruposProduto = obterGruposDoProduto(nomeProduto);
+function montarHtmlComplementosProduto(
+  nomeProduto,
+) {
+  const gruposProduto =
+    obterGruposDoProduto(nomeProduto);
 
-  if (gruposProduto.length === 0) return "";
+  if (!gruposProduto.length) {
+    return "";
+  }
 
   return gruposProduto
-    .map((vinculo) => {
-      const grupo = obterGrupoComplemento(vinculo.grupo);
+    .map((vinculo, indiceGrupo) => {
+      const grupo =
+        obterGrupoComplemento(
+          vinculo.grupo,
+        );
 
-      if (!grupo || String(grupo.statusGrupo || "").trim() !== "ATIVO") {
+      if (!grupo) {
         return "";
       }
 
-      const itensAtivos = (grupo.itens || [])
-        .filter((item) => {
-          return (
-            String(item.statusItem || "").trim() === "ATIVO" &&
-            complementoDisponivelPorEstoque(item.item)
-          );
-        })
-        .sort((a, b) => Number(a.ordem || 9999) - Number(b.ordem || 9999));
+      const statusGrupo =
+        String(
+          grupo.statusGrupo ||
+          "ATIVO",
+        )
+          .trim()
+          .toUpperCase();
 
-      if (itensAtivos.length === 0) return "";
+      if (statusGrupo !== "ATIVO") {
+        return "";
+      }
 
-      const minimo = Number(grupo.minimo || 0);
-      const maximo = Number(grupo.maximo || 0);
+      const itensAtivos =
+        (Array.isArray(grupo.itens)
+          ? grupo.itens
+          : []
+        )
+          .filter((item) => {
+            const nomeItem =
+              String(
+                item?.item || "",
+              ).trim();
 
-      return `
-          <fieldset
-            class="grupo-complemento-dinamico"
-            data-grupo="${grupo.grupo}"
-            data-minimo="${minimo}"
-            data-maximo="${maximo}"
-          >
-            <legend>
-              ${grupo.grupo}
-              ${minimo > 0 ? "*" : ""}
-              ${maximo > 0 ? `(até ${maximo})` : ""}
-            </legend>
+            const statusItem =
+              String(
+                item?.statusItem ||
+                "ATIVO",
+              )
+                .trim()
+                .toUpperCase();
 
-            <ul class="adicionais-lista">
-              ${itensAtivos
-          .map((item) => {
-            const precoItem = converterValorCardapio(item.valor || 0);
+            return (
+              nomeItem &&
+              statusItem === "ATIVO" &&
+              complementoDisponivelPorEstoque(
+                nomeItem,
+              )
+            );
+          })
+          .sort((a, b) => {
+            return (
+              Number(a.ordem || 9999) -
+              Number(b.ordem || 9999)
+            );
+          });
+
+      if (!itensAtivos.length) {
+        return "";
+      }
+
+      let minimo =
+        Math.max(
+          0,
+          Number(grupo.minimo || 0),
+        );
+
+      let maximo =
+        Math.max(
+          0,
+          Number(grupo.maximo || 0),
+        );
+
+      /*
+       * Impede regras impossíveis.
+       */
+      if (
+        maximo > 0 &&
+        minimo > maximo
+      ) {
+        minimo = maximo;
+      }
+
+      const nomeGrupo =
+        String(grupo.grupo || "").trim();
+
+      const grupoId =
+        `grupo-complemento-${indiceGrupo}-${normalizarTexto(nomeGrupo)
+          .replace(/\s+/g, "-")
+          .replace(/[^a-z0-9-]/g, "")}`;
+
+      const usarQuantidade =
+        maximo > 1;
+
+      const itensHtml =
+        itensAtivos
+          .map((item, indiceItem) => {
+            const nomeItem =
+              String(
+                item.item || "",
+              ).trim();
+
+            const precoItem =
+              converterValorCardapio(
+                item.valor || 0,
+              );
+
             const idSeguro =
-              normalizarTexto(`${grupo.grupo}-${item.item}`).replace(/\s+/g, "-");
+              `${grupoId}-item-${indiceItem}`;
 
-            if (maximo > 1) {
+            /*
+             * Grupo com máximo maior que 1:
+             * usa seletor de quantidade.
+             */
+            if (usarQuantidade) {
               return `
-    <div class="item-complemento item-complemento-quantidade">
-      <input
-        type="checkbox"
-        class="complemento-checkbox-quantidade"
-        id="${idSeguro}"
-        value="${item.item}"
-        data-grupo="${grupo.grupo}"
-        data-price="${precoItem}"
-        data-quantidade="0"
-        hidden
-      >
+                <div
+                  class="item-complemento item-complemento-quantidade"
+                  data-item-complemento
+                >
+                  <input
+                    type="checkbox"
+                    class="complemento-checkbox-quantidade"
+                    id="${idSeguro}"
+                    value="${nomeItem}"
+                    data-grupo="${nomeGrupo}"
+                    data-price="${precoItem}"
+                    data-quantidade="0"
+                    autocomplete="off"
+                    hidden
+                  >
 
-      <span class="nome-complemento">
-        ${item.item}
-        ${precoItem > 0 ? `(R$${formatarPreco(precoItem)})` : ""}
-      </span>
+                  <span class="nome-complemento">
+                    ${nomeItem}
+                    ${
+                      precoItem > 0
+                        ? `(R$${formatarPreco(precoItem)})`
+                        : ""
+                    }
+                  </span>
 
-      <div class="seletor-quantidade-complemento">
-        <button
-          type="button"
-          class="diminuir-complemento"
-          onclick="alterarQuantidadeComplemento(this, -1)"
-          disabled
-        >
-          −
-        </button>
+                  <div class="seletor-quantidade-complemento">
+                    <button
+                      type="button"
+                      class="diminuir-complemento"
+                      onclick="alterarQuantidadeComplemento(this, -1)"
+                      disabled
+                    >
+                      −
+                    </button>
 
-        <span class="quantidade-complemento">0</span>
+                    <span class="quantidade-complemento">
+                      0
+                    </span>
 
-        <button
-          type="button"
-          class="aumentar-complemento"
-          onclick="alterarQuantidadeComplemento(this, 1)"
-        >
-          +
-        </button>
-      </div>
-    </div>
-  `;
+                    <button
+                      type="button"
+                      class="aumentar-complemento"
+                      onclick="alterarQuantidadeComplemento(this, 1)"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              `;
             }
 
+            /*
+             * Grupo com máximo 0 ou 1:
+             * usa checkbox comum.
+             *
+             * Começa obrigatoriamente desmarcado
+             * e com quantidade zero.
+             */
             return `
-  <label class="item-complemento">
-    <input
-      type="checkbox"
-      id="${idSeguro}"
-      value="${item.item}"
-      data-grupo="${grupo.grupo}"
-      data-price="${precoItem}"
-      data-quantidade="1"
-    >
+              <label
+                class="item-complemento"
+                for="${idSeguro}"
+              >
+                <input
+                  type="checkbox"
+                  id="${idSeguro}"
+                  value="${nomeItem}"
+                  data-grupo="${nomeGrupo}"
+                  data-price="${precoItem}"
+                  data-quantidade="0"
+                  autocomplete="off"
+                >
 
-    <span>
-      ${item.item}
-      ${precoItem > 0 ? `(R$${formatarPreco(precoItem)})` : ""}
-    </span>
-  </label>
-`;
+                <span>
+                  ${nomeItem}
+                  ${
+                    precoItem > 0
+                      ? `(R$${formatarPreco(precoItem)})`
+                      : ""
+                  }
+                </span>
+              </label>
+            `;
           })
-          .join("")}
-            </ul>
-          </fieldset>
-        `;
+          .join("");
+
+      return `
+        <fieldset
+          id="${grupoId}"
+          class="grupo-complemento-dinamico"
+          data-grupo="${nomeGrupo}"
+          data-minimo="${minimo}"
+          data-maximo="${maximo}"
+        >
+          <legend>
+            <span>${nomeGrupo}</span>
+
+            ${
+              minimo > 0
+                ? `<strong class="complemento-obrigatorio">*</strong>`
+                : `<small>Opcional</small>`
+            }
+
+            ${
+              maximo > 0
+                ? `<small>Escolha até ${maximo}</small>`
+                : ""
+            }
+          </legend>
+
+          <ul class="adicionais-lista">
+            ${itensHtml}
+          </ul>
+        </fieldset>
+      `;
     })
+    .filter(Boolean)
     .join("");
 }
 
@@ -6024,11 +6824,11 @@ function renderizarAcompanhamentoPedido(pedido) {
             <div>
               <strong>${quantidade}x ${item.name}</strong>
               ${item.adicionais
-  ? formatarComplementosParaPedido(item.adicionais)
-      .split("\n")
-      .map((linha) => `<p>${linha}</p>`)
-      .join("")
-  : ""}
+          ? formatarComplementosParaPedido(item.adicionais)
+            .split("\n")
+            .map((linha) => `<p>${linha}</p>`)
+            .join("")
+          : ""}
             </div>
 
             <span>R$${formatarPreco(valorTotal)}</span>
@@ -6184,14 +6984,28 @@ async function verificarPagamentoPedido(pedidoId) {
 
   if (
     pedidoLocal &&
-    pedidoLocal.statusPagamento === "Pagamento aprovado"
+    pedidoLocal.statusPagamento === "Pagamento aprovado" &&
+    pedidoLocal.paymentId
   ) {
     return;
   }
 
   try {
-    const response = await fetch(`${API_URL}/verificar-pagamento/${pedidoId}`);
+    const response = await fetch(
+      `${API_URL}/verificar-pagamento/${encodeURIComponent(pedidoId)}`,
+      {
+        cache: "no-store",
+      }
+    );
+
     const data = await response.json();
+
+    if (!response.ok || data.sucesso === false) {
+      throw new Error(
+        data.erro ||
+        "Não foi possível verificar o pagamento."
+      );
+    }
 
     let pedidos = obterPedidosEmAndamento();
 
@@ -6202,14 +7016,52 @@ async function verificarPagamentoPedido(pedidoId) {
         data.aprovado === true ||
         pedido.statusPagamento === "Pagamento aprovado";
 
+      const paymentIdRecebido =
+        data.payment_id !== undefined &&
+          data.payment_id !== null
+          ? String(data.payment_id).trim()
+          : "";
+
+      const statusMercadoPagoRecebido =
+        String(data.status || "").trim();
+
       const pedidoAtualizado = {
         ...pedido,
+
         statusPagamento: pagamentoAprovado
           ? "Pagamento aprovado"
           : "Aguardando pagamento",
+
+        /*
+         * Identificador real da transação no Mercado Pago.
+         * Esse é o dado necessário para realizar o estorno.
+         */
+        paymentId:
+          paymentIdRecebido ||
+          pedido.paymentId ||
+          "",
+
+        /*
+         * Status técnico retornado pelo Mercado Pago:
+         * approved, pending, rejected, refunded etc.
+         */
+        statusMercadoPago:
+          statusMercadoPagoRecebido ||
+          pedido.statusMercadoPago ||
+          "",
       };
 
-      if (pagamentoAprovado && !pedido.salvoNaPlanilha) {
+      const precisaSalvarPedido =
+        pagamentoAprovado &&
+        (
+          !pedido.salvoNaPlanilha ||
+          (
+            paymentIdRecebido &&
+            !pedido.paymentId
+          )
+        );
+
+      if (precisaSalvarPedido) {
         salvarPedidoNaPlanilha({
           ...pedidoAtualizado,
           statusPedido: pedido.statusPedido || "Aguardando confirmação",
@@ -6267,9 +7119,23 @@ function salvarPedidoNaPlanilha(pedido) {
     desconto: pedido.desconto,
     total: pedido.total,
     cupom: pedido.cupom || "",
-    pagamento: pedido.statusPagamento,
-    status: pedido.statusPedido,
-    linkPagamento: pedido.linkPagamento,
+    pagamento:
+      pedido.pagamento ||
+      pedido.statusPagamento ||
+      "Aguardando pagamento",
+
+    status:
+      pedido.statusPedido ||
+      "Aguardando confirmação",
+
+    linkPagamento:
+      pedido.linkPagamento || "",
+
+    paymentId:
+      pedido.paymentId || "",
+
+    statusPagamento:
+      pedido.statusMercadoPago || "",
   });
 
   const iframe = document.createElement("iframe");
