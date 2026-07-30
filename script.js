@@ -3529,9 +3529,7 @@ document.addEventListener(
 
     setInterval(() => {
       Promise.all([
-        carregarControleProdutos(),
-        carregarCategoriasCardapio(),
-        carregarComplementosCardapio()
+        carregarDadosIniciaisCardapio()
       ])
         .then(() => {
 
