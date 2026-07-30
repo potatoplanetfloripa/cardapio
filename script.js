@@ -389,6 +389,29 @@ async function verificarLicencaPublica() {
   return dados;
 }
 
+async function validarLicencaEmSegundoPlano() {
+
+  try {
+
+    const licenca = await verificarLicencaPublica();
+
+    console.log("Resultado da licença:", licenca);
+
+    if (licenca.permitido !== true) {
+      mostrarTelaManutencao();
+    }
+
+  } catch (erro) {
+
+    console.warn(
+      "Não foi possível validar a licença.",
+      erro
+    );
+
+  }
+
+}
+
 function mostrarTelaManutencao() {
   document.body.className = "pagina-manutencao";
 
@@ -3470,77 +3493,90 @@ function prepararPopupInstalacaoIOS() {
 document.addEventListener(
   "DOMContentLoaded",
   async () => {
-    try {
-      const licenca =
-        await verificarLicencaPublica();
 
-      console.log(
-        "Resultado da licença:",
-        licenca,
-      );
-
-      if (licenca.permitido !== true) {
-        mostrarTelaManutencao();
-        return;
-      }
-    } catch (erro) {
-      console.error(
-        "Erro ao verificar licença:",
-        erro,
-      );
-
-      mostrarTelaManutencao();
-      return;
-    }
-
-    /*
-     * Só registra a visita quando a licença
-     * estiver válida e o cardápio for liberado.
-     *
-     * Não usamos await para não atrasar
-     * o carregamento dos produtos.
-     */
     prepararPopupInstalacaoIOS();
     carregarPerfilLojaCardapio();
 
     Promise.all([
-  carregarEstoqueCardapio(),
-  carregarControleProdutos(),
-  carregarComplementosCardapio(),
-  carregarCategoriasCardapio()
-])
-  .then(() => {
-    renderizarProdutos();
-    document.body.classList.remove("carregando-cardapio");
+      carregarEstoqueCardapio(),
+      carregarControleProdutos(),
+      carregarComplementosCardapio(),
+      carregarCategoriasCardapio()
+    ])
+      .then(() => {
 
-    setTimeout(() => {
-      registrarAcessoSeNecessario();
-    }, 2000);
-  })
-  .catch((erro) => {
-    console.error("Erro ao carregar o cardápio:", erro);
-    document.body.classList.remove("carregando-cardapio");
+        renderizarProdutos();
 
-    setTimeout(() => {
-      registrarAcessoSeNecessario();
-    }, 2000);
-  });
+        document.body.classList.remove("carregando-cardapio");
+
+        setTimeout(() => {
+          registrarAcessoSeNecessario();
+        }, 2000);
+
+        setTimeout(() => {
+          validarLicencaEmSegundoPlano();
+        }, 3000);
+
+      })
+      .catch((erro) => {
+        console.error("Erro ao carregar o cardápio:", erro);
+        document.body.classList.remove("carregando-cardapio");
+
+        setTimeout(() => {
+          registrarAcessoSeNecessario();
+        }, 2000);
+      });
 
     setInterval(() => {
       Promise.all([
-        carregarEstoqueCardapio(),
         carregarControleProdutos(),
-        carregarComplementosCardapio(),
-        carregarCategoriasCardapio()
+        carregarCategoriasCardapio(),
+        carregarComplementosCardapio()
       ])
         .then(() => {
+
           renderizarProdutos();
-          atualizarComplementosModalAberto();
-          atualizarPrecosCarrinho();
-          atualizarResumoPedido();
+
+          document.body.classList.remove("carregando-cardapio");
+
+          // Carrega o estoque em segundo plano
+          carregarEstoqueCardapio()
+            .then(() => {
+              console.log(
+                "Estoque carregado:",
+                new Date().toLocaleTimeString()
+              );
+
+              // Se necessário no futuro podemos atualizar apenas
+              // a disponibilidade dos produtos sem renderizar tudo.
+            })
+            .catch((erro) => {
+              console.error(
+                "Erro ao carregar estoque:",
+                erro
+              );
+            });
+
+          setTimeout(() => {
+            registrarAcessoSeNecessario();
+          }, 2000);
+
+          setTimeout(() => {
+            validarLicencaEmSegundoPlano();
+          }, 3000);
+
         })
         .catch((erro) => {
-          console.warn("Erro ao atualizar o cardápio:", erro);
+
+          console.error(
+            "Erro ao carregar o cardápio:",
+            erro
+          );
+
+          document.body.classList.remove("carregando-cardapio");
+
+          mostrarTelaManutencao();
+
         });
     }, TEMPO_ATUALIZACAO_PRODUTOS);
 
@@ -4228,11 +4264,10 @@ function montarHtmlComplementosProduto(
 
                   <span class="nome-complemento">
                     ${nomeItem}
-                    ${
-                      precoItem > 0
-                        ? `(R$${formatarPreco(precoItem)})`
-                        : ""
-                    }
+                    ${precoItem > 0
+                  ? `(R$${formatarPreco(precoItem)})`
+                  : ""
+                }
                   </span>
 
                   <div class="seletor-quantidade-complemento">
@@ -4285,11 +4320,10 @@ function montarHtmlComplementosProduto(
 
                 <span>
                   ${nomeItem}
-                  ${
-                    precoItem > 0
-                      ? `(R$${formatarPreco(precoItem)})`
-                      : ""
-                  }
+                  ${precoItem > 0
+                ? `(R$${formatarPreco(precoItem)})`
+                : ""
+              }
                 </span>
               </label>
             `;
@@ -4307,17 +4341,15 @@ function montarHtmlComplementosProduto(
           <legend>
             <span>${nomeGrupo}</span>
 
-            ${
-              minimo > 0
-                ? `<strong class="complemento-obrigatorio">*</strong>`
-                : `<small>Opcional</small>`
-            }
+            ${minimo > 0
+          ? `<strong class="complemento-obrigatorio">*</strong>`
+          : `<small>Opcional</small>`
+        }
 
-            ${
-              maximo > 0
-                ? `<small>Escolha até ${maximo}</small>`
-                : ""
-            }
+            ${maximo > 0
+          ? `<small>Escolha até ${maximo}</small>`
+          : ""
+        }
           </legend>
 
           <ul class="adicionais-lista">
