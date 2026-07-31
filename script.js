@@ -14,6 +14,11 @@ const CHAVE_SESSAO_VISITANTE =
 const CHAVE_ULTIMO_ACESSO_VISITANTE =
   `ultimoAcessoVisitante_${CARDAPIO_ID}`;
 
+const LICENCA_TIMEOUT = 5000;
+const LICENCA_MAX_TENTATIVAS = 3;
+const LICENCA_INTERVALO = 2000;
+const TEMPO_ATUALIZACAO_LICENCA = 5 * 60 * 1000;
+
 let registroAcessoEmAndamento = false;
 
 function gerarIdSessaoVisitante() {
@@ -362,51 +367,125 @@ async function registrarAcessoSeNecessario() {
   }
 }
 
-async function verificarLicencaPublica() {
-  const parametros = new URLSearchParams({
-    acao: "consultarLicenca",
-    cardapioId: CARDAPIO_ID,
-    t: Date.now().toString(),
-  });
+async function verificarLicencaPublica(timeout = LICENCA_TIMEOUT) {
+  const controller = new AbortController();
 
-  const resposta = await fetch(
-    `${URL_LICENCIAMENTO}?${parametros.toString()}`,
-    {
-      cache: "no-store",
-    },
-  );
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+  }, timeout);
 
-  if (!resposta.ok) {
-    throw new Error("Não foi possível verificar a licença.");
+  try {
+    const parametros = new URLSearchParams({
+      acao: "consultarLicenca",
+      cardapioId: CARDAPIO_ID,
+      t: Date.now().toString(),
+    });
+
+    const resposta = await fetch(
+      `${URL_LICENCIAMENTO}?${parametros.toString()}`,
+      {
+        cache: "no-store",
+        signal: controller.signal,
+      },
+    );
+
+    if (!resposta.ok) {
+      throw new Error(`HTTP ${resposta.status}`);
+    }
+
+    const dados = await resposta.json();
+
+    if (
+      !dados ||
+      typeof dados !== "object" ||
+      typeof dados.permitido !== "boolean"
+    ) {
+      throw new Error("Resposta inválida do servidor.");
+    }
+
+    return dados;
+
+  } catch (erro) {
+
+    if (erro.name === "AbortError") {
+      throw new Error("Tempo limite excedido ao consultar a licença.");
+    }
+
+    throw erro;
+
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+async function validarLicencaComTentativas(
+    maxTentativas = LICENCA_MAX_TENTATIVAS,
+    intervalo = LICENCA_INTERVALO,
+) {
+  let ultimoErro = null;
+
+  for (let tentativa = 1; tentativa <= maxTentativas; tentativa++) {
+
+    const inicio = performance.now();
+
+    try {
+
+      console.log(
+        `[Licença] Tentativa ${tentativa}/${maxTentativas}`,
+      );
+
+      const licenca = await verificarLicencaPublica();
+
+      const tempo = Math.round(performance.now() - inicio);
+
+      console.log(
+        `[Licença] Sucesso na tentativa ${tentativa} (${tempo} ms)`,
+      );
+
+      return licenca;
+
+    } catch (erro) {
+
+      ultimoErro = erro;
+
+      const tempo = Math.round(performance.now() - inicio);
+
+      console.warn(
+        `[Licença] Falha na tentativa ${tentativa} (${tempo} ms): ${erro.message}`,
+      );
+
+      if (tentativa < maxTentativas) {
+        await new Promise(resolve => setTimeout(resolve, intervalo));
+      }
+
+    }
+
   }
 
-  const dados = await resposta.json();
-
-  if (!dados || typeof dados.permitido !== "boolean") {
-    throw new Error("Resposta inválida ao verificar a licença.");
-  }
-
-  return dados;
+  throw ultimoErro;
 }
 
 async function validarLicencaEmSegundoPlano() {
 
   try {
 
-    const licenca = await verificarLicencaPublica();
+    const licenca = await validarLicencaComTentativas();
 
     console.log("Resultado da licença:", licenca);
 
     if (licenca.permitido !== true) {
+      console.warn("[Licença] Licença bloqueada.");
       mostrarTelaManutencao();
     }
 
   } catch (erro) {
 
-    console.warn(
-      "Não foi possível validar a licença.",
+    console.error(
+      "[Licença] Não foi possível confirmar a licença após 3 tentativas.",
       erro
     );
+
+    mostrarTelaManutencao();
 
   }
 
@@ -3498,85 +3577,83 @@ document.addEventListener(
     carregarPerfilLojaCardapio();
 
     Promise.all([
-      carregarEstoqueCardapio(),
-      carregarControleProdutos(),
-      carregarComplementosCardapio(),
-      carregarCategoriasCardapio()
-    ])
+  carregarControleProdutos(),
+  carregarComplementosCardapio(),
+  carregarCategoriasCardapio()
+])
+  .then(() => {
+
+    renderizarProdutos();
+
+    document.body.classList.remove("carregando-cardapio");
+
+    carregarEstoqueCardapio()
       .then(() => {
+        console.log("Estoque inicial carregado.");
 
+        // Atualiza os produtos com os dados do estoque.
         renderizarProdutos();
-
-        document.body.classList.remove("carregando-cardapio");
-
-        setTimeout(() => {
-          registrarAcessoSeNecessario();
-        }, 2000);
-
-        setTimeout(() => {
-          validarLicencaEmSegundoPlano();
-        }, 3000);
-
       })
       .catch((erro) => {
-        console.error("Erro ao carregar o cardápio:", erro);
-        document.body.classList.remove("carregando-cardapio");
-
-        setTimeout(() => {
-          registrarAcessoSeNecessario();
-        }, 2000);
+        console.warn(
+          "Não foi possível carregar o estoque inicial:",
+          erro
+        );
       });
 
-    setInterval(() => {
-      Promise.all([
-        carregarDadosIniciaisCardapio()
-      ])
-        .then(() => {
+    setTimeout(() => {
+      registrarAcessoSeNecessario();
+    }, 2000);
 
-          renderizarProdutos();
+    setTimeout(() => {
+      validarLicencaEmSegundoPlano();
+    }, 3000);
 
-          document.body.classList.remove("carregando-cardapio");
+  })
+  .catch((erro) => {
 
-          // Carrega o estoque em segundo plano
-          carregarEstoqueCardapio()
-            .then(() => {
-              console.log(
-                "Estoque carregado:",
-                new Date().toLocaleTimeString()
-              );
+    console.error("Erro ao carregar o cardápio:", erro);
 
-              // Se necessário no futuro podemos atualizar apenas
-              // a disponibilidade dos produtos sem renderizar tudo.
-            })
-            .catch((erro) => {
-              console.error(
-                "Erro ao carregar estoque:",
-                erro
-              );
-            });
+    document.body.classList.remove("carregando-cardapio");
 
-          setTimeout(() => {
-            registrarAcessoSeNecessario();
-          }, 2000);
+    mostrarTelaManutencao();
 
-          setTimeout(() => {
-            validarLicencaEmSegundoPlano();
-          }, 3000);
+  });
 
-        })
-        .catch((erro) => {
+    setInterval(async () => {
 
-          console.error(
-            "Erro ao carregar o cardápio:",
-            erro
-          );
+  try {
 
-          document.body.classList.remove("carregando-cardapio");
+    await Promise.all([
+      carregarControleProdutos(),
+      carregarCategoriasCardapio(),
+      carregarComplementosCardapio(),
+      carregarEstoqueCardapio()
+    ]);
 
-          mostrarTelaManutencao();
+    renderizarProdutos();
 
-        });
-    }, TEMPO_ATUALIZACAO_PRODUTOS);
+    console.log(
+      "Produtos e estoque atualizados:",
+      new Date().toLocaleTimeString()
+    );
+
+  } catch (erro) {
+
+    console.warn(
+      "Não foi possível atualizar os produtos em segundo plano:",
+      erro
+    );
+
+  }
+
+}, TEMPO_ATUALIZACAO_PRODUTOS);
+
+  setInterval(() => {
+
+  validarLicencaEmSegundoPlano();
+
+}, TEMPO_ATUALIZACAO_LICENCA);
 
     carregarCuponsCardapio()
       .then(() => {
